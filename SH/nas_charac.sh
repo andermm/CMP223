@@ -16,6 +16,7 @@ AKY_BUILD=$BENCHMARKS/akypuera/build
 PAJE_BUILD=$BENCHMARKS/pajeng/build
 PARTITION=hype
 
+mkdir $BENCHMARKS
 #Download and install ScoreP
 cd $BENCHMARKS
 wget -c https://www.vi-hps.org/cms/upload/packages/scorep/scorep-6.0.tar.gz
@@ -112,8 +113,8 @@ do
 		runline+="-np $PROCS -machinefile $MACHINEFILE_POWER_OF_2 "
 	fi
 	runline+="$PROGRAM_BIN/$apps "
-	runline+="2>> $LOGS/nas.err "
-	runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}$interface.log > /tmp/nas.out)"
+	runline+="2>> $LOGS/nas.err_trace "
+	runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}$interface_trace.log > /tmp/nas.out)"
 	
 	##Execute the experiments
 	echo "Running >> $runline <<"
