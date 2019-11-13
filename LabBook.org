@@ -1,0 +1,212 @@
+#+TITLE: LabBook
+#+AUTHOR: Anderson Mattheus Maliszewski
+#+STARTUP: overview indent
+#+TAGS: noexport(n) deprecated(d) 
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+SEQ_TODO: TODO(t!) STARTED(s!) WAITING(w!) | DONE(d!) CANCELLED(c!) DEFERRED(f!)
+
+This LabBook is for the *Scientific Methodology and Performance
+Evaluation for Experimental Computer* class, in which informations
+about the experimental procedure are described.
+
+* Experimental Project
+** Objective
+   Evaluate the impact of the network interconnection over parallel
+   programs. Both *InfiniBand (IB)* and *Gigabit Ethernet (ETH)*
+   interconnections were evaluated, using the same physical cluster of servers, executing the NAS
+   Parallel Benchmarks version 3.4 with input *class D* as representative HPC benchmarks. The
+   evaluation was made using the *Messsage Passing Interface (MPI)*
+   parallel implementation of the original set of benchmarks from the
+   NPB suite, which is composed of five kernels *(IS, EP, CG, FT, and
+   MG)* and three pseudo-application *(BT, SP, and LU).* They are executed
+   using ETH, IB, and IP-over-IB with 128 processes over 4 nodes (32 processes per node) in
+   the case of IS, EP, CG, FT, MG, and LU (power-of-two). As BT and SP
+   require that the number of processes to be a square root, it was
+   used 121 processes, with 31 processes in one node and 30 processes
+   in the last 3 nodes.
+** How to Reproduce it
+To reproduce this project, the first step is to to clone the git repository in
+the *$HOME* of the desired computer server. 
+
+~cd $HOME; git clone https://github.com/andermm/SMPE_1920.git~
+
+Here it is assumed that your HOME directory is exported with NFS. If you
+don't have the NFS configured, [[https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04][here]] is a tutorial to do it.
+If this step is ok, go ahead to the other topics.
+** Software Installation
+To execute the experiments using MPI and also to compile/execute NPB, some
+required packages need to be installed. They are:
+- libopenmpi-dev
+- gfortran
+
+If your OS is based on Debian and you have permission to install new
+packages, you can install both required packages using the
+script in [[/BATCH/sofware_install.sh]]. On the other hand, if you don't
+have permission to do it, you can use the Spack package manager. A
+complete tutorial can be seen in [[https://spack-tutorial.readthedocs.io/en/latest/][here]].
+** System Information 
+   For collecting the informations of all nodes used in the evaluation, it
+   was used the bash script [[./BATCH/sys_info_collect.sh]],
+   which creates a log output with ORG extension in
+   [[./LOGS/env_info.org]]. The script is automallatically executed in the
+   execution script.
+** Network Infrastructure Information
+Each node has a Mellanox MT27600 Channel Adapter (CA) configured for
+the InfiniBand 56 Gb/s 4X FDR ConnectX-3 with firmware version
+10.16.1038 and OFED version 4.6-1.0.1.1. All nodes are interconnected
+through a  Mellanox SX6036 FDR and a generic de 1 Gbps switch.
+** Design of Experiments
+   To execute the benchmarks without any bias, it was used the library
+   DoE (script in [[./R/DoE.R]]) to create the Design of
+   Experiments. This R script is called in the *nas.batch* script to
+   generate a CSV file. In the DoE, it was used two factors, *apps* and *interface*, respectively,
+   with 30 randomized replications, totalizing 720
+   distinct executions.
+** Experiments Execution
+ The execution script was made to be used in a cluster
+ with Slurm job scheduler with the *sbatch* command. However, in the InfiniBand experiments, an
+ error was reported regarding IB memory limitations. To overcome this
+ problem, a central script was created ([[/BATCH/central.sh]]), which allocated the nodes in
+ the cluster using the command ~salloc -p hype -N 4 -J JOB -t 72:00:00~
+ and calls for the execution script ([[/BATCH/nas.batch]]) to be
+ executed as a normal bash script. As the experiments use two distint machine files
+ ([[./LOGS/nodes_power_of_2]] and [[./LOGS/nodes_square_root]]) they are not
+ automatically created in the execution script. If you are reproducing
+ the experiments in an enviroment without a job scheduler manager,
+ just execute the script ([[/BATCH/nas.sbatch]]) as a normal bash file.
+** Graphical Analysis 
+After the conclusion of the experiments, in this topic, graphs
+containing the execution time of the applications were created. The
+first step is to read the CSV file. Next, four graphs are created
+according to the number of processes, in which BT and SP have 121, and
+according to a similar execution time range 
+*** Read CSV
+#+begin_src R :results output :session *R* :exports both
+options(crayon.enabled=FALSE)
+library("tidyverse")
+df <- read_csv("LOGS/npb.02-11-2019.21h37m51s.csv")
+ df$apps=toupper(df$apps) 
+    
+    df %>%
+      group_by(apps,interface) %>%
+      summarise(
+        mean=mean(time),
+        sd=sd(time),
+        se=sd/sqrt(n()),
+        N=n()) %>%
+      arrange(apps,interface) -> newdf
+newdf
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 3.2.1     ✔ purrr   0.3.2
+✔ tibble  2.1.3     ✔ dplyr   0.8.3
+✔ tidyr   1.0.0     ✔ stringr 1.4.0
+✔ readr   1.3.1     ✔ forcats 0.4.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+
+Parsed with column specification:
+cols(
+  apps = col_character(),
+  interface = col_character(),
+  time = col_double()
+)
+
+# A tibble: 24 x 6
+# Groups:   apps [8]
+   apps  interface   mean     sd     se     N
+   <
+<
+     <
+ <
+ <
+<int>
+ 1 BT    ETH        558.   2.01  0.366     30
+ 2 BT    IB         414.   1.22  0.222     30
+ 3 BT    IPoIB      690.  10.5   1.92      30
+ 4 CG    ETH        771.   3.49  0.637     30
+ 5 CG    IB         184.   1.97  0.360     30
+ 6 CG    IPoIB      182.   2.44  0.445     30
+ 7 EP    ETH         37.5  1.14  0.209     30
+ 8 EP    IB          37.3  0.222 0.0406    30
+ 9 EP    IPoIB       38.2  1.91  0.349     30
+10 FT    ETH       1584.   0.726 0.132     30
+# … with 14 more rows
+#+end_example
+*** BT-SP(121 Procs)
+#+begin_src R :results output graphics :file PLOTS/BT_SP.png :exports both :width 600 :height 400 :session *R*
+ggplot(newdf[newdf$apps %in% c("BT", "SP"), ] , aes(x=apps, y=mean, fill=interface)) +
+    geom_bar(stat="identity", position = "dodge", width = 0.2) +
+    geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.05, position = position_dodge(.2)) +
+    theme_minimal() +
+    scale_fill_manual(values=c("#006dff", "#5ca3ff", "#b2d3ff"), name="Network\nInterface",
+    breaks=c("ETH", "IB", "IPoIB"), labels=c("Ethernet", "InfiniBand", "IP-over-IB")) +
+    theme(legend.position = c(0.15, 0.85), legend.background = element_rect(color = "black",
+    size = 0.3, linetype = "solid"), axis.text=element_text(size=12), 
+    axis.title=element_text(size=12), legend.title = element_text(color = "black", size = 14),
+    legend.text = element_text(color = "black", size = 12)) +
+    labs(x="Application", y="Execution Time [s]")
+#+end_src
+
+#+RESULTS:
+[[file:PLOTS/BT_SP.png]]
+
+*** FT(128 Procs)
+#+begin_src R :results output graphics :file PLOTS/FT.png :exports both :width 600 :height 400 :session *R* 
+   ggplot(newdf[newdf$apps %in% c("FT"), ] , aes(x=apps, y=mean, fill=interface)) +
+    geom_bar(stat="identity", position = "dodge", width = 0.1) +
+    geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.05, position = position_dodge(.1)) +
+    theme_minimal() +
+    scale_fill_manual(values=c("#006dff", "#5ca3ff", "#b2d3ff"), name="Network\nInterface",
+    breaks=c("ETH", "IB", "IPoIB"), labels=c("Ethernet", "InfiniBand", "IP-over-IB")) +
+    theme(legend.position = c(0.15, 0.85), legend.background = element_rect(color = "black",
+    size = 0.3, linetype = "solid"), axis.text=element_text(size=12), 
+    axis.title=element_text(size=12), legend.title = element_text(color = "black", size = 14),
+    legend.text = element_text(color = "black", size = 12)) +
+    labs(x="Application", y="Execution Time [s]")
+#+end_src
+
+#+RESULTS:
+[[file:PLOTS/FT.png]]
+
+*** EP-IS-MG(128 Procs)
+#+begin_src R :results output graphics :file PLOTS/EP_IS_MG.png :exports both :width 600 :height 400 :session *R* 
+ggplot(newdf[newdf$apps %in% c("EP", "IS", "MG"), ] , aes(x=apps, y=mean, fill=interface)) +
+    geom_bar(stat="identity", position = "dodge", width = 0.3) +
+    geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.1, position = position_dodge(.3)) +
+    theme_minimal() +
+    scale_fill_manual(values=c("#006dff", "#5ca3ff", "#b2d3ff"), name="Network\nInterface",
+    breaks=c("ETH", "IB", "IPoIB"), labels=c("Ethernet", "InfiniBand", "IP-over-IB")) +
+    theme(legend.position = c(0.15, 0.85), legend.background = element_rect(color = "black",
+    size = 0.3, linetype = "solid"), axis.text=element_text(size=12), 
+    axis.title=element_text(size=12), legend.title = element_text(color = "black", size = 14),
+    legend.text = element_text(color = "black", size = 12)) +
+    labs(x="Application", y="Execution Time [s]")
+#+end_src
+
+#+RESULTS:
+[[file:PLOTS/EP_IS_MG.png]]
+*** CG-LU(128 Procs)
+#+begin_src R :results output graphics :file PLOTS/CG_LU.png :exports both :width 600 :height 400 :session *R* 
+ggplot(newdf[newdf$apps %in% c("CG", "LU"), ] , aes(x=apps, y=mean, fill=interface)) +
+    geom_bar(stat="identity", position = "dodge", width = 0.2) +
+    geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.05, position = position_dodge(.2)) +
+    theme_minimal() +
+    scale_fill_manual(values=c("#006dff", "#5ca3ff", "#b2d3ff"), name="Network\nInterface",
+    breaks=c("ETH", "IB", "IPoIB"), labels=c("Ethernet", "InfiniBand", "IP-over-IB")) +
+    theme(legend.position = c(0.9, 0.85), legend.background = element_rect(color = "black",
+    size = 0.3, linetype = "solid"), axis.text=element_text(size=12), 
+    axis.title=element_text(size=12), legend.title = element_text(color = "black", size = 14),
+    legend.text = element_text(color = "black", size = 12)) +
+    labs(x="Application", y="Execution Time [s]")
+#+end_src
+
+#+RESULTS:
+[[file:PLOTS/CG_LU.png]]
+

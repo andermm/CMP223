@@ -1,0 +1,50 @@
+#+TITLE: SMPE_1920
+#+AUTHOR: Anderson Mattheus Maliszewski
+#+STARTUP: overview indent
+#+TAGS: noexport(n) deprecated(d)
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+SEQ_TODO: TODO(t!) STARTED(s!) WAITING(w!) | DONE(d!) CANCELLED(c!) DEFERRED(f!)
+
+This repository is for the 
+*Scientific Methodology and Performance Evaluation for Experimental
+Computer* class, in which are located the
+files and scripts used to perform the proposed final work
+activity. Above are described the files and folders. In addition, to
+accurately reproduce this evaluation some softwares are required,
+which are listed in the topic *Analysis Environment* at the end of this
+file. Further details about how to reproduce the experiments are in [[./LabBook.org]].
+
+- BATCH
+Here are contained the execution and system information collection scripts.
+- LOGS
+This folder has the logs of the benchmarks execution in a CSV file,
+both machine files used by the MPI execution line and the environment
+information about the nodes used in the experiments in an ORG file.
+- LOGS/BACKUP
+In this folder are contained the backup logs about each application
+and interconnection.
+- NPB3.4
+This folder has the *Nas Parallel Benchmarks (NPB)* in which are
+the MPI executables are compiled.
+- R
+This folder has the *Design of Experiments (DoE)* script in an R file,
+which was used to create the experimental project in a CSV file, used
+to execute the binaries of the NPB randomly.
+- LabBook.org
+In this file are described the objective of this work, as well as, the
+step-by-step of the entire project.
+
+* Analysis Environment 
+As mentioned before, some specific softwares are necessary to
+reproduce this evaluation accurately. They are:
+- Emacs and Org capable of compiling blocks of R code using Org-Babel
+They are used as a project management tool to keep track, record
+all the information, and  generate the graphics using blocks of
+R code. A complete tutorial about how to install and configure the
+mentioned software are available [[https://app-learninglab.inria.fr/gitlab/learning-lab/mooc-rr-ressources/blob/master/module2/ressources/emacs_orgmode.org][here]]. If you don't want to use this
+softwares, you can copy the blocks of code and use R or RStudio to
+generate the graphics.
+ 
+
+
