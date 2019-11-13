@@ -4,6 +4,7 @@ BASE=$HOME/CMP223
 SCRIPTS=$BASE/SH
 BENCHMARKS=$BASE/BENCHMARKS
 LOGS=$BASE/LOGS
+TRACE=$LOGS/TRACE
 R=$BASE/R
 NPB_CHARAC=$BENCHMARKS/NPB3.4_CHARAC
 APP_BIN_NPB=$NPB_CHARAC/NPB3.4-MPI/bin
@@ -16,7 +17,7 @@ AKY_BUILD=$BENCHMARKS/akypuera/build
 PAJE_BUILD=$BENCHMARKS/pajeng/build
 PARTITION=draco
 
-mkdir $BENCHMARKS
+mkdir -p $BENCHMARKS $TRACE
 #Download and install ScoreP
 cd $BENCHMARKS
 wget -c https://www.vi-hps.org/cms/upload/packages/scorep/scorep-6.0.tar.gz
@@ -69,7 +70,7 @@ MACHINEFILE_POWER_OF_2=$LOGS/nodes_power_of_2
 MACHINEFILE_SQUARE_ROOT=$LOGS/nodes_square_root
 
 #Generate the experimental project
-Rscript $DoE
+#Rscript $DoE
 PROJECT=$R/experimental_project_npb_charac.csv
 
 #2 - Read the experimental project
@@ -89,7 +90,7 @@ do
 
 	##Prepare the command for execution
 	runline=""
-	runline+="mpirun -x SCOREP_EXPERIMENT_DIRECTORY=$LOGS/scorep_${apps:0:3}$interface \
+	runline+="mpirun -x SCOREP_EXPERIMENT_DIRECTORY=$TRACE/scorep_${apps:0:3}$interface \
 					 -x SCOREP_ENABLE_TRACING=TRUE \
 					 -x SCOREP_ENABLE_PROFILING=FALSE --mca btl self,"
 
@@ -122,8 +123,8 @@ do
 
 	TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
 	echo "${apps:0:2},$interface,$TIME" >> $OUTPUT
-	$AKY_BUILD/./otf22paje traces.otf2 > ${apps:0:2}.trace
-	$PAJE_BUILD/./pj_dump ${apps:0:2}.trace | grep ^State > ${apps:0:2}.csv
+	$AKY_BUILD/./otf22paje $TRACE/scorep_${apps:0:3}$interface/traces.otf2 > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace
+	$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv
 	echo "Done!"
 done
 sed -i '1s/^/apps,interface,time\n/' $OUTPUT
