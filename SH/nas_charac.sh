@@ -81,7 +81,6 @@ do
 	export name=$(echo $name | sed "s/\"//g")
 	export apps=$(echo $apps | sed "s/\"//g")
 	export interface=$(echo $interface | sed "s/\"//g")
-	export =$(echo)
 
 	##Define a single key
 	KEY="$name-${apps:0:2}-$interface"
@@ -89,12 +88,13 @@ do
 	echo $KEY
 
 	##Prepare the command for execution
-	runline=""
-	runline+="mpirun -x SCOREP_EXPERIMENT_DIRECTORY=$TRACE/scorep_${apps:0:3}$interface \
-					 -x SCOREP_ENABLE_TRACING=TRUE \
-					 -x SCOREP_ENABLE_PROFILING=FALSE --mca btl self,"
+	runline+="mpirun "
+	runline+="-x SCOREP_EXPERIMENT_DIRECTORY=$TRACE/scorep_${apps:0:3}$interface "
+    runline+="-x SCOREP_ENABLE_TRACING=TRUE "
+    runline+="-x SCOREP_ENABLE_PROFILING=FALSE "
+    runline+="--mca btl self,"
 
-	if [[ $interface == ib ]]; then
+	if [[  == ib ]]; then
 		runline+="openib --mca btl_openib_if_include mlx5_0:1 "	
 	fi
 
@@ -113,8 +113,8 @@ do
 		PROCS=128
 		runline+="-np $PROCS -machinefile $MACHINEFILE_POWER_OF_2 "
 	fi
-	runline+="$PROGRAM_BIN/$apps "
-	runline+="2>> $LOGS/nas.err_trace "
+	runline+="$APP_BIN_NPB/$apps "
+	runline+="2>> $LOGS/nas_trace.err "
 	runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}$interface_trace.log > /tmp/nas.out)"
 	
 	##Execute the experiments
@@ -122,12 +122,12 @@ do
 	eval "$runline < /dev/null"
 
 	TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
-	echo "${apps:0:2},$interface,$TIME" >> $OUTPUT
+	echo "${apps:0:2},$interface,$TIME" >> $OUTPUT_NPB_CHARAC
 	$AKY_BUILD/./otf22paje $TRACE/scorep_${apps:0:3}$interface/traces.otf2 > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace
 	$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv
 	echo "Done!"
 done
-sed -i '1s/^/apps,interface,time\n/' $OUTPUT
+sed -i '1s/^/apps,interface,time\n/' $OUTPUT_NPB_CHARAC
 exit
 
 #$HOME/Desktop/EXP/akypuera/build/./otf22paje traces.otf2 > otf2.trace
@@ -144,7 +144,16 @@ exit
 #-machinefile /home/users/ammaliszewski/SMPE_1920/LOGS/nodes_power_of_2 \
 #/home/users/ammaliszewski/SMPE_1920/NPB3.4/NPB3.4-MPI/bin/ft.D.x
 
+mpirun -x SCOREP_EXPERIMENT_DIRECTORY=/home/users/ammaliszewski/CMP223/LOGS/TRACE/scorep_mg.eth
+-x SCOREP_ENABLE_TRACING=TRUE 
+-x SCOREP_ENABLE_PROFILING=FALSE --mca btl self,tcp --mca btl_tcp_if_include eno2 -np 128 -machinefile
+/home/users/ammaliszewski/CMP223/LOGS/nodes_power_of_2
+/home/users/ammaliszewski/CMP223/BENCHMARKS/NPB3.4_CHARAC/NPB3.4-MPI/bin/mg.D.x
+2>> /home/users/ammaliszewski/CMP223/LOGS/nas.err_trace &> >(tee -a
+/home/users/ammaliszewski/CMP223/LOGS/BACKUP/mg.eth_trace.log > /tmp/nas.out)
+
 #Infiniband
 #mpirun -np 128 --mca btl self,openib \
 #-machinefile /home/users/ammaliszewski/SMPE_1920/LOGS/nodes_power_of_2 \
 #--mca btl_openib_if_include mlx5_0:1 /home/users/ammaliszewski/SMPE_1920/NPB3.4/NPB3.4-MPI/bin/ft.D.x
+
