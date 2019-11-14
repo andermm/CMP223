@@ -54,16 +54,10 @@ MACHINEFILE_POWER_OF_2=$LOGS/nodes_power_of_2
 MACHINEFILE_SQUARE_ROOT=$LOGS/nodes_square_root
 
 #Generate the experimental project
-Rscript $DoE
+#Rscript $DoE
 
 #Check if the experimental project is provided
 PROJECT=$R/experimental_project_npb_exec.csv
-if [[ -f $PROJETO ]]; then
-  echo "The experimental project is provided"
-else
-  echo "The experimental project is missing !"
-  exit
-fi
 
 #2 - Read the experimental project
 tail -n +2 $PROJECT |
@@ -111,24 +105,8 @@ do
 	eval "$runline < /dev/null"
 
 	TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
-	echo "${apps:0:2},$interface,$TIME" >> $OUTPUT
+	echo "${apps:0:2},$interface,$TIME" >> $OUTPUT_NPB_EXEC
 	echo "Done!"
 done
-sed -i '1s/^/apps,interface,time\n/' $OUTPUT
+sed -i '1s/^/apps,interface,time\n/' $OUTPUT_NPB_EXEC
 exit
-
-
-#IpoIB
-#mpirun -np 128 --mca btl self,tcp --mca btl_tcp_if_include ib0 \
-#-machinefile /home/users/ammaliszewski/SMPE_1920/LOGS/nodes_power_of_2 \
-#/home/users/ammaliszewski/SMPE_1920/NPB3.4/NPB3.4-MPI/bin/ft.C.x
-
-#Ethernet
-#mpirun -np 128 --mca btl self,tcp --mca btl_tcp_if_include eno2 \
-#-machinefile /home/users/ammaliszewski/SMPE_1920/LOGS/nodes_power_of_2 \
-#/home/users/ammaliszewski/SMPE_1920/NPB3.4/NPB3.4-MPI/bin/ft.D.x
-
-#Infiniband
-#mpirun -np 128 --mca btl self,openib \
-#-machinefile /home/users/ammaliszewski/SMPE_1920/LOGS/nodes_power_of_2 \
-#--mca btl_openib_if_include mlx5_0:1 /home/users/ammaliszewski/SMPE_1920/NPB3.4/NPB3.4-MPI/bin/ft.D.x
