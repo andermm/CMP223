@@ -5,7 +5,7 @@ SCRIPTS=$BASE/SH
 BENCHMARKS=$BASE/BENCHMARKS
 LOGS=$BASE/LOGS
 R=$BASE/R
-ALYA=$BENCHMARKS/Alya/Executables/unix
+INTEL=$BENCHMARKS/Intel/Executables/unix
 APP_BIN_ALYA=$ALYA/Alya.x
 APP_CONFIG_ALYA=$ALYA/config.in
 APP_TEST_CASE_A=
@@ -17,6 +17,9 @@ PARTITION=hype
 mkdir -p $BENCHMARKS
 # Download and compile Alya and 2 Test Case
 cd $BENCHMARKS
+
+git clone --recursive https://github.com/intel/mpi-benchmarks.git
+
 
 wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/Alya.tar.gz;tar -zxf Alya.tar.gz;rm -rf Alya.tar.gz
 cd $ALYA; wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/TestCaseA.tar.gz;tar -zxf TestCaseA.tar.gz;rm -rf TestCaseA.tar.gz
