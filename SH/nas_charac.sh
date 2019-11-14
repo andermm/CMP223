@@ -94,7 +94,7 @@ do
     runline+="-x SCOREP_ENABLE_PROFILING=FALSE "
     runline+="--mca btl self,"
 
-	if [[  == ib ]]; then
+	if [[ $interface == ib ]]; then
 		runline+="openib --mca btl_openib_if_include mlx5_0:1 "	
 	fi
 
