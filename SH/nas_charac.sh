@@ -15,7 +15,7 @@ OUTPUT_NPB_CHARAC=$LOGS/npb_charac.$START.csv
 DoE=$BASE/R/DoE_npb_charac.R
 AKY_BUILD=$BENCHMARKS/akypuera/build
 PAJE_BUILD=$BENCHMARKS/pajeng/build
-PARTITION=draco
+PARTITION=hype
 
 mkdir -p $BENCHMARKS $TRACE
 #Download and install ScoreP
