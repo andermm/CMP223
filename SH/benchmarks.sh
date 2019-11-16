@@ -28,10 +28,10 @@ APP_LOGS_ONDES3D=$ONDES3D/LOGS
 ############################################################################################
 #Alya Variables
 ############################################################################################
-ALYA=Alya/Executables/unix
-APP_BIN_ALYA=$ALYA/Alya.x
-APP_CONFIG_ALYA=$ALYA/config.in
-APP_TEST_CASE_B_ALYA=$ALYA/TestCaseB/sphere
+#ALYA=Alya/Executables/unix
+#APP_BIN_ALYA=$ALYA/Alya.x
+#APP_CONFIG_ALYA=$ALYA/config.in
+#APP_TEST_CASE_B_ALYA=$ALYA/TestCaseB/sphere
 ############################################################################################
 #IMB Variables
 ############################################################################################
@@ -63,15 +63,15 @@ cd $IMB; mkdir bin; make
 ############################################################################################
 ########################################Alya################################################
 ############################################################################################
-cd $BENCHMARKS
-wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/Alya.tar.gz
-tar -zxf Alya.tar.gz;rm -rf Alya.tar.gz
-cd $BENCHMARKS/$ALYA; wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/TestCaseB.tar.gz
-tar -zxf TestCaseB.tar.gz;rm -rf TestCaseB.tar.gz
-cd $BENCHMARKS/$ALYA; cp configure.in/config_gfortran.in config.in
-sed -i 's,mpif90,mpifort,g' config.in
-./configure -x nastin parall
-cd $BENCHMARKS/$ALYA; make metis4;make
+#cd $BENCHMARKS
+#wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/Alya.tar.gz
+#tar -zxf Alya.tar.gz;rm -rf Alya.tar.gz
+#cd $BENCHMARKS/$ALYA; wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/TestCaseB.tar.gz
+#tar -zxf TestCaseB.tar.gz;rm -rf TestCaseB.tar.gz
+#cd $BENCHMARKS/$ALYA; cp configure.in/config_gfortran.in config.in
+#sed -i 's,mpif90,mpifort,g' config.in
+#./configure -x nastin parall
+#cd $BENCHMARKS/$ALYA; make metis4;make
 ############################################################################################
 #######################################Ondes3d##############################################
 ############################################################################################
@@ -152,9 +152,9 @@ do
 	elif [[ $apps == imb_CPU ]]; then
 		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
-	elif [[ $apps == Alya.x ]]; then
-		PROCS=160
-		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
+#	elif [[ $apps == Alya.x ]]; then
+#		PROCS=160
+#		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
 	elif [[ $apps == bt.D.x || $apps == sp.D.x ]]; then
 		PROCS=121
 		runline+="-np $PROCS -machinefile $MACHINEFILE_SQUARE_ROOT "
@@ -175,10 +175,10 @@ do
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU "
 		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_CPU.out)"
-	elif [[ $apps == Alya.x ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_TEST_CASE_B_ALYA "
-		runline+="2>> $LOGS/errors "
-		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface.log > /tmp/alya.out)"
+#	elif [[ $apps == Alya.x ]]; then
+#		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_TEST_CASE_B_ALYA "
+#		runline+="2>> $LOGS/errors "
+#		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface.log > /tmp/alya.out)"
 	else
 		runline+="$BENCHMARKS/$APP_BIN_NPB/$apps "
 		runline+="2>> $LOGS/errors "
@@ -201,8 +201,8 @@ do
 	elif [[ $apps == imb_CPU ]]; then
 		TIME=`cat /tmp/imb_memory.out | awk '{print $8","$4}'`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC_IMB
-	elif [[ $apps == Alya.x ]]; then
-		echo FALTA_FAZER_FUNCIONAR
+#	elif [[ $apps == Alya.x ]]; then
+#		echo FALTA_FAZER_FUNCIONAR
 	else	
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
 		echo "${apps:0:2},$interface,$TIME" >> $OUTPUT_APPS_EXEC
