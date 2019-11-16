@@ -22,6 +22,7 @@ ONDES3D=ondes3d
 APP_BIN_ONDES3D=$ONDES3D/ondes3d
 APP_TEST_ONDES3D_SISHUAN=$ONDES3D/SISHUAN-XML
 APP_CONFIG_ONDES3D=$APP_TEST_ONDES3D_SISHUAN/options.h
+APP_CONFIG_ONDES3D_PRM=$APP_TEST_ONDES3D_SISHUAN/sishuan.prm
 APP_SRC_ONDES3D=$ONDES3D/SRC
 APP_LOGS_ONDES3D=$ONDES3D/LOGS
 ############################################################################################
@@ -65,24 +66,22 @@ cd $IMB; mkdir bin; make
 cd $BENCHMARKS
 wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/Alya.tar.gz
 tar -zxf Alya.tar.gz;rm -rf Alya.tar.gz
-cd $ALYA; wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/TestCaseA.tar.gz
-tar -zxf TestCaseA.tar.gz;rm -rf TestCaseA.tar.gz
-cd $ALYA; wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/TestCaseB.tar.gz
+cd $BENCHMARKS/$ALYA; wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/TestCaseB.tar.gz
 tar -zxf TestCaseB.tar.gz;rm -rf TestCaseB.tar.gz
-cd $ALYA; cp configure.in/config_gfortran.in config.in
+cd $BENCHMARKS/$ALYA; cp configure.in/config_gfortran.in config.in
 sed -i 's,mpif90,mpifort,g' $APP_CONFIG_ALYA
 ./configure -x nastin parall
-cd $ALYA; make metis4;make;cd $BASE
+cd $BENCHMARKS/$ALYA; make metis4;make
 ############################################################################################
 #######################################Ondes3d##############################################
 ############################################################################################
 cd $BENCHMARKS
 git clone --recursive https://bitbucket.org/fdupros/ondes3d.git
-sed -i 's,./../,./,g' SISHUAN-XML/options.h
-sed -i 's,./SISHUAN-OUTPUT,$APP_LOGS_ONDES3D,g' $APP_TEST_ONDES3D_SISHUAN/sishuan.prm
-sed -i 's,./SISHUAN-XML,$APP_TEST_ONDES3D_SISHUAN/,g' $APP_TEST_ONDES3D_SISHUAN/sishuan.prm
-mkdir -p LOGS
-cp $APP_CONFIG_ONDES3D $APP_SRC_ONDES3D; cd $APP_SRC_ONDES3D; make clean; make; cd $ONDES3D; 
+sed -i 's,./../,./BENCHMARKS/ondes3d/,g' $APP_CONFIG_ONDES3D
+sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ondes3d/LOGS,g' $APP_CONFIG_ONDES3D_PRM
+mkdir -p $ONDES3D/LOGS
+sed -i 's,./SISHUAN-XML,./BENCHMARKS/ondes3d/SISHUAN-XML,g' $APP_CONFIG_ONDES3D_PRM
+cp $APP_CONFIG_ONDES3D $APP_SRC_ONDES3D; cd $APP_SRC_ONDES3D; make clean; make 
 ############################################################################################
 #######################################NPB##################################################
 ############################################################################################
@@ -145,16 +144,16 @@ do
 	fi
 
 	if [[ $apps == ondes3d ]]; then
-		PROCS=180
+		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
 	elif [[ $apps == imb_memory ]]; then
-		PROCS=180
+		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
 	elif [[ $apps == imb_CPU ]]; then
-		PROCS=180
+		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
 	elif [[ $apps == Alya.x ]]; then
-		PROCS=180
+		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
 	elif [[ $apps == bt.D.x || $apps == sp.D.x ]]; then
 		PROCS=121
