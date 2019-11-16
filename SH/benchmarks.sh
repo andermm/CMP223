@@ -45,12 +45,12 @@ IMB_CPU=(CPU 8Level Rand)
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
 OUTPUT_APPS_EXEC=$LOGS/apps_exec.$START.csv
 OUTPUT_APPS_EXEC_IMB=$LOGS/imb_exec.$START.csv
-PARTITION=hype
+PARTITION=(hype1 hype2 hype4 hype5)
 ############################################################################################
 #Executes the system information collector script
 ############################################################################################
-for (( i = 1; i < 5; i++ )); do
-	ssh $PARTITION${i} '$SCRIPTS/./sys_info_collect.sh'
+for (( i = 0; i < 4; i++ )); do
+	ssh ${PARTITION[i]} '$SCRIPTS/./sys_info_collect.sh'
 done
 
 mkdir -p $BENCHMARKS;cd $BENCHMARKS; 
