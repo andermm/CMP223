@@ -69,7 +69,7 @@ tar -zxf Alya.tar.gz;rm -rf Alya.tar.gz
 cd $BENCHMARKS/$ALYA; wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/TestCaseB.tar.gz
 tar -zxf TestCaseB.tar.gz;rm -rf TestCaseB.tar.gz
 cd $BENCHMARKS/$ALYA; cp configure.in/config_gfortran.in config.in
-sed -i 's,mpif90,mpifort,g' $APP_CONFIG_ALYA
+sed -i 's,mpif90,mpifort,g' config.in
 ./configure -x nastin parall
 cd $BENCHMARKS/$ALYA; make metis4;make
 ############################################################################################
