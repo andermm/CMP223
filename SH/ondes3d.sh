@@ -19,9 +19,10 @@ mkdir -p $BENCHMARKS
 cd $BENCHMARKS
 
 git clone --recursive https://bitbucket.org/fdupros/ondes3d.git
+sed -i 's,./../,./,g' SISHUAN-XML/options.h
 cp $APP_CONFIG_ONDES3D $APP_SRC_ONDES3D; cd $APP_SRC_ONDES3D; make clean; make; cd $ONDES3D; 
 sed -i 's,SISHUAN-OUTPUT,LOGS,g' SISHUAN-XML/sishuan.prm;mkdir -p LOGS;
-sed -i 's,./../,./,g' SISHUAN-XML/options.h
+
 
 exit
 
