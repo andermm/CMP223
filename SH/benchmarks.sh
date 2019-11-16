@@ -156,7 +156,7 @@ do
 #		PROCS=160
 #		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
 	elif [[ $apps == bt.D.x || $apps == sp.D.x ]]; then
-		PROCS=121
+		PROCS=144
 		runline+="-np $PROCS -machinefile $MACHINEFILE_SQUARE_ROOT "
 	else
 		PROCS=128
