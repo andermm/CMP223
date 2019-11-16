@@ -2,7 +2,7 @@
   set.seed(0)
   cmp223 <- fac.design(factor.names = list(
     apps = c("bt.D.x", "ep.D.x", "cg.D.x", "mg.D.x", "lu.D.x", "sp.D.x", "is.D.x", "ft.D.x", "imb_memory", "imb_CPU", 
-      "Alya.x", "ondes3d"),
+      "ondes3d"),
     interface = c("eth", "ib", "openib")),
     replications=30,
     randomize=TRUE)
