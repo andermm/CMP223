@@ -201,13 +201,17 @@ do
 		TIME=`grep -i "Timing total" /tmp/ondes3d.out | awk {'print $3'} | head -n 1`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
 	elif [[ $apps == imb_memory ]]; then
-		TIME=`cat /tmp/imb_memory.out | awk '{print $8","$4}'`
-		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC_IMB_MEM
+		for (( i = 0; i < 160; i++ )); do
+			echo "$apps,$interface" >> $OUTPUT_APPS_EXEC_IMB_MEM
+		done
+		paste -d, $OUTPUT_APPS_EXEC_IMB_MEM <(awk '{print $8","$4}' /tmp/imb_memory.out)
 	elif [[ $apps == imb_CPU ]]; then
-		TIME=`cat /tmp/imb_CPU.out | awk '{print $8","$4}'`
-		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC_IMB_CPU
-#	elif [[ $apps == Alya.x ]]; then
-#		echo FALTA_FAZER_FUNCIONAR
+		for (( i = 0; i < 160; i++ )); do
+			echo "$apps,$interface" >> $OUTPUT_APPS_EXEC_IMB_CPU
+		done
+		paste -d, $OUTPUT_APPS_EXEC_IMB_CPU <(awk '{print $8","$4}' /tmp/imb_CPU.out)	
+	#elif [[ $apps == Alya.x ]]; then
+		#echo FALTA_FAZER_FUNCIONAR
 	else	
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
 		echo "${apps:0:2},$interface,$TIME" >> $OUTPUT_APPS_EXEC
