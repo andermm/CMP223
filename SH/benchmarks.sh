@@ -192,7 +192,7 @@ do
 ############################################################################################
 #Execute the experiments
 ############################################################################################
-	echo "Running >> $runline <<"
+	echo "Executing >> $runline <<"
 	eval "$runline < /dev/null"
 ############################################################################################
 #Save the results
@@ -205,11 +205,13 @@ do
 			echo "$apps,$interface" >> /tmp/imb_tmp.out
 		done
 		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
+		rm /tmp/imb_tmp.out
 	elif [[ $apps == imb_CPU ]]; then
 		for (( i = 0; i < 160; i++ )); do
 			echo "$apps,$interface" >> /tmp/imb_tmp.out
 		done
-		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB	
+		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
+		rm /tmp/imb_tmp.out	
 	#elif [[ $apps == Alya.x ]]; then
 		#echo FALTA_FAZER_FUNCIONAR
 	else	
