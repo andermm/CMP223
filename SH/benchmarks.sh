@@ -48,14 +48,9 @@ IMB_CPU_MICROBENCHMARK=Rand
 ############################################################################################
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
 OUTPUT_APPS_EXEC=$LOGS/apps_exec.$START.csv
-OUTPUT_APPS_EXEC_IMB=$LOGS/imb_exec.$START.csv
+OUTPUT_APPS_EXEC_IMB_CPU=$LOGS/imb_cpu_exec.$START.csv
+OUTPUT_APPS_EXEC_IMB_MEM=$LOGS/imb_mem_exec.$START.csv
 PARTITION=(hype1 hype2 hype4 hype5)
-############################################################################################
-#Executes the system information collector script
-############################################################################################
-for (( i = 0; i < 4; i++ )); do
-	ssh ${PARTITION[i]} './home/users/ammaliszewski/CMP223/SH/sys_info_collect.sh'
-done
 
 mkdir -p $BENCHMARKS;cd $BENCHMARKS; 
 mkdir -p $BASE/LOGS/BACKUP
@@ -169,23 +164,23 @@ do
 
 	if [[ $apps == ondes3d ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_ONDES3D 0 "
-		runline+="2>> $LOGS/errors "
+		runline+="2 >> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
 	elif [[ $apps == imb_memory ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
-		runline+="2>> $LOGS/errors "
+		runline+="2 >> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_memory.out)"
 	elif [[ $apps == imb_CPU ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
-		runline+="2>> $LOGS/errors "
+		runline+="2 >> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_CPU.out)"
 #	elif [[ $apps == Alya.x ]]; then
 #		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_TEST_CASE_B_ALYA "
-#		runline+="2>> $LOGS/errors "
+#		runline+="2 >> $LOGS/errors "
 #		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface.log > /tmp/alya.out)"
 	else
 		runline+="$BENCHMARKS/$APP_BIN_NPB/$apps "
-		runline+="2>> $LOGS/errors "
+		runline+="2 >> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}$interface.log > /tmp/nas.out)"
 	fi	
 ############################################################################################
@@ -201,10 +196,10 @@ do
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
 	elif [[ $apps == imb_memory ]]; then
 		TIME=`cat /tmp/imb_memory.out | awk '{print $8","$4}'`
-		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC_IMB
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC_IMB_MEM
 	elif [[ $apps == imb_CPU ]]; then
-		TIME=`cat /tmp/imb_memory.out | awk '{print $8","$4}'`
-		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC_IMB
+		TIME=`cat /tmp/imb_CPU.out | awk '{print $8","$4}'`
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC_IMB_CPU
 #	elif [[ $apps == Alya.x ]]; then
 #		echo FALTA_FAZER_FUNCIONAR
 	else	
@@ -214,5 +209,6 @@ do
 	echo "Done!"
 done
 sed -i '1s/^/apps,interface,time\n/' $OUTPUT_APPS_EXEC
-sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB
+sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB_CPU
+sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB_MEM
 exit
