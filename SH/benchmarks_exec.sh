@@ -213,5 +213,5 @@ sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB
 ############################################################################################
 #Calls the script of benchmarks characterization
 ############################################################################################
-cd $HOME/CMP223; nohup ./SH/benchmarks_charac.sh > $BASE/LOGS/script_charac_log 2>&1 &
+cd $BASE; nohup ./SH/benchmarks_charac.sh > $BASE/LOGS/script_charac_log 2>&1 &
 exit

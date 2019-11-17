@@ -66,8 +66,7 @@ make; make install
 
 #PajeNG
 cd $SOFTWARES
-git clone --recursive https://github.com/schnorr/pajeng.git
-mkdir -p pajeng/build ; cd pajeng/build; cmake .. ; make install
+git clone --recursive https://github.com/schnorr/pajeng.git; mkdir -p pajeng/build ; cd pajeng/build; cmake .. ; make install
 
 ########################################IMB#################################################
 cd $BENCHMARKS
@@ -213,7 +212,7 @@ do
 		TIME=`grep -i "Timing total" /tmp/ondes3d.out | awk {'print $3'} | head -n 1`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_CHARAC
 		$AKY_BUILD/./otf22paje $TRACE/scorep_${apps:0:3}$interface/traces.otf2 > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace
-		$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv
+		#$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv
 	elif [[ $apps == imb_memory ]]; then
 		for (( i = 0; i < 160; i++ )); do
 			echo "$apps,$interface" >> /tmp/imb_tmp.out
@@ -221,7 +220,7 @@ do
 		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_CHARAC_IMB
 		rm /tmp/imb_tmp.out
 		$AKY_BUILD/./otf22paje $TRACE/scorep_${apps:0:3}$interface/traces.otf2 > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace
-		$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv
+		#$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv
 	elif [[ $apps == imb_CPU ]]; then
 		for (( i = 0; i < 160; i++ )); do
 			echo "$apps,$interface" >> /tmp/imb_tmp.out
@@ -229,14 +228,14 @@ do
 		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_CHARAC_IMB
 		rm /tmp/imb_tmp.out
 		$AKY_BUILD/./otf22paje $TRACE/scorep_${apps:0:3}$interface/traces.otf2 > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace
-		$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv	
+		#$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv	
 	#elif [[ $apps == Alya.x ]]; then
 		#echo FALTA_FAZER_FUNCIONAR
 	else	
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
 		echo "${apps:0:2},$interface,$TIME" >> $OUTPUT_APPS_CHARAC
 		$AKY_BUILD/./otf22paje $TRACE/scorep_${apps:0:3}$interface/traces.otf2 > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace
-		$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv
+		#$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv
 	fi	
 	echo "Done!"
 done
