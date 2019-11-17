@@ -37,8 +37,12 @@ APP_LOGS_ONDES3D=$ONDES3D/LOGS
 ############################################################################################
 IMB=ImbBench
 APP_BIN_IMB=$IMB/bin/imb
-IMB_MEMORY=(Memory 8Level BST)
-IMB_CPU=(CPU 8Level Rand)
+IMB_MEMORY=Memory
+IMB_MEMORY_PATTERN=8Level 
+IMB_MEMORY_MICROBENCHMARK=BST
+IMB_CPU=CPU
+IMB_CPU_PATTERN=8Level 
+IMB_CPU_MICROBENCHMARK=Rand
 ############################################################################################
 #Other Variables
 ############################################################################################
@@ -137,7 +141,7 @@ do
 
 	if [[ $interface == ib ]]; then
 		runline+="openib --mca btl_openib_if_include mlx5_0:1 "	
-	elif [[ $interface == openib ]]; then
+	elif [[ $interface == ipoib ]]; then
 		runline+="tcp --mca btl_tcp_if_include ib0 "
 	else
 		runline+="tcp --mca btl_tcp_if_include eno2 "
@@ -168,11 +172,11 @@ do
 		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
 	elif [[ $apps == imb_memory ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY "
+		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK"
 		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_memory.out)"
 	elif [[ $apps == imb_CPU ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU "
+		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK"
 		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_CPU.out)"
 #	elif [[ $apps == Alya.x ]]; then
