@@ -185,29 +185,25 @@ do
 	if [[ $apps == ondes3d ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_ONDES3D 0 "
 		runline+="2>> $LOGS/errors_charac "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface_charac.log > /tmp/ondes3d.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.${interface}_charac.log > /tmp/ondes3d.out)"
 	elif [[ $apps == imb_memory ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors_charac "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface_charac.log > /tmp/imb.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.${interface}_charac.log > /tmp/imb.out)"
 	elif [[ $apps == imb_CPU ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors_charac "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface_charac.log > /tmp/imb.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.${interface}_charac.log > /tmp/imb.out)"
 #	elif [[ $apps == Alya.x ]]; then
 #		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_TEST_CASE_B_ALYA "
 #		runline+="2 >> $LOGS/errors_charac "
-#		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface_charac.log > /tmp/alya.out)"
+#		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}${interface}_charac.log > /tmp/alya.out)"
 	else
 		runline+="$BENCHMARKS/$APP_BIN_NPB/$apps "
 		runline+="2>> $LOGS/errors_charac "
-		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}$interface_charac.log > /tmp/nas.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}${interface}_charac.log > /tmp/nas.out)"
 	fi	
 
-	runline+="$APP_BIN_NPB/$apps "
-	runline+="2>> $LOGS/nas_trace.err "
-	runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}${interface}_trace.log > /tmp/nas.out)"
-	
 #Execute the experiments
 	echo "Running >> $runline <<"
 	eval "$runline < /dev/null"
