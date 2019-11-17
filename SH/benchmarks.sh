@@ -54,7 +54,7 @@ PARTITION=(hype1 hype2 hype4 hype5)
 #Executes the system information collector script
 ############################################################################################
 for (( i = 0; i < 4; i++ )); do
-	ssh ${PARTITION[i]} '/home/users/ammaliszewski/CMP223/SH/./sys_info_collect.sh'
+	ssh ${PARTITION[i]} './home/users/ammaliszewski/CMP223/SH/sys_info_collect.sh'
 done
 
 mkdir -p $BENCHMARKS;cd $BENCHMARKS; 
@@ -172,11 +172,11 @@ do
 		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
 	elif [[ $apps == imb_memory ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK"
+		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_memory.out)"
 	elif [[ $apps == imb_CPU ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK"
+		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_CPU.out)"
 #	elif [[ $apps == Alya.x ]]; then
