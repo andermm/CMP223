@@ -48,7 +48,7 @@ IMB_CPU_MICROBENCHMARK=Rand
 ############################################################################################
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
 OUTPUT_APPS_EXEC=$LOGS/apps_exec.$START.csv
-OUTPUT_APPS_EXEC_IMB_CPU=$LOGS/imb_exec.$START.csv
+OUTPUT_APPS_EXEC_IMB=$LOGS/imb_exec.$START.csv
 
 PARTITION=(hype1 hype2 hype4 hype5)
 ############################################################################################
