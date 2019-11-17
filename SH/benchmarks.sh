@@ -51,6 +51,12 @@ OUTPUT_APPS_EXEC=$LOGS/apps_exec.$START.csv
 OUTPUT_APPS_EXEC_IMB_CPU=$LOGS/imb_cpu_exec.$START.csv
 OUTPUT_APPS_EXEC_IMB_MEM=$LOGS/imb_mem_exec.$START.csv
 PARTITION=(hype1 hype2 hype4 hype5)
+############################################################################################
+#Executes the system information collector script
+############################################################################################
+for (( i = 0; i < 4; i++ )); do
+	ssh ${PARTITION[i]} '/home/users/ammaliszewski/CMP223/SH/./sys_info_collect.sh'
+done
 
 mkdir -p $BENCHMARKS;cd $BENCHMARKS; 
 mkdir -p $BASE/LOGS/BACKUP
@@ -176,7 +182,7 @@ do
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_CPU.out)"
 #	elif [[ $apps == Alya.x ]]; then
 #		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_TEST_CASE_B_ALYA "
-#		runline+="2>> $LOGS/errors "
+#		runline+="2 >> $LOGS/errors "
 #		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface.log > /tmp/alya.out)"
 	else
 		runline+="$BENCHMARKS/$APP_BIN_NPB/$apps "
