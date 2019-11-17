@@ -48,7 +48,6 @@ PAJE_BUILD=$SOFTWARES/pajeng/build
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
 OUTPUT_APPS_CHARAC=$LOGS/apps_charac.$START.csv
 OUTPUT_APPS_CHARAC_IMB=$LOGS/imb_charac.$START.csv
-PARTITION=(hype1 hype2 hype4 hype5)
 
 mkdir -p $SOFTWARES; mkdir -p $TRACE
 
@@ -92,11 +91,11 @@ cd $IMB; mkdir bin; make
 cd $BENCHMARKS
 git clone --recursive https://bitbucket.org/fdupros/ondes3d.git
 mv ondes3d ONDES3D_CHARAC
-sed -i 's,./../,./BENCHMARKS/ondes3d/,g' $APP_CONFIG_ONDES3D
-sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ondes3d/LOGS,g' $APP_CONFIG_ONDES3D_PRM
+sed -i 's,./../,./BENCHMARKS/ONDES3D_CHARAC/,g' $APP_CONFIG_ONDES3D
+sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ONDES3D_CHARAC/LOGS,g' $APP_CONFIG_ONDES3D_PRM
 sed -i 's,mpicc,/tmp/install/bin/./scorep mpicc,g' $APP_SRC_ONDES3D/Makefile
 mkdir -p $ONDES3D/LOGS
-sed -i 's,./SISHUAN-XML,./BENCHMARKS/ondes3d/SISHUAN-XML,g' $APP_CONFIG_ONDES3D_PRM
+sed -i 's,./SISHUAN-XML,./BENCHMARKS/ONDES3D_CHARAC/SISHUAN-XML,g' $APP_CONFIG_ONDES3D_PRM
 cp $APP_CONFIG_ONDES3D $APP_SRC_ONDES3D; cd $APP_SRC_ONDES3D; make clean; make 
 
 #######################################NPB##################################################
