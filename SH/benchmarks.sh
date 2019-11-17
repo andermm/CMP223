@@ -164,23 +164,23 @@ do
 
 	if [[ $apps == ondes3d ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_ONDES3D 0 "
-		runline+="2 >> $LOGS/errors "
+		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
 	elif [[ $apps == imb_memory ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
-		runline+="2 >> $LOGS/errors "
+		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_memory.out)"
 	elif [[ $apps == imb_CPU ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
-		runline+="2 >> $LOGS/errors "
+		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_CPU.out)"
 #	elif [[ $apps == Alya.x ]]; then
 #		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_TEST_CASE_B_ALYA "
-#		runline+="2 >> $LOGS/errors "
+#		runline+="2>> $LOGS/errors "
 #		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface.log > /tmp/alya.out)"
 	else
 		runline+="$BENCHMARKS/$APP_BIN_NPB/$apps "
-		runline+="2 >> $LOGS/errors "
+		runline+="2>> $LOGS/errors "
 		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}$interface.log > /tmp/nas.out)"
 	fi	
 ############################################################################################
