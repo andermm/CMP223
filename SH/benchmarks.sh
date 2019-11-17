@@ -48,8 +48,8 @@ IMB_CPU_MICROBENCHMARK=Rand
 ############################################################################################
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
 OUTPUT_APPS_EXEC=$LOGS/apps_exec.$START.csv
-OUTPUT_APPS_EXEC_IMB_CPU=$LOGS/imb_cpu_exec.$START.csv
-OUTPUT_APPS_EXEC_IMB_MEM=$LOGS/imb_mem_exec.$START.csv
+OUTPUT_APPS_EXEC_IMB_CPU=$LOGS/imb_exec.$START.csv
+
 PARTITION=(hype1 hype2 hype4 hype5)
 ############################################################################################
 #Executes the system information collector script
@@ -175,11 +175,11 @@ do
 	elif [[ $apps == imb_memory ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_memory.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb.out)"
 	elif [[ $apps == imb_CPU ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb_CPU.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb.out)"
 #	elif [[ $apps == Alya.x ]]; then
 #		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_TEST_CASE_B_ALYA "
 #		runline+="2 >> $LOGS/errors "
@@ -202,14 +202,14 @@ do
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
 	elif [[ $apps == imb_memory ]]; then
 		for (( i = 0; i < 160; i++ )); do
-			echo "$apps,$interface" >> $OUTPUT_APPS_EXEC_IMB_MEM
+			echo "$apps,$interface" >> /tmp/imb_tmp.out
 		done
-		paste -d, $OUTPUT_APPS_EXEC_IMB_MEM <(awk '{print $8","$4}' /tmp/imb_memory.out)
+		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
 	elif [[ $apps == imb_CPU ]]; then
 		for (( i = 0; i < 160; i++ )); do
-			echo "$apps,$interface" >> $OUTPUT_APPS_EXEC_IMB_CPU
+			echo "$apps,$interface" >> /tmp/imb_tmp.out
 		done
-		paste -d, $OUTPUT_APPS_EXEC_IMB_CPU <(awk '{print $8","$4}' /tmp/imb_CPU.out)	
+		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB	
 	#elif [[ $apps == Alya.x ]]; then
 		#echo FALTA_FAZER_FUNCIONAR
 	else	
@@ -219,6 +219,5 @@ do
 	echo "Done!"
 done
 sed -i '1s/^/apps,interface,time\n/' $OUTPUT_APPS_EXEC
-sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB_CPU
-sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB_MEM
+sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB
 exit
