@@ -160,23 +160,23 @@ do
 	if [[ $apps == ondes3d ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_ONDES3D 0 "
 		runline+="2>> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.${interface}_exec.log > /tmp/ondes3d.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/ondes3d.out)"
 	elif [[ $apps == imb_memory ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.${interface}_exec.log > /tmp/imb.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/imb.out)"
 	elif [[ $apps == imb_CPU ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.${interface}_exec.log > /tmp/imb.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/imb.out)"
 #	elif [[ $apps == Alya.x ]]; then
 #		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_TEST_CASE_B_ALYA "
 #		runline+="2 >> $LOGS/errors_exec "
-#		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface_exec.log > /tmp/alya.out)"
+#		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface.exec.log > /tmp/alya.out)"
 	else
 		runline+="$BENCHMARKS/$APP_BIN_NPB/$apps "
 		runline+="2>> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}${interface}_exec.log > /tmp/nas.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}$interface.exec.log > /tmp/nas.out)"
 	fi	
 
 #Execute the experiments
@@ -213,5 +213,5 @@ sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB
 ############################################################################################
 #Calls the script of benchmarks characterization
 ############################################################################################
-cd $HOME/CMP223; nohup ./SH/benchmarks_charac.sh > $BASE/LOGS/script_charac_log 2>&1 &'"
+cd $HOME/CMP223; nohup ./SH/benchmarks_charac.sh > $BASE/LOGS/script_charac_log 2>&1 &
 exit
