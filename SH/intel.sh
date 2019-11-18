@@ -16,7 +16,7 @@ PROCS=2
 
 #Other Variables
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
-OUTPUT_IMB_EXEC=$LOGS/IMB.$START.csv
+OUTPUT_IMB_EXEC=$LOGS/imb.$START.csv
 
 
 #################################Intel MPI Benchmarks#############################################
