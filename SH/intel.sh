@@ -8,27 +8,27 @@ LOGS=$BASE/LOGS
 R=$BASE/R
 
 #Intel MPI Benchmarks Variables
-IMB=mpi-benchmarks
-IMB_SOURCE=$IMB/src_cpp/Makefile
-APP_BIN_IMB=$IMB/IMB-MPI1
-APP_TEST=PingPong
+INTEL=mpi-benchmarks
+INTEL_SOURCE=$INTEL/src_cpp/Makefile
+APP_BIN_INTEL=$INTEL/IMB-MPI1
+APP_TEST_INTEL=PingPong
 PROCS=2
 
 #Other Variables
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
-OUTPUT_IMB_EXEC=$LOGS/imb.$START.csv
+OUTPUT_INTEL_EXEC=$LOGS/intel.$START.csv
 
 
 #################################Intel MPI Benchmarks#############################################
 cd $BENCHMARKS
 git clone --recursive https://github.com/intel/mpi-benchmarks.git
-sed -i 's,mpiicc,mpicc,g' $IMB_SOURCE
-sed -i 's,mpiicpc,mpicxx,g' $IMB_SOURCE
-cd $IMB; make IMB-MPI1
+sed -i 's,mpiicc,mpicc,g' $INTEL_SOURCE
+sed -i 's,mpiicpc,mpicxx,g' $INTEL_SOURCE
+cd $INTEL; make IMB-MPI1
 
 #Define the machine file and experimental project
-echo -e "draco2\ndraco3" > $LOGS/nodes_imb
-MACHINEFILE=$LOGS/nodes_imb
+echo -e "draco2\ndraco3" > $LOGS/nodes_intel
+MACHINEFILE=$LOGS/nodes_intel
 PROJECT=$R/intel_mpi_experimental_project_exec.csv
 for i in `seq 30`; do shuf -e IMB-MPI1,ib IMB-MPI1,eth IMB-MPI1,ipoib >> $PROJECT ; done
 sed -i '1s/^/apps,interface\n/' $PROJECT
@@ -60,8 +60,8 @@ do
 	fi
 	
 #Save the output according to the app
-	runline+="$BENCHMARKS/$APP_BIN_IMB $APP_TEST "
-	runline+="2>> $LOGS/errors_imb_exec "
+	runline+="$BENCHMARKS/$APP_BIN_INTEL $APP_TEST_INTEL "
+	runline+="2>> $LOGS/errors_intel_exec "
 	runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/intel_mb.out)"
 	
 
@@ -79,13 +79,13 @@ N=`tail -n +35 /tmp/intel_mb.out | awk {'print $1'} | grep -v '[^ 0.0-9.0]' | se
 	tail -n +35 /tmp/intel_mb.out | awk {'print $1'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/BYTES
     tail -n +35 /tmp/intel_mb.out | awk {'print $3'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/TIME
     tail -n +35 /tmp/intel_mb.out | awk {'print $4'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/Mbytes
-    paste -d"," /tmp/for.out /tmp/BYTES /tmp/TIME /tmp/Mbytes >> $OUTPUT_IMB_EXEC
+    paste -d"," /tmp/for.out /tmp/BYTES /tmp/TIME /tmp/Mbytes >> $OUTPUT_INTEL_EXEC
     rm /tmp/for.out; rm /tmp/BYTES; rm /tmp/TIME; rm /tmp/Mbytes
     
     echo "Done!"
 
 done
-sed -i '1s/^/apps,interface,bytes,time,mbytes-sec\n/' $OUTPUT_IMB_EXEC
+sed -i '1s/^/apps,interface,bytes,time,mbytes-sec\n/' $OUTPUT_INTEL_EXEC
 
 #Calls the characterization benchmark script
 cd $BASE; nohup ./SH/benchmarks_charac.sh > $BASE/LOGS/script_charac_log 2>&1 &
