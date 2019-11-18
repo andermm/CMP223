@@ -247,5 +247,6 @@ sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB
 sed -i '1s/^/apps,interface,bytes,time,mbytes-sec\n/' $OUTPUT_INTEL_EXEC
 
 
-#Calls the Intel MPI benchmark script
+#Calls the characterization benchmark script
+cd $BASE; nohup ./SH/benchmarks_charac.sh > $BASE/LOGS/script_charac_log 2>&1 &
 exit
