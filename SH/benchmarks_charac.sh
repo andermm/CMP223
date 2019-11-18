@@ -16,7 +16,7 @@ APP_CONFIG_NPB=$NPB/NPB3.4-MPI/config
 APP_COMPILE_NPB=$NPB/NPB3.4-MPI
 
 #Ondes3d Variables
-ONDES3D=ONDES3D_CHARAC
+ONDES3D=ondes3dc
 APP_BIN_ONDES3D=$ONDES3D/ondes3d
 APP_TEST_ONDES3D_SISHUAN=$ONDES3D/SISHUAN-XML
 APP_CONFIG_ONDES3D=$APP_TEST_ONDES3D_SISHUAN/options.h
@@ -89,12 +89,12 @@ cd $IMB; mkdir bin; make
 #######################################Ondes3d##############################################
 cd $BENCHMARKS
 git clone --recursive https://bitbucket.org/fdupros/ondes3d.git
-mv ondes3d ONDES3D_CHARAC
-sed -i 's,./../,./BENCHMARKS/ONDES3D_CHARAC/,g' $APP_CONFIG_ONDES3D
-sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ONDES3D_CHARAC/LOGS,g' $APP_CONFIG_ONDES3D_PRM
+mv ondes3d ondes3dc
+sed -i 's,./../,./BENCHMARKS/ondes3dc/,g' $APP_CONFIG_ONDES3D
+sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ondes3dc/LOGS,g' $APP_CONFIG_ONDES3D_PRM
 sed -i 's,mpicc,/tmp/install/bin/./scorep mpicc,g' $APP_SRC_ONDES3D/Makefile
 mkdir -p $ONDES3D/LOGS
-sed -i 's,./SISHUAN-XML,./BENCHMARKS/ONDES3D_CHARAC/SISHUAN-XML,g' $APP_CONFIG_ONDES3D_PRM
+sed -i 's,./SISHUAN-XML,./BENCHMARKS/ondes3dc/SISHUAN-XML,g' $APP_CONFIG_ONDES3D_PRM
 cp $APP_CONFIG_ONDES3D $APP_SRC_ONDES3D; cd $APP_SRC_ONDES3D; make clean; make 
 
 #######################################NPB##################################################
