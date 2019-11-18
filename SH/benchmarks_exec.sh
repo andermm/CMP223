@@ -38,10 +38,17 @@ IMB_CPU=CPU
 IMB_CPU_PATTERN=8Level 
 IMB_CPU_MICROBENCHMARK=Rand
 
+#Intel MPI Benchmarks Variables
+INTEL=mpi-benchmarks
+INTEL_SOURCE=$INTEL/src_cpp/Makefile
+APP_BIN_INTEL=$INTEL/IMB-MPI1
+APP_TEST_INTEL=PingPong
+
 #Other Variables
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
 OUTPUT_APPS_EXEC=$LOGS/apps_exec.$START.csv
 OUTPUT_APPS_EXEC_IMB=$LOGS/imb_exec.$START.csv
+OUTPUT_INTEL_EXEC=$LOGS/intel.$START.csv
 
 PARTITION=(hype1 hype2 hype4 hype5)
 
@@ -102,10 +109,19 @@ for (( n = 0; n < 8; n++ )); do
 done
 cd $APP_COMPILE_NPB; make suite; cd $BASE
 
+#################################Intel MPI Benchmarks#############################################
+cd $BENCHMARKS
+git clone --recursive https://github.com/intel/mpi-benchmarks.git
+sed -i 's,mpiicc,mpicc,g' $INTEL_SOURCE
+sed -i 's,mpiicpc,mpicxx,g' $INTEL_SOURCE
+cd $INTEL; make IMB-MPI1
+
 #Define the machine file and experimental project
 MACHINEFILE_POWER_OF_2=$LOGS/nodes_power_of_2
 MACHINEFILE_SQUARE_ROOT=$LOGS/nodes_square_root
 MACHINEFILE_FULL=$LOGS/nodes_full
+echo -e "hype1\nhype2" > $LOGS/nodes_intel
+MACHINEFILE_INTEL=$LOGS/nodes_intel
 PROJECT=$R/experimental_project_exec.csv
 
 #Read the experimental project
@@ -139,6 +155,9 @@ do
 	if [[ $apps == ondes3d ]]; then
 		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
+	elif [[ $apps == intel ]]; then
+		PROCS=2
+		runline+="-np $PROCS -machinefile $MACHINEFILE_INTEL "
 	elif [[ $apps == imb_memory ]]; then
 		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
@@ -161,6 +180,10 @@ do
 		runline+="$BENCHMARKS/$APP_BIN_ONDES3D 0 "
 		runline+="2>> $LOGS/errors_exec "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/ondes3d.out)"
+	elif [[ $apps == intel ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_INTEL $APP_TEST_INTEL "
+		runline+="2>> $LOGS/errors_exec "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/intel_mb.out)"
 	elif [[ $apps == imb_memory ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors_exec "
@@ -187,6 +210,18 @@ do
 	if [[ $apps == ondes3d ]]; then
 		TIME=`grep -i "Timing total" /tmp/ondes3d.out | awk {'print $3'} | head -n 1`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
+	elif [[ $apps == intel ]]; then
+		N=`tail -n +35 /tmp/intel_mb.out | awk {'print $1'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' | wc -l`
+		for (( i = 0; i < $N; i++ )); do
+			echo "$apps,$interface" >> /tmp/for.out
+		done
+
+	tail -n +35 /tmp/intel_mb.out | awk {'print $1'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/BYTES
+    tail -n +35 /tmp/intel_mb.out | awk {'print $3'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/TIME
+    tail -n +35 /tmp/intel_mb.out | awk {'print $4'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/Mbytes
+    paste -d"," /tmp/for.out /tmp/BYTES /tmp/TIME /tmp/Mbytes >> $OUTPUT_INTEL_EXEC
+    rm /tmp/for.out; rm /tmp/BYTES; rm /tmp/TIME; rm /tmp/Mbytes
+	
 	elif [[ $apps == imb_memory ]]; then
 		for (( i = 0; i < 160; i++ )); do
 			echo "$apps,$interface" >> /tmp/imb_tmp.out
@@ -209,7 +244,8 @@ do
 done
 sed -i '1s/^/apps,interface,time\n/' $OUTPUT_APPS_EXEC
 sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB
+sed -i '1s/^/apps,interface,bytes,time,mbytes-sec\n/' $OUTPUT_INTEL_EXEC
+
 
 #Calls the Intel MPI benchmark script
-cd $BASE; nohup ./SH/intel.sh > $BASE/LOGS/script_intel_log 2>&1 &
 exit

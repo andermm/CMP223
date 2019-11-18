@@ -12,7 +12,7 @@ INTEL=mpi-benchmarks
 INTEL_SOURCE=$INTEL/src_cpp/Makefile
 APP_BIN_INTEL=$INTEL/IMB-MPI1
 APP_TEST_INTEL=PingPong
-PROCS=2
+PROCS_INTEL=2
 
 #Other Variables
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
@@ -48,7 +48,7 @@ do
 
 #Prepare the command for execution
 	runline=""
-	runline+="mpiexec -np $PROCS -machinefile $MACHINEFILE --mca btl self,"
+	runline+="mpiexec -np $PROCS_INTEL -machinefile $MACHINEFILE --mca btl self,"
 
 #Select interface
 	if [[ $interface == ib ]]; then
