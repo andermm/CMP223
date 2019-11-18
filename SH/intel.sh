@@ -86,4 +86,7 @@ N=`tail -n +35 /tmp/intel_mb.out | awk {'print $1'} | grep -v '[^ 0.0-9.0]' | se
 
 done
 sed -i '1s/^/apps,interface,bytes,time,mbytes-sec\n/' $OUTPUT_IMB_EXEC
+
+#Calls the characterization benchmark script
+cd $BASE; nohup ./SH/benchmarks_charac.sh > $BASE/LOGS/script_charac_log 2>&1 &
 exit
