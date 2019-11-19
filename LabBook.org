@@ -118,10 +118,13 @@ using the pure MPI version.
 To reproduce this project, the first step is to to clone the git repository in
 the *$HOME* of the desired computer server. 
 
-~cd $HOME; git clone https://github.com/andermm/SMPE_1920.git~
+#+begin_src shell :results output :exports both
+cd $HOME; git clone https://github.com/andermm/CMP223
+#+end_src
 
 Here it is assumed that your HOME directory is exported with NFS. If you
 don't have the NFS configured, [[https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04][here]] is a tutorial to do it.
+
 If this step is ok, go ahead to the other topics.
 ** Software Installation
 To execute the experiments using MPI and also to compile/execute NPB, some
