@@ -9,7 +9,7 @@
     print(cmp223_exec)
   
   write.table(cmp223_exec, file = "experimental_project_exec.csv",
-                sep=";"
+                sep=","
   )
   
   set.seed(0)
@@ -22,6 +22,6 @@
   print(cmp223_charac)
   
   write.table(cmp223_charac, file = "experimental_project_charac.csv",
-              sep=";"
+              sep=","
   )
   
