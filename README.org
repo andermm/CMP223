@@ -6,7 +6,6 @@
 #+EXPORT_EXCLUDE_TAGS: noexport
 #+SEQ_TODO: TODO(t!) STARTED(s!) WAITING(w!) | DONE(d!) CANCELLED(c!) DEFERRED(f!)
 
-* Overview
 This repository is for the *CMP223 - Computer System Performance*
 *Analysis (2019/2)* final work, and has the entire project used to
 perform it. Below are the files and folders, along with the analysis
@@ -24,12 +23,11 @@ environment. Mode details on how to reproduce the experiments are in
 - [[PLOTS]] - Here are the graphs of the analysis made with the execution
   time of the applications, as well as its characterization genereted
   with R statistical language.
-- [[R]] - This folder has the two Design of Experiments (DoE) (~DoE_exec~
-  and ~DoE_charac~) files, used to generate the experimental design,
-  which are the two CSV files (~experiment_project_exec~ and
-  ~experimental_project_charac~) responsible for having random
-  applications/network interface combinations using 30 execution
-  replications.
+- [[R]] - This folder has the Design of Experiments (DoE) ([[R/DoE.R]]) file,
+  used to generate the experimental design, which are the two CSV
+  files (~experiment_project_exec~ and ~experimental_project_charac~)
+  responsible for having random applications/network interface
+  combinations using 30 execution replications.
 - [[SH]] - Here are five bash scripts (~benchmark_exec~, ~benchmark_charac~,
   ~central~, ~software_intall~, ~sys_info_collect~) that are used to perform
   the experiments and collect system information.
