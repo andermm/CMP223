@@ -86,7 +86,7 @@ cp configure.in/config_gfortran.in config.in
 sed -i 's,mpif90,/tmp/install/bin/./scorep mpifort,g' config.in
 sed -i 's,mpicc,/tmp/install/bin/./scorep mpicc,g' config.in
 ./configure -x nastin parall
-make metis4 -j 20; make -j 20
+make metis4; make
 
 #######################################Ondes3d##############################################
 cd $BENCHMARKS

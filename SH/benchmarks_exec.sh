@@ -76,7 +76,7 @@ cd $ALYA_DIR
 cp configure.in/config_gfortran.in config.in
 sed -i 's,mpif90,mpifort,g' config.in
 ./configure -x nastin parall
-make metis4 -j 20; make -j 20
+make metis4; make
 
 #######################################Ondes3d##############################################
 cd $BENCHMARKS
