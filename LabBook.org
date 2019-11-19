@@ -142,8 +142,8 @@ permission to do so, you can use the Spack package manager. The full
 tutorial on how to use Spack can be seen [[https://spack-tutorial.readthedocs.io/en/latest/][here]].
 ** System Information 
    To collect the information of all nodes used in the evaluation, it
-   was used the bash script [[/BATCH/sys_info_collect.sh]], which creates
-   a log output with ORG extension in [[/LOGS/env_info.org]]. The script
+   was used the bash script [[SH/sys_info_collect.sh]], which creates
+   a log output with ORG extension in [[LOGS/env_info.org]]. The script
    is executes automatically in the execution script.
 
 ** Network Infrastructure Information
@@ -154,7 +154,7 @@ through a Mellanox SX6036 FDR and a generic de 1 Gbps switch.
 
 ** Design of Experiments
    To execute the benchmarks without any bias, the DoE.base library
-   was used (script in [[/R/DoE.R]]) to create the Design of Experiments,
+   was used (script in [[R/DoE.R]]) to create the Design of Experiments,
    which generates two CSV files. In DoE, two factors, apps and
    interface were used, with 30 randomized replications totalizing
    distinct 1170 (13*3*30) executions in the case of the execution and 1
