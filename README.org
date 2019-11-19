@@ -10,10 +10,8 @@
 This repository is for the *CMP223 - Computer System Performance*
 *Analysis (2019/2)* final work, and has the entire project used to
 perform it. Below are the files and folders, along with the analysis
-environment and software requirements description. Mode details on how
-to reproduce the experiments are in [[LabBook.org]].
-
-* Software Requirements
+environment. Mode details on how to reproduce the experiments are in
+[[LabBook.org]].
 
 * Folders and Files Description
 - [[LOGS]] - This folder has the benchmarks execution logs in the CSV
@@ -48,15 +46,14 @@ to reproduce the experiments are in [[LabBook.org]].
   as well as the step-by-step execution of the entire project.
 
 * Analysis Environment 
-As mentioned before, some specific softwares are necessary to
-reproduce this evaluation accurately. They are:
-- Emacs and Org capable of compiling blocks of R code using Org-Babel
-They are used as a project management tool to keep track, record
-all the information, and  generate the graphics using blocks of
-R code. A complete tutorial about how to install and configure the
-mentioned software are available [[https://app-learninglab.inria.fr/gitlab/learning-lab/mooc-rr-ressources/blob/master/module2/ressources/emacs_orgmode.org][here]]. If you don't want to use this
-softwares, you can copy the blocks of code and use R or RStudio to
-generate the graphics.
+Some specific softwares are necessary to reproduce this evaluation
+accurately. They are:
+- Emacs and Org - They are used as a project management tool to track,
+  record all the information, and generate the graphics using R code
+  blocks. A complete tutorial on how to install and configure the
+  mentioned softwares are available [[https://app-learninglab.inria.fr/gitlab/learning-lab/mooc-rr-ressources/blob/master/module2/ressources/emacs_orgmode.org][here]]. If you do not want to use
+  this softwares, you can copy the blocks of code and use R or RStudio
+  to generate the graphics.
  
 
 
