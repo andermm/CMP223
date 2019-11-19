@@ -35,16 +35,16 @@ to reproduce the experiments are in [[LabBook.org]].
 - [[SH]] - Here are five bash scripts (~benchmark_exec~, ~benchmark_charac~,
   ~central~, ~software_intall~, ~sys_info_collect~) that are used to perform
   the experiments and collect system information.
-- BENCHMARKS - This folder has all the five benchmarks (Alya,
+- [[BENCHMARKS]] - This folder has all the five benchmarks (Alya,
   ImbBench, Intel MPI Benchmarks, Nas Parallel Benchmarks, and
   Ondes3d) subdivided into execution and characterization
   folders. This was made because the benchamarks execution used the
   default (mpicc and/or mpifort) compiler, and the benchmarks
   characterization used the Score-P and default compiler to generate
   the binaries that are traced during its execution.
-- SOFTWARE - Here are the three softwares ([[https://www.vi-hps.org/projects/score-p/][Score-P]], [[https://github.com/schnorr/akypuera][Akypuera]], and
+- [[SOFTWARE]] - Here are the three softwares ([[https://www.vi-hps.org/projects/score-p/][Score-P]], [[https://github.com/schnorr/akypuera][Akypuera]], and
   [[https://github.com/schnorr/pajeng][PajeNG]]) used in the tracing process.
-- LabBook.org - In this file is described the objective of this work,
+- [[LabBook.org]] - In this file is described the objective of this work,
   as well as the step-by-step execution of the entire project.
 
 * Analysis Environment 
