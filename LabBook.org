@@ -7,24 +7,49 @@
 #+SEQ_TODO: TODO(t!) STARTED(s!) WAITING(w!) | DONE(d!) CANCELLED(c!) DEFERRED(f!)
 
 This LabBook is for the *Scientific Methodology and Performance
-Evaluation for Experimental Computer* class, in which informations
-about the experimental procedure are described.
+Evaluation for Experimental Computer* class and has the step-by-step
+procedure used during the proposed experiments. Also, to reproduce
+this evaluation, you can follow the steps below. Have fun!
 
 * Experimental Project
 ** Objective
-   Evaluate the impact of the network interconnection over parallel
-   programs. Both *InfiniBand (IB)* and *Gigabit Ethernet (ETH)*
-   interconnections were evaluated, using the same physical cluster of servers, executing the NAS
-   Parallel Benchmarks version 3.4 with input *class D* as representative HPC benchmarks. The
-   evaluation was made using the *Messsage Passing Interface (MPI)*
-   parallel implementation of the original set of benchmarks from the
-   NPB suite, which is composed of five kernels *(IS, EP, CG, FT, and
-   MG)* and three pseudo-application *(BT, SP, and LU).* They are executed
-   using ETH, IB, and IP-over-IB with 128 processes over 4 nodes (32 processes per node) in
-   the case of IS, EP, CG, FT, MG, and LU (power-of-two). As BT and SP
-   require that the number of processes to be a square root, it was
-   used 121 processes, with 31 processes in one node and 30 processes
-   in the last 3 nodes.
+   Assess the impact of the network interconnection on HPC
+   applications. Both *InfiniBand (IB)* and *Gigabit Ethernet (ETH)*, as
+   well as *IP-over-IB (IPoIB)* interconnections were evaluated using
+   the same physical cluster of servers. The MPI-PingPong benchmark of
+   the [[https://software.intel.com/en-us/articles/intel-mpi-benchmarks][Intel MPI Benchmarks]] suite was executed to first characterize
+   interconnect latency and throughput. Then two synthetic benchmarks
+   (NPB and ImbBench) and two real applications (Alya and Ondes3d)
+   were executed. [[https://www.nas.nasa.gov/publications/npb.html][NAS Parallel Benchmarks (NPB)]] set version 3.4 with
+   input *class D* was used because it represent several patterns of
+   real HPC applications, as well as being characterized as a balanced
+   benchmarks sed (when and MPI parallel application makes balanced
+   use of processes and consequently they all end almost together). On
+   the other hand, [[https://github.com/Roloff/ImbBench.git][Unbalanced Benchmark (IMB)]] was created to represent
+   the more common unbalanced application patterns. Thus, with both of
+   the mentioned benchmarks we cover the common HPC application and
+   also the balanced and unbalanced patterns. [[https://www.bsc.es/research-development/research-areas/engineering-simulations/alya-high-performance-computational][Alya]] and [[https://bitbucket.org/fdupros/ondes3d/src/master/][Ondes3d]] were
+   used because this work tends to cover not only synthetic benchmarks
+   which try to mimic real applications but rather use real
+   applications and evaluate them. In the next session the benchmarks
+   are described more detail.
+** Benchmarks
+
+*** Intel MPI Benchmark
+*** NAS Parallel Benchmarks
+*** Unbalanced Benchmark
+*** Alya
+*** Ondes3d
+The evaluation was made using the
+   *Messsage Passing Interface (MPI)* parallel implementation of the
+   original set of benchmarks from the NPB suite, which is composed of
+   five kernels *(IS, EP, CG, FT, and MG)* and three pseudo-application
+   *(BT, SP, and LU).* They are executed using ETH, IB, and IP-over-IB
+   with 128 processes over 4 nodes (32 processes per node) in the case
+   of IS, EP, CG, FT, MG, and LU (power-of-two). As BT and SP require
+   that the number of processes to be a square root, it was used 121
+   processes, with 31 processes in one node and 30 processes in the
+   last 3 nodes.
 ** How to Reproduce it
 To reproduce this project, the first step is to to clone the git repository in
 the *$HOME* of the desired computer server. 
