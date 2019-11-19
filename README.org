@@ -8,33 +8,31 @@
 
 * Overview
 This repository is for the *CMP223 - Computer System Performance*
-*Analysis (2019/2)* final work.
-
-Here is the entire project used to perform the proposed final work
-activity. Below are the files and folders, along with the analysis
+*Analysis (2019/2)* final work, and has the entire project used to
+perform it. Below are the files and folders, along with the analysis
 environment and software requirements description. Mode details on how
-to reproduce the experiments are in [[./LabBook.org]].
+to reproduce the experiments are in [[LabBook.org]].
 
 * Software Requirements
 
 * Folders and Files Description
-- LOGS - This folder has the benchmarks execution logs in the CSV
+- [[LOGS]] - This folder has the benchmarks execution logs in the CSV
   files (~apps_exec~, ~apps_charac~, ~imb_exec~, ~imb_charac~, and ~intel~),
   four machine files (~nodes_full~, ~nodes_power_of_2~, ~nodes_square_root~,
   and ~nodes_intel~) used by the MPI execution line, environment
   information about the nodes used in the experiments in an ORG file
   (~env_info~), and a folder called BACKUP that contains the
   applications logs without any modification.
-- PLOTS - Here are the graphs of the analysis made with the execution
+- [[PLOTS]] - Here are the graphs of the analysis made with the execution
   time of the applications, as well as its characterization genereted
   with R statistical language.
-- R - This folder has the two Design of Experiments (DoE) (~DoE_exec~
+- [[R]] - This folder has the two Design of Experiments (DoE) (~DoE_exec~
   and ~DoE_charac~) files, used to generate the experimental design,
   which are the two CSV files (~experiment_project_exec~ and
   ~experimental_project_charac~) responsible for having random
   applications/network interface combinations using 30 execution
   replications.
-- SH - Here are five bash scripts (~benchmark_exec~, ~benchmark_charac~,
+- [[SH]] - Here are five bash scripts (~benchmark_exec~, ~benchmark_charac~,
   ~central~, ~software_intall~, ~sys_info_collect~) that are used to perform
   the experiments and collect system information.
 - BENCHMARKS - This folder has all the five benchmarks (Alya,
