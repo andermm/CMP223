@@ -116,45 +116,54 @@ using the pure MPI version.
 
 ** How to Reproduce it
 To reproduce this project, the first step is to to clone the git repository in
-the *$HOME* of the desired computer server. 
+the *$HOME* of the desired cluster of servers. 
 
 #+begin_src shell :results output :exports both
 cd $HOME; git clone https://github.com/andermm/CMP223
 #+end_src
 
-Here it is assumed that your HOME directory is exported with NFS. If you
-don't have the NFS configured, [[https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04][here]] is a tutorial to do it.
-
-If this step is ok, go ahead to the other topics.
+Here it is assumed that your HOME directory is exported with NFS. If
+you don't have the NFS configured, [[https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04][here]] is a tutorial to do it. If
+this step is ok, go ahead to the other topics.
 ** Software Installation
-To execute the experiments using MPI and also to compile/execute NPB, some
-required packages need to be installed. They are:
-- libopenmpi-dev
-- gfortran
+To execute the experiments, some required packages need to
+be installed. They are:
+- openmpi-bin - High performance message passing library (mpiexec).
+- libopenmpi-dev - High performance message passing library (mpicc and
+  mpifort).
+- gfortran - GNU Fortran 95 compiler.
+- cmake - Cross-platform, open-source make system.
+- pajeng - Space-time view and associated tools for Paje trace files.
 
-If your OS is based on Debian and you have permission to install new
-packages, you can install both required packages using the
-script in [[/BATCH/sofware_install.sh]]. On the other hand, if you don't
-have permission to do it, you can use the Spack package manager. A
-complete tutorial can be seen in [[https://spack-tutorial.readthedocs.io/en/latest/][here]].
+If your OS is Debian based and you have permission to install new
+packages, you can install the required packages using the script in
+[[/BATCH/sofware_install.sh]]. On the other hand, if you do not have
+permission to do so, you can use the Spack package manager. The full
+tutorial on how to use Spack can be seen [[https://spack-tutorial.readthedocs.io/en/latest/][here]].
 ** System Information 
-   For collecting the informations of all nodes used in the evaluation, it
-   was used the bash script [[./BATCH/sys_info_collect.sh]],
-   which creates a log output with ORG extension in
-   [[./LOGS/env_info.org]]. The script is automallatically executed in the
-   execution script.
+   To collect the information of all nodes used in the evaluation, it
+   was used the bash script [[/BATCH/sys_info_collect.sh]], which creates
+   a log output with ORG extension in [[/LOGS/env_info.org]]. The script
+   is executes automatically in the execution script.
+
 ** Network Infrastructure Information
 Each node has a Mellanox MT27600 Channel Adapter (CA) configured for
 the InfiniBand 56 Gb/s 4X FDR ConnectX-3 with firmware version
 10.16.1038 and OFED version 4.6-1.0.1.1. All nodes are interconnected
-through a  Mellanox SX6036 FDR and a generic de 1 Gbps switch.
+through a Mellanox SX6036 FDR and a generic de 1 Gbps switch.
+
 ** Design of Experiments
-   To execute the benchmarks without any bias, it was used the library
-   DoE (script in [[./R/DoE.R]]) to create the Design of
-   Experiments. This R script is called in the *nas.batch* script to
-   generate a CSV file. In the DoE, it was used two factors, *apps* and *interface*, respectively,
-   with 30 randomized replications, totalizing 720
-   distinct executions.
+   To execute the benchmarks without any bias, the DoE.base library
+   was used (script in [[/R/DoE.R]]) to create the Design of Experiments,
+   which generates two CSV files. In DoE, two factors, apps and
+   interface were used, with 30 randomized replications totalizing
+   distinct 1170 (13*3*30) executions in the case of the execution and 1
+   randomized replication totalizing 36 (13*3) executions in the case of
+   characterization.
+
+- Factor 1 - Apps: The applications name totaling 13.
+- Factor 2 - Interface - The network interface name, totaling 3.
+    
 ** Experiments Execution
  The execution script was made to be used in a cluster
  with Slurm job scheduler with the *sbatch* command. However, in the InfiniBand experiments, an
