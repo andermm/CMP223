@@ -236,7 +236,7 @@ do
 		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
 		rm /tmp/imb_tmp.out	
 	elif [[ $apps == Alya.x ]]; then
-		TIME=`cat $ALYA_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
+		TIME=`cat $BENCHMARKS$ALYA_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
 		echo "${apps:0:4},$interface,$TIME" >> $OUTPUT_APPS_EXEC
 	else	
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`

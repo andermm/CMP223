@@ -232,7 +232,7 @@ do
 		$AKY_BUILD/./otf22paje $TRACE/scorep_${apps:0:3}$interface/traces.otf2 > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace
 		#$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv	
 	elif [[ $apps == Alya.x ]]; then
-		TIME=`cat $ALYA_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
+		TIME=`cat $BENCHMARKS$ALYA_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
 		echo "${apps:0:4},$interface,$TIME" >> $OUTPUT_APPS_CHARAC
 	else	
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
