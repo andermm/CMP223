@@ -15,7 +15,7 @@ environment. Mode details on how to reproduce the experiments are in
 * Folders and Files Description
 - [[LOGS]] - This folder has the benchmarks execution logs in the CSV
   files (~apps_exec~, ~apps_charac~, ~imb_exec~, ~imb_charac~, and ~intel~),
-  four machine files ([[LOGS/nodes_full][nodes_full]], [[LOGS/nodes_power_of_2][nodes_power_of_2]], [[LOGS/nodes_squeare_root][nodes_square_root]],
+  four machine files ([[LOGS/nodes_full][nodes_full]], [[LOGS/nodes_power_of_2][nodes_power_of_2]], [[LOGS/nodes_square_root][nodes_square_root]]
   and ~nodes_intel~) used by the MPI execution line, environment
   information about the nodes used in the experiments in an ORG file
   (~env_info~), and a folder called BACKUP that contains the
@@ -25,7 +25,7 @@ environment. Mode details on how to reproduce the experiments are in
   with R statistical language.
 - [[R]] - This folder has the Design of Experiments (DoE) ([[R/DoE.R][DoE]]) file, used
   to generate the experimental design, which are the two CSV files
-  ([[R/experiment_project_exec][experiment_project_exec]] and [[~experimental_project_charac][experimental_project_charac]])
+  ([[R/experimental_project_exec][experimental_project_exec]] and [[experimental_project_charac][experimental_project_charac]]
   responsible for having random applications/network interface
   combinations using 30 execution replications.
 - [[SH]] - Here are five bash scripts ([[SH/benchmark_exec][benchmark_exec]], [[SH/benchmark_charac][benchmark_charac]],
