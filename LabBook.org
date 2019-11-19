@@ -137,7 +137,7 @@ be installed. They are:
 
 If your OS is Debian based and you have permission to install new
 packages, you can install the required packages using the script in
-[[/BATCH/sofware_install.sh]]. On the other hand, if you do not have
+[[SH/sofware_install.sh]]. On the other hand, if you do not have
 permission to do so, you can use the Spack package manager. The full
 tutorial on how to use Spack can be seen [[https://spack-tutorial.readthedocs.io/en/latest/][here]].
 ** System Information 
