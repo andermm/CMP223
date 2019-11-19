@@ -15,7 +15,7 @@ environment. Mode details on how to reproduce the experiments are in
 * Folders and Files Description
 - [[LOGS]] - This folder has the benchmarks execution logs in the CSV
   files (~apps_exec~, ~apps_charac~, ~imb_exec~, ~imb_charac~, and ~intel~),
-  four machine files (~nodes_full~, ~nodes_power_of_2~, ~nodes_square_root~,
+  four machine files ([[LOGS/nodes_full][nodes_full]], [[LOGS/nodes_power_of_2][nodes_power_of_2]], [[LOGS/nodes_squeare_root][nodes_square_root]],
   and ~nodes_intel~) used by the MPI execution line, environment
   information about the nodes used in the experiments in an ORG file
   (~env_info~), and a folder called BACKUP that contains the
@@ -23,20 +23,20 @@ environment. Mode details on how to reproduce the experiments are in
 - [[PLOTS]] - Here are the graphs of the analysis made with the execution
   time of the applications, as well as its characterization genereted
   with R statistical language.
-- [[R]] - This folder has the Design of Experiments (DoE) ([[R/DoE.R][DoE]]) file,
-  used to generate the experimental design, which are the two CSV
-  files (~experiment_project_exec~ and ~experimental_project_charac~)
+- [[R]] - This folder has the Design of Experiments (DoE) ([[R/DoE.R][DoE]]) file, used
+  to generate the experimental design, which are the two CSV files
+  ([[R/experiment_project_exec][experiment_project_exec]] and [[~experimental_project_charac][experimental_project_charac]])
   responsible for having random applications/network interface
   combinations using 30 execution replications.
-- [[SH]] - Here are five bash scripts (~benchmark_exec~, ~benchmark_charac~,
-  ~central~, ~software_intall~, ~sys_info_collect~) that are used to perform
+- [[SH]] - Here are five bash scripts ([[SH/benchmark_exec][benchmark_exec]], [[SH/benchmark_charac][benchmark_charac]],
+  [[SH/central][central]], [[SH/software_install][software_install]], [[SH/sys_info_collect][sys_info_collect]]) that are used to perform
   the experiments and collect system information.
 - [[BENCHMARKS]] - This folder has all the five benchmarks (Alya,
   ImbBench, Intel MPI Benchmarks, Nas Parallel Benchmarks, and
   Ondes3d) subdivided into execution and characterization
   folders. This was made because the benchamarks execution used the
-  default (mpicc and/or mpifort) compiler, and the benchmarks
-  characterization used the Score-P and default compiler to generate
+  mpicc and/or mpifort compiler, and the benchmarks characterization
+  used the Score-P and the mpicc and/or mpifort compiler to generate
   the binaries that are traced during its execution.
 - [[SOFTWARE]] - Here are the three softwares ([[https://www.vi-hps.org/projects/score-p/][Score-P]], [[https://github.com/schnorr/akypuera][Akypuera]], and
   [[https://github.com/schnorr/pajeng][PajeNG]]) used in the tracing process.
