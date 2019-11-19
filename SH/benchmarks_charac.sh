@@ -241,4 +241,5 @@ do
 done
 sed -i '1s/^/apps,interface,time\n/' $OUTPUT_NPB_CHARAC
 sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_CHARAC_IMB
+
 exit
