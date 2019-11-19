@@ -25,8 +25,8 @@ this evaluation, you can follow the steps below. Have fun!
    real HPC applications, as well as being characterized as a balanced
    benchmarks sed (when and MPI parallel application makes balanced
    use of processes and consequently they all end almost together). On
-   the other hand, [[https://github.com/Roloff/ImbBench.git][Unbalanced Benchmark (IMB)]] was created to represent
-   the more common unbalanced application patterns. Thus, with both of
+   the other hand, [[https://github.com/Roloff/ImbBench.git][Inbalanced Benchmark (IMB)]] was created to represent
+   the more common inbalanced application patterns. Thus, with both of
    the mentioned benchmarks we cover the common HPC application and
    also the balanced and unbalanced patterns. [[https://www.bsc.es/research-development/research-areas/engineering-simulations/alya-high-performance-computational][Alya]] and [[https://bitbucket.org/fdupros/ondes3d/src/master/][Ondes3d]] were
    used because this work tends to cover not only synthetic benchmarks
@@ -34,22 +34,86 @@ this evaluation, you can follow the steps below. Have fun!
    applications and evaluate them. In the next session the benchmarks
    are described more detail.
 ** Benchmarks
+Below the benchmarks used are described.
 
 *** Intel MPI Benchmark
+The Intel® MPI Benchmarks perform a set of MPI performance
+measurements for point-to-point and global communication operations
+for a range of message sizes. The generated benchmark data fully
+characterizes:
+- Performance of a cluster system, including node performance, network
+  latency, and throughput.
+- Efficiency of the MPI implementation used.
+There are several benchmarks included in this set, and in this
+evaluation, only the MPI1 PingPong application was used to measure
+interconnect latency and throughput.
 *** NAS Parallel Benchmarks
-*** Unbalanced Benchmark
+The NAS Parallel Benchmarks (NPB) are a small set of programs designed
+to help evaluate the performance of parallel supercomputers. The
+benchmarks are derived from computational fluid dynamics (CFD)
+applications. Problem sizes in NPB are predefined and indicated as
+different classes.
+
+In this evaluation, the original set of benchmarks from the NPB suite,
+consisting of five kernels and three pseudo-applications were used
+with the Messsage Passing Interface (MPI) parallel implementation.
+
+Five Kernels:
+- *IS* - Integer Sort, random memory access.
+- *EP* - Embarrassingly Parallel.
+- *CG* - Conjugate Gradient, irregular memory access and communication.
+- *FT* - Discrete 3D fast Fourier Transform, all-to-all communication.
+- *MG* - Multi-Grid on a sequence of meshes, long- and short-distance
+  communication, memory intensive.
+
+Three pseudo-applications: 
+- *BT* - Block Tri-diagonal solver.
+- *SP* - Scalar Penta-diagonal solver.
+- *LU* - Lower-Upper Gauss-Seidel solver.
+
+They were executed with 128 processes on 4 nodes, 32 processes per
+node, in the case of IS, EP, CG, FT, MG, and LU (power-of-two). Since
+BT and SP require the number of processes to be a square root, 144
+processes were used, with 36 processes in each node.
+
+*** Inbalanced Benchmark
+Imbalance Benchmark (ImbBench) is a set of MPI-based applications,
+created by the Ph.D. Student Eduardo Roloff, that simulate several
+behaviors in terms of process loads. ImbBench was designed with the
+heterogeneity of the cloud in mind, and its goal is to help the user
+to choose the most suitable configuration to execute an application in
+the cloud. ImbBench distributes the load among all the available
+processes according to a preselected imbalance pattern.
+
+ImbBench has a set of microbenchmarks and parameters to benchmark CPU
+and Memory. In this evaluation, it was used both CPU and Memory
+benchmarks with the 8Level pattern of imbalance and the Rand and BST
+microbenchmarks, respectively.
+
 *** Alya
+Alya is a high performance computational mechanics code to solve
+complex coupled multi-physics / multi-scale / multi-domain problems,
+which are mostly coming from the engineering realm. Among the
+different physics solved by Alya we can mention:
+incompressible/compressible flows, non-linear solid mechanics,
+chemistry, particle transport, heat transfer, turbulence modeling,
+electrical propagation, etc.
+
 *** Ondes3d
-The evaluation was made using the
-   *Messsage Passing Interface (MPI)* parallel implementation of the
-   original set of benchmarks from the NPB suite, which is composed of
-   five kernels *(IS, EP, CG, FT, and MG)* and three pseudo-application
-   *(BT, SP, and LU).* They are executed using ETH, IB, and IP-over-IB
-   with 128 processes over 4 nodes (32 processes per node) in the case
-   of IS, EP, CG, FT, MG, and LU (power-of-two). As BT and SP require
-   that the number of processes to be a square root, it was used 121
-   processes, with 31 processes in one node and 30 processes in the
-   last 3 nodes.
+It is an application used for seismic wave propagation simulation,
+developed by the French Department of Geological and Mineral Research
+(Bureau de Recherches Géologiques et Minières-BRGM). The principle of
+operation of this application is the use of equations of elastodynamic
+physics to represent the seismic waves, and the use of the finite
+difference method to solve these equations. Ondes3D presents
+characteristics such as load unbalance and frequent communication
+between processes.
+
+For the implementation of Ondes3D, the configuration parameters used
+were defined by the SISHUAN simulation, a real earthquake that
+occurred in China in 2008, with magnitude 8.0 on the Richter scale
+using the pure MPI version.
+
 ** How to Reproduce it
 To reproduce this project, the first step is to to clone the git repository in
 the *$HOME* of the desired computer server. 
