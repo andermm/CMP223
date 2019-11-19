@@ -161,9 +161,16 @@ through a Mellanox SX6036 FDR and a generic de 1 Gbps switch.
    randomized replication totalizing 36 (13*3) executions in the case of
    characterization.
 
-- Factor 1 - Apps: The applications name totaling 13.
-- Factor 2 - Interface - The network interface name, totaling 3.
-    
+- Factor 1 - Apps: The applications name totaling 13 (~bt.D.x~, ~ep.D.x~,
+  ~cg.D.x~, ~mg.D.x~, ~lu.D.x~, ~sp.D.x~, ~is.D.x~, ~ft.D.x~, ~imb_memory~, ~imb_CPU~,
+  ~ondes3d~, ~intel~, and ~Alya.x~).
+- Factor 2 - Interface - The network interface name, totaling 3 (~eth~,
+  ~ib~, ~ipoib~).
+
+** Bash Scripts Descriptions
+- [[SH/benchmarks_charac.sh][benchmark]] 
+-
+
 ** Experiments Execution
  The execution script was made to be used in a cluster
  with Slurm job scheduler with the *sbatch* command. However, in the InfiniBand experiments, an
@@ -175,7 +182,8 @@ through a Mellanox SX6036 FDR and a generic de 1 Gbps switch.
  ([[./LOGS/nodes_power_of_2]] and [[./LOGS/nodes_square_root]]) they are not
  automatically created in the execution script. If you are reproducing
  the experiments in an enviroment without a job scheduler manager,
- just execute the script ([[/BATCH/nas.sbatch]]) as a normal bash file.
+ just execute the script ([[/BATCH/nas.sbatch]]) as a normal bash
+ file.
 ** Graphical Analysis 
 After the conclusion of the experiments, in this topic, graphs
 containing the execution time of the applications were created. The
