@@ -23,10 +23,12 @@ APP_SRC_ONDES3D=$ONDES3D/SRC
 APP_LOGS_ONDES3D=$ONDES3D/LOGS
 
 #Alya Variables
-#ALYA=ALYA_EXEC/Executables/unix
-#APP_BIN_ALYA=$ALYA/Alya.x
-#APP_CONFIG_ALYA=$ALYA/config.in
-#APP_TEST_CASE_B_ALYA=$ALYA/TestCaseB/sphere
+ALYA=ALYA_EXEC
+ALYA_DIR=$ALYA/Executables/unix
+APP_BIN_ALYA=$ALYA_DIR/Alya.x
+APP_CONFIG_ALYA=$ALYA/Executables/unix/config.in
+APP_ALYA_TUFAN=$ALYA/4_tufan_run/c/c
+ALYA_LOG=$APP_ALYA_TUFAN.log
 
 #IMB Variables
 IMB=IMBBENCH_EXEC
@@ -67,15 +69,14 @@ mv ImbBench IMBBENCH_EXEC
 cd $IMB; mkdir bin; make
 
 ########################################Alya################################################
-#cd $BENCHMARKS
-#wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/Alya.tar.gz
-#tar -zxf Alya.tar.gz;rm -rf Alya.tar.gz
-#cd $BENCHMARKS/$ALYA; wget -c https://repository.prace-ri.eu/ueabs/ALYA/2.1/TestCaseB.tar.gz
-#tar -zxf TestCaseB.tar.gz;rm -rf TestCaseB.tar.gz
-#cd $BENCHMARKS/$ALYA; cp configure.in/config_gfortran.in config.in
-#sed -i 's,mpif90,mpifort,g' config.in
-#./configure -x nastin parall
-#cd $BENCHMARKS/$ALYA; make metis4;make
+cd $BENCHMARKS
+git clone --recursive https://gitlab.com/ammaliszewski/alya.git
+mv alya ALYA_EXEC
+cd $ALYA_DIR
+cp configure.in/config_gfortran.in config.in
+sed -i 's,mpif90,mpifort,g' config.in
+./configure -x nastin parall
+make metis4; make
 
 #######################################Ondes3d##############################################
 cd $BENCHMARKS
@@ -164,9 +165,9 @@ do
 	elif [[ $apps == imb_CPU ]]; then
 		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
-#	elif [[ $apps == Alya.x ]]; then
-#		PROCS=160
-#		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
+	elif [[ $apps == Alya.x ]]; then
+		PROCS=160
+		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
 	elif [[ $apps == bt.D.x || $apps == sp.D.x ]]; then
 		PROCS=144
 		runline+="-np $PROCS -machinefile $MACHINEFILE_SQUARE_ROOT "
@@ -192,10 +193,10 @@ do
 		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
 		runline+="2>> $LOGS/errors_exec "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/imb.out)"
-#	elif [[ $apps == Alya.x ]]; then
-#		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_TEST_CASE_B_ALYA "
-#		runline+="2 >> $LOGS/errors_exec "
-#		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface.exec.log > /tmp/alya.out)"
+	elif [[ $apps == Alya.x ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_ALYA BENCHMARKS/$APP_ALYA_TUFAN "
+		runline+="2 >> $LOGS/errors_exec "
+		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:4}.$interface.exec.log > /tmp/alya.out)"
 	else
 		runline+="$BENCHMARKS/$APP_BIN_NPB/$apps "
 		runline+="2>> $LOGS/errors_exec "
@@ -234,8 +235,9 @@ do
 		done
 		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
 		rm /tmp/imb_tmp.out	
-	#elif [[ $apps == Alya.x ]]; then
-		#echo FALTA_FAZER_FUNCIONAR
+	elif [[ $apps == Alya.x ]]; then
+		TIME=`cat $BENCHMARKS/$ALYA_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
+		echo "${apps:0:4},$interface,$TIME" >> $OUTPUT_APPS_EXEC
 	else	
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
 		echo "${apps:0:2},$interface,$TIME" >> $OUTPUT_APPS_EXEC
