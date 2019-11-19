@@ -195,7 +195,7 @@ do
 	elif [[ $apps == Alya.x ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_ALYA $APP_ALYA_TUFAN "
 		runline+="2 >> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:5}$interface.exec.log > /tmp/alya.out)"
+		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:4}$interface.exec.log > /tmp/alya.out)"
 	else
 		runline+="$BENCHMARKS/$APP_BIN_NPB/$apps "
 		runline+="2>> $LOGS/errors_exec "
@@ -235,7 +235,8 @@ do
 		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
 		rm /tmp/imb_tmp.out	
 	elif [[ $apps == Alya.x ]]; then
-		echo FALTA_FAZER_FUNCIONAR
+		TIME=`cat c.log | grep "TOTAL CPU TIME" | awk '{print $4}'`
+		echo "${apps:0:4},$interface,$TIME" >> $OUTPUT_APPS_EXEC
 	else	
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
 		echo "${apps:0:2},$interface,$TIME" >> $OUTPUT_APPS_EXEC
