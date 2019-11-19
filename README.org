@@ -23,7 +23,7 @@ environment. Mode details on how to reproduce the experiments are in
 - [[PLOTS]] - Here are the graphs of the analysis made with the execution
   time of the applications, as well as its characterization genereted
   with R statistical language.
-- [[R]] - This folder has the Design of Experiments (DoE) ([[R/DoE.R]]) file,
+- [[R]] - This folder has the Design of Experiments (DoE) ([[R/DoE.R][DoE]]) file,
   used to generate the experimental design, which are the two CSV
   files (~experiment_project_exec~ and ~experimental_project_charac~)
   responsible for having random applications/network interface
