@@ -33,9 +33,9 @@ this evaluation, you can follow the steps below. Have fun!
    which try to mimic real applications but rather use real
    applications and evaluate them. In the next session the benchmarks
    are described more detail.
+
 ** Benchmarks
 Below the benchmarks used are described.
-
 *** Intel MPI Benchmark
 The Intel® MPI Benchmarks perform a set of MPI performance
 measurements for point-to-point and global communication operations
@@ -47,6 +47,7 @@ characterizes:
 There are several benchmarks included in this set, and in this
 evaluation, only the MPI1 PingPong application was used to measure
 interconnect latency and throughput.
+
 *** NAS Parallel Benchmarks
 The NAS Parallel Benchmarks (NPB) are a small set of programs designed
 to help evaluate the performance of parallel supercomputers. The
@@ -125,6 +126,7 @@ cd $HOME; git clone https://github.com/andermm/CMP223
 Here it is assumed that your HOME directory is exported with NFS. If
 you don't have the NFS configured, [[https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04][here]] is a tutorial to do it. If
 this step is ok, go ahead to the other topics.
+
 ** Software Installation
 To execute the experiments, some required packages need to
 be installed. They are:
@@ -140,6 +142,7 @@ packages, you can install the required packages using the [[SH/software_install.
 Installer]] script. On the other hand, if you do not have permission to
 do so, you can use the Spack package manager. The full tutorial on how
 to use Spack can be seen [[https://spack-tutorial.readthedocs.io/en/latest/][here]].
+
 ** System Information 
    To collect the information of all nodes used in the evaluation, it
    was used the [[SH/sys_info_collect.sh][System Information Collect]] script, which creates the
@@ -168,7 +171,7 @@ through a Mellanox SX6036 FDR and a generic de 1 Gbps switch.
   ~ib~, ~ipoib~).
 
 ** Bash Scripts Descriptions
-- [[SH/benchmarks_exec.sh][Benchmarks Execution]]
+- [[SH/benchmarks_exec.sh][Benchmarks Execution]] - 
 - [[SH/benchmarks_charac.sh][Benchmarks Characterization]]
 - [[SH/central.sh][Central]]
 - [[SH/software_install.sh][Software Installation]]
