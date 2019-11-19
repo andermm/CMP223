@@ -30,6 +30,7 @@ ALYA_DIR=$ALYA/Executables/unix
 APP_BIN_ALYA=$ALYA_DIR/Alya.x
 APP_CONFIG_ALYA=$ALYA/Executables/unix/config.in
 APP_ALYA_TUFAN=$ALYA/4_tufan_run/c
+ALYA_LOG=$APP_ALYA_TUFAN/c.log
 
 #IMB Variables
 IMB=IMBBENCH_CHARAC
@@ -231,7 +232,7 @@ do
 		$AKY_BUILD/./otf22paje $TRACE/scorep_${apps:0:3}$interface/traces.otf2 > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace
 		#$PAJE_BUILD/./pj_dump $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.trace | grep ^State > $TRACE/scorep_${apps:0:3}$interface/${apps:0:2}.csv	
 	elif [[ $apps == Alya.x ]]; then
-		TIME=`cat c.log | grep "TOTAL CPU TIME" | awk '{print $4}'`
+		TIME=`cat $ALYA_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
 		echo "${apps:0:4},$interface,$TIME" >> $OUTPUT_APPS_CHARAC
 	else	
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
