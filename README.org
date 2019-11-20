@@ -13,24 +13,24 @@ environment. Mode details on how to reproduce the experiments are in
 [[LabBook.org]].
 
 * Folders and Files Description
-- [[LOGS]] - This folder has the benchmarks execution logs in the CSV
-  files (~apps_exec~, ~apps_charac~, ~imb_exec~, ~imb_charac~, and ~intel~),
-  four machine files ([[LOGS/nodes_full][nodes_full]], [[LOGS/nodes_power_of_2][nodes_power_of_2]], [[LOGS/nodes_square_root][nodes_square_root]]
-  and ~nodes_intel~) used by the MPI execution line, environment
-  information about the nodes used in the experiments in an ORG file
-  (~env_info~), and a folder called BACKUP that contains the
-  applications logs without any modification.
+- [[LOGS]] - This folder has the benchmark execution logs in the CSV files
+  (~apps_exec~, ~apps_charac~, ~imb_exec~, ~imb_charac~, and ~intel~), four
+  machine files ([[LOGS/nodes_full][nodes_full]], [[LOGS/nodes_power_of_2][nodes_power_of_2]], [[LOGS/nodes_square_root][nodes_square_root]] and
+  [[LOGS/nodes_intel][nodes_intel]] used by the MPI execution line, a file containing the
+  [[LOGS/env_info.org][environment information]] used in the experiments, and a folder called
+  [[LOGS/BACKUP][BACKUP]] that includes the application logs without any modification.
 - [[PLOTS]] - Here are the graphs of the analysis made with the execution
   time of the applications, as well as its characterization genereted
   with R statistical language.
-- [[R]] - This folder has the Design of Experiments (DoE) ([[R/DoE.R][DoE]]) file, used
-  to generate the experimental design, which are the two CSV files
-  ([[R/experimental_project_exec][experimental_project_exec]] and [[experimental_project_charac][experimental_project_charac]]
-  responsible for having random applications/network interface
-  combinations using 30 execution replications.
-- [[SH]] - Here are five bash scripts ([[SH/benchmark_exec][benchmark_exec]], [[SH/benchmark_charac][benchmark_charac]],
-  [[SH/central][central]], [[SH/software_install][software_install]], [[SH/sys_info_collect][sys_info_collect]]) that are used to perform
-  the experiments and collect system information.
+- [[R]] - This folder has the Design of Experiments output (made in the
+  [[LabBook.org][LabBook.org]] → Experiment Project → Design of Experiments), called
+  [[R/experimental_project][experimental_project]], which is responsible for random
+  applications/network interface combinations using 30 execution
+  replications for normal execution and 1 replication for
+  characterization execution.
+- [[SH]] - Here are five bash scripts ([[SH/benchmark][benchmark]], [[SH/central][central]],
+  [[SH/software_install][software_install]], [[SH/sys_info_collect][sys_info_collect]]) that are used to perform the
+  experiments and collect system information.
 - [[BENCHMARKS]] - This folder has all the five benchmarks (Alya,
   ImbBench, Intel MPI Benchmarks, Nas Parallel Benchmarks, and
   Ondes3d) subdivided into execution and characterization
@@ -53,5 +53,4 @@ accurately. They are:
   this softwares, you can copy the blocks of code and use R or RStudio
   to generate the graphics.
  
-
 
