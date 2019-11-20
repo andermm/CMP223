@@ -8,6 +8,7 @@ R=$BASE/R
 LOGS=$BASE/LOGS
 SOFTWARES=$BASE/SOFTWARES
 TRACE=$LOGS/TRACE
+MACHINE_FILES=$BASE/MACHINE_FILES
 
 #NPB Variables
 NPBE=NPB3.4_Exec
@@ -120,13 +121,11 @@ mkdir -p pajeng/build ; cd pajeng/build; cmake .. ; make install
 #Exec
 cd $BENCHMARKS
 git clone --recursive https://github.com/Roloff/ImbBench.git
-mv ImbBench Imbbench_Exec
+mv ImbBench Imbbench_Exec; cp -r Imbbench_Exec Imbbench_Charac
 cd $IMBE; mkdir bin; make
 
 #Charac
 cd $BENCHMARKS
-git clone --recursive https://github.com/Roloff/ImbBench.git
-mv ImbBench Imbbench_Charac
 sed -i 's,mpicc,/tmp/install/bin/./scorep mpicc,g' $IMBC/Makefile
 cd $IMBC; mkdir bin; make
 
@@ -134,7 +133,7 @@ cd $IMBC; mkdir bin; make
 #Exec
 cd $BENCHMARKS
 git clone --recursive https://gitlab.com/ammaliszewski/alya.git
-mv alya Alya_Exec
+mv alya Alya_Exec; cp -r Alya_Exec Alya_Charac
 cd $ALYAE_DIR
 cp configure.in/config_gfortran.in config.in
 sed -i 's,mpif90,mpifort,g' config.in
@@ -142,10 +141,7 @@ sed -i 's,mpif90,mpifort,g' config.in
 make metis4; make
 
 #Charac
-cd $BENCHMARKS
-git clone --recursive https://gitlab.com/ammaliszewski/alya.git
-mv alya Alya_Charac
-cd $ALYAC_DIR
+cd $BENCHMARKS; cd $ALYAC_DIR
 cp configure.in/config_gfortran.in config.in
 sed -i 's,mpif90,/tmp/install/bin/./scorep mpifort,g' config.in
 sed -i 's,mpicc,/tmp/install/bin/./scorep mpicc,g' config.in
@@ -156,7 +152,7 @@ make metis4; make
 #Exec
 cd $BENCHMARKS
 git clone --recursive https://bitbucket.org/fdupros/ondes3d.git
-mv ondes3d ondes3de
+mv ondes3d Ondes3de; cp -r Ondes3de Ondes3dc 
 sed -i 's,./../,./BENCHMARKS/ondes3de/,g' $APP_CONFIG_ONDES3DE
 sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ondes3de/LOGS,g' $APP_CONFIG_ONDES3DE_PRM
 mkdir -p $ONDES3DE/LOGS
@@ -164,9 +160,6 @@ sed -i 's,./SISHUAN-XML,./BENCHMARKS/ondes3de/SISHUAN-XML,g' $APP_CONFIG_ONDES3D
 cp $APP_CONFIG_ONDES3DE $APP_SRC_ONDES3DE; cd $APP_SRC_ONDES3DE; make clean; make 
 
 #Charac
-cd $BENCHMARKS
-git clone --recursive https://bitbucket.org/fdupros/ondes3d.git
-mv ondes3d ondes3dc
 sed -i 's,./../,./BENCHMARKS/ondes3dc/,g' $APP_CONFIG_ONDES3DC
 sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ondes3dc/LOGS,g' $APP_CONFIG_ONDES3DC_PRM
 sed -i 's,mpicc,/tmp/install/bin/./scorep mpicc,g' $APP_SRC_ONDES3DC/Makefile
@@ -178,7 +171,7 @@ cp $APP_CONFIG_ONDES3DC $APP_SRC_ONDES3DC; cd $APP_SRC_ONDES3DC; make clean; mak
 #Exec
 cd $BENCHMARKS
 wget -c https://www.nas.nasa.gov/assets/npb/NPB3.4.tar.gz
-tar -xzf NPB3.4.tar.gz --transform="s/NPB3.4/NPB3.4_Exec/"
+tar -xzf NPB3.4.tar.gz --transform="s/NPB3.4/NPB3.4_Exec/"; cp -r NPB3.4_Exec NPB3.4_Charac
 rm -rf NPB3.4.tar.gz
 
 for f in $APP_CONFIG_NPBE/*.def.template; do
@@ -199,10 +192,6 @@ cd $APP_COMPILE_NPBE; make suite
 
 #Charac
 cd $BENCHMARKS
-wget -c https://www.nas.nasa.gov/assets/npb/NPB3.4.tar.gz
-tar -xzf NPB3.4.tar.gz --transform="s/NPB3.4/NPB3.4_Charac/"
-rm -rf NPB3.4.tar.gz
-
 for f in $APP_CONFIG_NPBC/*.def.template; do
 	mv -- "$f" "${f%.def.template}.def"; 
 done
@@ -230,11 +219,10 @@ sed -i 's,mpiicpc,mpicxx,g' $INTEL_SOURCE
 cd $INTEL; make IMB-MPI1
 
 #Define the machine file and experimental project
-MACHINEFILE_POWER_OF_2=$LOGS/nodes_power_of_2
-MACHINEFILE_SQUARE_ROOT=$LOGS/nodes_square_root
-MACHINEFILE_FULL=$LOGS/nodes_full
-echo -e "hype1\nhype2" > $LOGS/nodes_intel
-MACHINEFILE_INTEL=$LOGS/nodes_intel
+MACHINEFILE_POWER_OF_2=$MACHINE_FILES/nodes_power_of_2
+MACHINEFILE_SQUARE_ROOT=$MACHINE_FILES/nodes_square_root
+MACHINEFILE_FULL=$MACHINE_FILES/nodes_full
+MACHINEFILE_INTEL=$MACHINE_FILES/nodes_intel
 PROJECT=$R/experimental_project.csv
 
 #Read the experimental project

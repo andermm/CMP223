@@ -12,12 +12,11 @@ perform it. Below are the files and folders, along with the analysis
 environment and references. Mode details on how to reproduce the experiments are in
 [[LabBook.org]].
 
-
 #+BEGIN_QUOTE
 *Reporting errors*: This repository has several links to self-contained
- files as well as links from the Internet. So if you try to reproduce
- this work and find broken links or other issues, please tell me
- everything so that I can improve it. :)
+ files as well as links from the Internet, so if you try to reproduce
+ it and find broken links or other problems, please tell me everything
+ so that I can improve it. :)
 #+END_QUOTE
 
 
