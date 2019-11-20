@@ -28,8 +28,8 @@ environment and references. Mode details on how to reproduce the experiments are
   applications/network interface combinations using 30 execution
   replications for normal execution and 1 replication for
   characterization execution.
-- [[SH]] - Here are five bash scripts ([[SH/benchmark][benchmark]], [[SH/central][central]],
-  [[SH/software_install][software_install]], [[SH/sys_info_collect][sys_info_collect]]) that are used to perform the
+- [[SH]] - Here are five bash scripts ([[SH/benchmark.sh][benchmark]], [[SH/central.sh][central]]
+  [[SH/software_install][software_install.sh]], [[SH/sys_info_collect][sys_info_collect.sh]] that are used to perform the
   experiments and collect system information.
 - [[BENCHMARKS]] - This folder has all the five benchmarks (Alya,
   ImbBench, Intel MPI Benchmarks, Nas Parallel Benchmarks, and
