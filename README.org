@@ -44,14 +44,13 @@ environment. Mode details on how to reproduce the experiments are in
   as well as the step-by-step execution of the entire project.
 
 * Analysis Environment 
-Some specific softwares are necessary to reproduce this evaluation
-accurately. They are:
-- Emacs and Org - They are used as a project management tool to track,
-  record all the information, and generate the graphics using R code
-  blocks. A complete tutorial on how to install and configure the
-  mentioned softwares are available [[https://app-learninglab.inria.fr/gitlab/learning-lab/mooc-rr-ressources/blob/master/module2/ressources/emacs_orgmode.org][here]]. If you do not want to use
-  this softwares, you can copy the blocks of code and use R or RStudio
-  to generate the graphics.
+Some specific softwares are required to reproduce this evaluation
+accurately. They are Emacs and Org, and both are used as project
+management tools to track, record all information, and generate
+graphics using R code blocks. A complete tutorial on how to install
+and configure the mentioned softwares is available [[https://app-learninglab.inria.fr/gitlab/learning-lab/mooc-rr-ressources/blob/master/module2/ressources/emacs_orgmode.org][here]]. If you do not
+want to use this softwares, you can copy the blocks of code and use R
+or RStudio to generate the graphics.
  
 
 #+BEGIN_QUOTE
@@ -60,3 +59,26 @@ accurately. They are:
  this work and find broken links or other issues, please tell me
  everything so that I can improve it. :)
 #+END_QUOTE
+
+* References
++ R. Jain, [[http://www.cs.wustl.edu/~jain/books/perfbook.htm][The Art of Computer Systems Performance Analysis:
+  Techniques for Experimental Design, Measurement, Simulation, and
+  Modeling]], Wiley-Interscience, New York, NY, April 1991.
+#+BEGIN_QUOTE
+This was the base book used in the *CMP223 - Computer System
+Performance Analysis (2019/2)* discipline and can be considered the
+oracle for creating performance evaluations even though it is old, but
+the checklist and concepts are still current today.
+#+END_QUOTE
++ Legrand. Arnaud, Schnorr. Lucas, [[https://github.com/alegrand/SMPE.git][Scientific Methodology and
+  Performance Evaluation for Computer Scientists]], GitHub Repository.
+#+BEGIN_QUOTE
+In this repository is a course named *Scientific Methodology and
+Performance Evaluation for Computer Scientists,* which is based on
+several renowed books (including Jain's one). The aim of it is to
+provide the fundamental basis for sound scientific methodology of
+performance evaluation of computer systems. This course completly
+changed the way I see and create performance evaluations, and I truly
+recommend it to you.
+#+END_QUOTE
+
