@@ -238,23 +238,46 @@ sed -i '1s/^/number,apps,interface\n/' experimental_project.csv
 #+end_src
 
 ** Bash Scripts Descriptions
-- [[SH/benchmarks_exec.sh][Benchmarks Execution]] 
-  - Step 1: Defining the Variables
-  - Step 2: Collect the System Information
-  - Step 3: Create the Folders/Download and Compile the Programs
-  - Step 4: Define the Machine Files and Experimental Project
-  - Step 5: Read the Experimental Project and Started the Execution
-    Loop
-- [[SH/central.sh][Central]]
-  - 
-- [[SH/software_install.sh][Software Installation]] 
-  - This script is basically a simple loop to check whether packages
-    within the 'name' vector are installed or not. If so, them
-    ok. Otherwise, install the packages that are not installed. This
-    script assume that the user has sudo privilegies. Otherwise, go to
-    the *Software Installation* session, which will describe how to
-    install the software using Spack packet manager.
-- [[SH/sys_info_collect.sh][System Information Collect]]
+- [[SH/experiments_exec.sh][Experiments Execution]] - This is the most essential script for this
+  evaluation. It comprises from the beggining, when the variables
+  are defined, until the end, when the experiments execution ends and the
+  results are classified. To describe it, it has been divided into a
+  few steps, which are:
+
+  - Step 1: Defining the Variables - Here all the variables with
+    folder, software and bencharmark locations are defined.
+  - Step 2: Collect System Information - In this step, the Execution
+    Experiments script calls the System Information script to collect
+    information about all nodes used in the evaluation.
+  - Step 3: Create the Folders/Download and Compile the Programs -
+    Here the priviously definied folders are created and the softwares
+    and benchmarks are donwloaded and compiled with their respective
+    compilers and with the Score-P + compilers.
+  - Step 4: Define Machine Files and Experimental Project - In this
+    step the machine files and experimental project used during MPI
+    execution are defined.
+  - Step 5: Read the Experimental Project and Start the Execution
+    Loop - This final step reads the experimental project, start the MPI
+    command line, executes the experiments with their respective
+    interconnection and binaries. At the end of each execution, the
+    results are sent to the their respective log files.
+
+- [[SH/central.sh][Central]] - This script was created to allocate the nodes using the
+  ~salloc~ command from Slurm Workload Manager and then pass the bash
+  script execution command through ssh to start the Experiments
+  Execution.
+- [[SH/software_install.sh][Software Installation]] - This script is basically a simple loop to
+  check whether packages within the 'name' vector are installed or
+  not. If so, them ok. Otherwise, install the packages that are not
+  installed. This script assume that the user has sudo
+  privilegies. Otherwise, go to the *Software Installation* session,
+  which will describe how to install the software using Spack packet
+  manager.
+- [[SH/sys_info_collect.sh][System Information Collect]] - This is a crucial script to performance
+  evaluations, which executes before the benchmarks. It saves all the
+  system information and sends the output to an ORG file. This output
+  will undoubtedly help describe the results or even add system
+  information to the paper/report.
 
 ** Experiments Execution
  The execution script was made to be used in a cluster
