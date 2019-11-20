@@ -13,6 +13,7 @@ LOGS=$BASE/LOGS
 SOFTWARES=$BASE/SOFTWARES
 TRACE=$LOGS/TRACE
 MACHINE_FILES=$BASE/MACHINE_FILES
+DOWNLOAD_LOGS=$LOGS/DOWNLOAD_LOGS
 
 #NPB Variables
 NPBE=NPB3.4_Exec
@@ -30,8 +31,8 @@ APP_COMPILE_NPBC=$NPBC/NPB3.4-MPI
 ONDES3DE=Ondes3de
 APP_BIN_ONDES3DE=$ONDES3DE/ondes3d
 APP_TEST_ONDES3DE_SISHUAN=$ONDES3DE/SISHUAN-XML
-APP_CONFIG_ONDES3DE=$APP_TEST_ONDES3D_SISHUAN/options.h
-APP_CONFIG_ONDES3DE_PRM=$APP_TEST_ONDES3D_SISHUAN/sishuan.prm
+APP_CONFIG_ONDES3DE=$APP_TEST_ONDES3DE_SISHUAN/options.h
+APP_CONFIG_ONDES3DE_PRM=$APP_TEST_ONDES3DE_SISHUAN/sishuan.prm
 APP_SRC_ONDES3DE=$ONDES3DE/SRC
 APP_LOGS_ONDES3DE=$ONDES3DE/LOGS
 
@@ -39,26 +40,26 @@ APP_LOGS_ONDES3DE=$ONDES3DE/LOGS
 ONDES3DC=Ondes3dc
 APP_BIN_ONDES3DC=$ONDES3DC/ondes3d
 APP_TEST_ONDES3DC_SISHUAN=$ONDES3DC/SISHUAN-XML
-APP_CONFIG_ONDES3DC=$APP_TEST_ONDES3D_SISHUAN/options.h
-APP_CONFIG_ONDES3DC_PRM=$APP_TEST_ONDES3D_SISHUAN/sishuan.prm
+APP_CONFIG_ONDES3DC=$APP_TEST_ONDES3DC_SISHUAN/options.h
+APP_CONFIG_ONDES3DC_PRM=$APP_TEST_ONDES3DC_SISHUAN/sishuan.prm
 APP_SRC_ONDES3DC=$ONDES3DC/SRC
 APP_LOGS_ONDES3DC=$ONDES3DC/LOGS
 
 #Alya Exec Variables
 ALYAE=Alya_Exec
 ALYAE_DIR=$ALYAE/Executables/unix
-APP_BIN_ALYAE=$ALYA_DIR/Alya.x
+APP_BIN_ALYAE=$ALYAE_DIR/Alya.x
 APP_CONFIG_ALYAE=$ALYAE/Executables/unix/config.in
 APP_ALYAE_TUFAN=$ALYAE/4_tufan_run/c/c
-ALYAE_LOG=$APP_ALYA_TUFAN.log
+ALYAE_LOG=$APP_ALYAE_TUFAN.log
 
 #Alya Charac Variables
 ALYAC=Alya_Charac
 ALYAC_DIR=$ALYAC/Executables/unix
-APP_BIN_ALYAC=$ALYA_DIR/Alya.x
+APP_BIN_ALYAC=$ALYAC_DIR/Alya.x
 APP_CONFIG_ALYAC=$ALYAC/Executables/unix/config.in
 APP_ALYAC_TUFAN=$ALYAC/4_tufan_run/c/c
-ALYAC_LOG=$APP_ALYA_TUFAN.log
+ALYAC_LOG=$APP_ALYAC_TUFAN.log
 
 #IMB Exec Variables
 IMBE=Imbbench_Exec
@@ -167,18 +168,19 @@ make metis4; make
 cd $BENCHMARKS
 git clone --recursive --progress https://bitbucket.org/fdupros/ondes3d.git 2> $LOGS/Ondes3d.download.log
 mv ondes3d Ondes3de; cp -r Ondes3de Ondes3dc 
-sed -i 's,./../,./BENCHMARKS/ondes3de/,g' $APP_CONFIG_ONDES3DE
-sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ondes3de/LOGS,g' $APP_CONFIG_ONDES3DE_PRM
+sed -i 's,./../,./BENCHMARKS/Ondes3de/,g' $APP_CONFIG_ONDES3DE  
+sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/Ondes3de/LOGS,g' $APP_CONFIG_ONDES3DE_PRM
 mkdir -p $ONDES3DE/LOGS
-sed -i 's,./SISHUAN-XML,./BENCHMARKS/ondes3de/SISHUAN-XML,g' $APP_CONFIG_ONDES3DE_PRM
+sed -i 's,./SISHUAN-XML,./BENCHMARKS/Ondes3de/SISHUAN-XML,g' $APP_CONFIG_ONDES3DE_PRM
 cp $APP_CONFIG_ONDES3DE $APP_SRC_ONDES3DE; cd $APP_SRC_ONDES3DE; make clean; make 
 
 #Charac
-sed -i 's,./../,./BENCHMARKS/ondes3dc/,g' $APP_CONFIG_ONDES3DC
-sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ondes3dc/LOGS,g' $APP_CONFIG_ONDES3DC_PRM
+cd $BENCHMARKS
+sed -i 's,./../,./BENCHMARKS/Ondes3dc/,g' $APP_CONFIG_ONDES3DC
+sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/Ondes3dc/LOGS,g' $APP_CONFIG_ONDES3DC_PRM
 sed -i 's,mpicc,/tmp/install/bin/./scorep mpicc,g' $APP_SRC_ONDES3DC/Makefile
 mkdir -p $ONDES3DC/LOGS
-sed -i 's,./SISHUAN-XML,./BENCHMARKS/ondes3dc/SISHUAN-XML,g' $APP_CONFIG_ONDES3D_PRM
+sed -i 's,./SISHUAN-XML,./BENCHMARKS/Ondes3dc/SISHUAN-XML,g' $APP_CONFIG_ONDES3DC_PRM
 cp $APP_CONFIG_ONDES3DC $APP_SRC_ONDES3DC; cd $APP_SRC_ONDES3DC; make clean; make 
 
 #######################################NPB##################################################
@@ -227,7 +229,7 @@ cd $APP_COMPILE_NPBC; make suite; cd $BASE
 
 #################################Intel MPI Benchmarks#############################################
 cd $BENCHMARKS
-git clone --recursive --progress https://github.com/intel/mpi-benchmarks.git 2> mpi-benchmarks.download.log
+git clone --recursive --progress https://github.com/intel/mpi-benchmarks.git 2> $LOGS/mpi-benchmarks.download.log
 sed -i 's,mpiicc,mpicc,g' $INTEL_SOURCE
 sed -i 's,mpiicpc,mpicxx,g' $INTEL_SOURCE
 cd $INTEL; make IMB-MPI1
