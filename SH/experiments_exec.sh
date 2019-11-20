@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#############################################################################################################
+##################################Step 1: Defining the Variables#############################################
+#############################################################################################################
+
 #Variable Directories
 BASE=$HOME/CMP223
 SCRIPTS=$BASE/SH
@@ -89,10 +93,18 @@ OUTPUT_APPS_CHARAC_IMB=$LOGS/imb_charac.$START.csv
 OUTPUT_INTEL_EXEC=$LOGS/intel.$START.csv
 PARTITION=(hype1 hype2 hype4 hype5)
 
+#############################################################################################################
+#################################Step 2: Collect the System Information######################################
+#############################################################################################################
+
 #Executes the system information collector script
 for (( i = 0; i < 4; i++ )); do
 	ssh ${PARTITION[i]} '/home/users/ammaliszewski/CMP223/SH/./sys_info_collect.sh'
 done
+
+#############################################################################################################
+#######################Step 3: Create the Folders/Download and Compile the Programs##########################
+#############################################################################################################
 
 mkdir -p $BENCHMARKS
 mkdir -p $LOGS
@@ -220,12 +232,20 @@ sed -i 's,mpiicc,mpicc,g' $INTEL_SOURCE
 sed -i 's,mpiicpc,mpicxx,g' $INTEL_SOURCE
 cd $INTEL; make IMB-MPI1
 
+#############################################################################################################
+#######################Step 4: Define the Machine Files and Experimental Project#############################
+#############################################################################################################
+
 #Define the machine file and experimental project
 MACHINEFILE_POWER_OF_2=$MACHINE_FILES/nodes_power_of_2
 MACHINEFILE_SQUARE_ROOT=$MACHINE_FILES/nodes_square_root
 MACHINEFILE_FULL=$MACHINE_FILES/nodes_full
 MACHINEFILE_INTEL=$MACHINE_FILES/nodes_intel
 PROJECT=$R/experimental_project.csv
+
+#############################################################################################################
+#######################Step 5: Read the Experimental Project and Started the Execution Loop##################
+#############################################################################################################
 
 #Read the experimental project
 tail -n +2 $PROJECT |

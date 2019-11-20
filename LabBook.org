@@ -6,10 +6,10 @@
 #+EXPORT_EXCLUDE_TAGS: noexport
 #+SEQ_TODO: TODO(t!) STARTED(s!) WAITING(w!) | DONE(d!) CANCELLED(c!) DEFERRED(f!)
 
-This LabBook is for the *Scientific Methodology and Performance
-Evaluation for Experimental Computer* class and has the step-by-step
-procedure used during the proposed experiments. Also, to reproduce
-this evaluation, you can follow the steps below. Have fun!
+This LabBook is for the *CMP223 - Computer System Performance* *Analysis
+(2019/2)* final work and has the step-by-step procedure used during the
+proposed experiments. Also, to reproduce this evaluation, you can
+follow the steps below. Have fun!
 
 #+BEGIN_QUOTE
 *Reporting errors*: This repository has several links to self-contained
@@ -238,10 +238,22 @@ sed -i '1s/^/number,apps,interface\n/' experimental_project.csv
 #+end_src
 
 ** Bash Scripts Descriptions
-- [[SH/benchmarks_exec.sh][Benchmarks Execution]] - 
-- [[SH/benchmarks_charac.sh][Benchmarks Characterization]]
+- [[SH/benchmarks_exec.sh][Benchmarks Execution]] 
+  - Step 1: Defining the Variables
+  - Step 2: Collect the System Information
+  - Step 3: Create the Folders/Download and Compile the Programs
+  - Step 4: Define the Machine Files and Experimental Project
+  - Step 5: Read the Experimental Project and Started the Execution
+    Loop
 - [[SH/central.sh][Central]]
-- [[SH/software_install.sh][Software Installation]]
+  - 
+- [[SH/software_install.sh][Software Installation]] 
+  - This script is basically a simple loop to check whether packages
+    within the 'name' vector are installed or not. If so, them
+    ok. Otherwise, install the packages that are not installed. This
+    script assume that the user has sudo privilegies. Otherwise, go to
+    the *Software Installation* session, which will describe how to
+    install the software using Spack packet manager.
 - [[SH/sys_info_collect.sh][System Information Collect]]
 
 ** Experiments Execution
