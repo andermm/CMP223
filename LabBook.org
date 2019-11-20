@@ -244,19 +244,19 @@ sed -i '1s/^/number,apps,interface\n/' experimental_project.csv
   results are classified. To describe it, it has been divided into a
   few steps, which are:
 
-  - Step 1: Defining the Variables - Here all the variables with
+  - *Step 1*: Defining the Variables - Here all the variables with
     folder, software and bencharmark locations are defined.
-  - Step 2: Collect System Information - In this step, the Execution
+  - *Step 2*: Collect System Information - In this step, the Execution
     Experiments script calls the System Information script to collect
     information about all nodes used in the evaluation.
-  - Step 3: Create the Folders/Download and Compile the Programs -
+  - *Step 3*: Create the Folders/Download and Compile the Programs -
     Here the priviously definied folders are created and the softwares
     and benchmarks are donwloaded and compiled with their respective
     compilers and with the Score-P + compilers.
-  - Step 4: Define Machine Files and Experimental Project - In this
+  - *Step 4*: Define Machine Files and Experimental Project - In this
     step the machine files and experimental project used during MPI
     execution are defined.
-  - Step 5: Read the Experimental Project and Start the Execution
+  - *Step 5*: Read the Experimental Project and Start the Execution
     Loop - This final step reads the experimental project, start the MPI
     command line, executes the experiments with their respective
     interconnection and binaries. At the end of each execution, the
