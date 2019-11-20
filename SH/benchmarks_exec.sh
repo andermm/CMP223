@@ -55,9 +55,9 @@ APP_CONFIG_ALYAC=$ALYAC/Executables/unix/config.in
 APP_ALYAC_TUFAN=$ALYAC/4_tufan_run/c/c
 ALYAC_LOG=$APP_ALYA_TUFAN.log
 
-#IMB Variables
+#IMB Exec Variables
 IMBE=Imbbench_Exec
-APP_BIN_IMB=$IMBE/bin/imb
+APP_BIN_IMBE=$IMBE/bin/imb
 IMB_MEMORY=Memory
 IMB_MEMORY_PATTERN=8Level 
 IMB_MEMORY_MICROBENCHMARK=BST
@@ -65,15 +65,9 @@ IMB_CPU=CPU
 IMB_CPU_PATTERN=8Level 
 IMB_CPU_MICROBENCHMARK=Rand
 
-#IMB Variables
+#IMB Charac Variables
 IMBC=Imbbench_Charac
-APP_BIN_IMB=$IMBC/bin/imb
-IMB_MEMORY=Memory
-IMB_MEMORY_PATTERN=8Level 
-IMB_MEMORY_MICROBENCHMARK=BST
-IMB_CPU=CPU
-IMB_CPU_PATTERN=8Level 
-IMB_CPU_MICROBENCHMARK=Rand
+APP_BIN_IMBC=$IMBC/bin/imb
 
 #Intel MPI Benchmarks Variables
 INTEL=mpi-benchmarks
@@ -258,24 +252,11 @@ do
 		runline+="mpiexec --mca btl self, "
 	else
 		runline+="mpiexec "
-		runline+="-x SCOREP_EXPERIMENT_DIRECTORY=$TRACE/scorep_${apps:0:3}$interface "
+		runline+="-x SCOREP_EXPERIMENT_DIRECTORY=$TRACE/$apps.$interface "
     	runline+="-x SCOREP_ENABLE_TRACING=TRUE "
     	runline+="-x SCOREP_ENABLE_PROFILING=FALSE "
     	runline+="--mca btl self,"
 	fi
-
-
-#Prepare the command for execution
-
-
-
-
-
-
-
-
-
-
 
 #Select interface
 	if [[ $interface == ib ]]; then
@@ -287,22 +268,16 @@ do
 	fi
 
 #Select app
-	if [[ $apps == ondes3d ]]; then
+#Ondes3d, Alya, IMB
+	if [[ ${#apps} == 12 || ${#apps} == 14 || ${#apps} == 15 || 
+		${#apps} == 18 || ${#apps} == 11 || ${#apps} == 9 ]]; then
 		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
-	elif [[ $apps == intel ]]; then
+#Intel
+	elif [[ ${#apps} == 10 ]]; then
 		PROCS=2
 		runline+="-np $PROCS -machinefile $MACHINEFILE_INTEL "
-	elif [[ $apps == imb_memory ]]; then
-		PROCS=160
-		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
-	elif [[ $apps == imb_CPU ]]; then
-		PROCS=160
-		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
-	elif [[ $apps == Alya.x ]]; then
-		PROCS=160
-		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
-	elif [[ $apps == bt.D.x || $apps == sp.D.x ]]; then
+	elif [[ ${app:5:7} == bt || ${app:5:7} == sp ]]; then
 		PROCS=144
 		runline+="-np $PROCS -machinefile $MACHINEFILE_SQUARE_ROOT "
 	else
@@ -311,78 +286,116 @@ do
 	fi
 
 #Save the output according to the app
-	if [[ $apps == ondes3d ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_ONDES3D 0 "
-		runline+="2>> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/ondes3d.out)"
-	elif [[ $apps == intel ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_INTEL $APP_TEST_INTEL "
-		runline+="2>> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/intel_mb.out)"
-	elif [[ $apps == imb_memory ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
-		runline+="2>> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/imb.out)"
-	elif [[ $apps == imb_CPU ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_IMB $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
-		runline+="2>> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.exec.log > /tmp/imb.out)"
-	elif [[ $apps == Alya.x ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_ALYA BENCHMARKS/$APP_ALYA_TUFAN "
-		runline+="2 >> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:4}.$interface.exec.log > /tmp/alya.out)"
-	else
-		runline+="$BENCHMARKS/$APP_BIN_NPB/$apps "
-		runline+="2>> $LOGS/errors_exec "
-		runline+="&> >(tee -a $LOGS/BACKUP/${apps:0:3}$interface.exec.log > /tmp/nas.out)"
-	fi	
-
-#Execute the experiments
-	echo "Executing >> $runline <<"
-	eval "$runline < /dev/null"
-
-#Save the results
-	if [[ $apps == ondes3d ]]; then
+	if [[ $apps == exec_ondes3d ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_ONDES3DE 0 "
+		runline+="2>> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
 		TIME=`grep -i "Timing total" /tmp/ondes3d.out | awk {'print $3'} | head -n 1`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
-	elif [[ $apps == intel ]]; then
+
+	elif [[ $apps == charac_ondes3d ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_ONDES3DC 0 "
+		runline+="2>> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
+		TIME=`grep -i "Timing total" /tmp/ondes3d.out | awk {'print $3'} | head -n 1`
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_CHARAC
+		$AKY_BUILD/./otf22paje $TRACE/$apps.$interface/traces.otf2 > $TRACE/$apps.$interface/$apps.$interface.trace
+		$PAJE_BUILD/./pj_dump $TRACE/$apps.$interface/$apps.$interface.trace | grep ^State > $TRACE/$apps.$interface/$apps$interface.csv
+	
+	elif [[ $apps == exec_intel ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_INTEL $APP_TEST_INTEL "
+		runline+="2>> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/intel_mb.out)"
 		N=`tail -n +35 /tmp/intel_mb.out | awk {'print $1'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' | wc -l`
 		for (( i = 0; i < $N; i++ )); do
 			echo "$apps,$interface" >> /tmp/for.out
 		done
 
-	tail -n +35 /tmp/intel_mb.out | awk {'print $1'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/BYTES
-    tail -n +35 /tmp/intel_mb.out | awk {'print $3'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/TIME
-    tail -n +35 /tmp/intel_mb.out | awk {'print $4'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/Mbytes
-    paste -d"," /tmp/for.out /tmp/BYTES /tmp/TIME /tmp/Mbytes >> $OUTPUT_INTEL_EXEC
-    rm /tmp/for.out; rm /tmp/BYTES; rm /tmp/TIME; rm /tmp/Mbytes
-	
-	elif [[ $apps == imb_memory ]]; then
+		tail -n +35 /tmp/intel_mb.out | awk {'print $1'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/BYTES
+    	tail -n +35 /tmp/intel_mb.out | awk {'print $3'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/TIME
+    	tail -n +35 /tmp/intel_mb.out | awk {'print $4'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' > /tmp/Mbytes
+    	paste -d"," /tmp/for.out /tmp/BYTES /tmp/TIME /tmp/Mbytes >> $OUTPUT_INTEL_EXEC
+    	rm /tmp/for.out; rm /tmp/BYTES; rm /tmp/TIME; rm /tmp/Mbytes
+
+	elif [[ $apps == exec_imb_memory ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_IMBE $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
+		runline+="2>> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb.out)"
 		for (( i = 0; i < 160; i++ )); do
 			echo "$apps,$interface" >> /tmp/imb_tmp.out
 		done
 		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
 		rm /tmp/imb_tmp.out
-	elif [[ $apps == imb_CPU ]]; then
+
+	elif [[ $apps == charac_imb_memory ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_IMBC $IMB_MEMORY $IMB_MEMORY_PATTERN $IMB_MEMORY_MICROBENCHMARK "
+		runline+="2>> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb.out)"
+		for (( i = 0; i < 160; i++ )); do
+			echo "$apps,$interface" >> /tmp/imb_tmp.out
+		done
+		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_CHARAC_IMB
+		rm /tmp/imb_tmp.out
+		$AKY_BUILD/./otf22paje $TRACE/$apps.$interface/traces.otf2 > $TRACE/$apps.$interface/$apps.$interface.trace
+		$PAJE_BUILD/./pj_dump $TRACE/$apps.$interface/$apps.$interface.trace | grep ^State > $TRACE/$apps.$interface/$apps$interface.csv
+
+	elif [[ $apps == exec_imb_CPU ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_IMBE $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
+		runline+="2>> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb.out)"
 		for (( i = 0; i < 160; i++ )); do
 			echo "$apps,$interface" >> /tmp/imb_tmp.out
 		done
 		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
-		rm /tmp/imb_tmp.out	
-	elif [[ $apps == Alya.x ]]; then
-		TIME=`cat $BENCHMARKS/$ALYA_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
-		echo "${apps:0:4},$interface,$TIME" >> $OUTPUT_APPS_EXEC
-	else	
+		rm /tmp/imb_tmp.out
+
+	elif [[ $apps == charac_imb_CPU ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_IMBC $IMB_CPU $IMB_CPU_PATTERN $IMB_CPU_MICROBENCHMARK "
+		runline+="2>> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/imb.out)"
+		for (( i = 0; i < 160; i++ )); do
+			echo "$apps,$interface" >> /tmp/imb_tmp.out
+		done
+		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_CHARAC_IMB
+		rm /tmp/imb_tmp.out
+		$AKY_BUILD/./otf22paje $TRACE/$apps.$interface/traces.otf2 > $TRACE/$apps.$interface/$apps.$interface.trace
+		$PAJE_BUILD/./pj_dump $TRACE/$apps.$interface/$apps.$interface.trace | grep ^State > $TRACE/$apps.$interface/$apps$interface.csv
+
+	elif [[ $apps == exec_alya ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_ALYAE BENCHMARKS/$APP_ALYAE_TUFAN "
+		runline+="2 >> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/alya.out)"
+		TIME=`cat $BENCHMARKS/$ALYAE_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
+
+	elif [[ $apps == charac_alya ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_ALYAE BENCHMARKS/$APP_ALYAC_TUFAN "
+		runline+="2 >> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/alya.out)"
+		TIME=`cat $BENCHMARKS/$ALYAC_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_CHARAC
+
+	elif [[ ${#apps} == 7 ]]; then
+		runline+="$BENCHMARKS/$APP_BIN_NPBE/${app:5:7}.x "
+		runline+="2>> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/nas.out)"
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
-		echo "${apps:0:2},$interface,$TIME" >> $OUTPUT_APPS_EXEC
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
+	else
+		runline+="$BENCHMARKS/$APP_BIN_NPBC/${app:7:9}.x "
+		runline+="2>> $LOGS/app_std_error "
+		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/nas.out)"
+		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_CHARAC
 	fi	
 	echo "Done!"
+
+#Execute the experiments
+	echo "Executing >> $runline <<"
+	eval "$runline < /dev/null"
+	
 done
 sed -i '1s/^/apps,interface,time\n/' $OUTPUT_APPS_EXEC
 sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB
 sed -i '1s/^/apps,interface,bytes,time,mbytes-sec\n/' $OUTPUT_INTEL_EXEC
-
-
-#Calls the characterization benchmark script
-cd $BASE; nohup ./SH/benchmarks_charac.sh > $BASE/LOGS/script_charac_log 2>&1 &
 exit
