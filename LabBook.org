@@ -157,18 +157,135 @@ through a Mellanox SX6036 FDR and a generic de 1 Gbps switch.
 
 ** Design of Experiments
    To execute the benchmarks without any bias, the DoE.base library
-   was used ([[R/DoE.R][Design of Experiments]] script) to create the Design of
-   Experiments, which generates two CSV files. In DoE, two factors,
+   was used to create the Design of Experiments. In DoE, two factors,
    apps and interface were used, with 30 randomized replications
-   totalizing distinct 1170 (13*3*30) executions in the case of the
-   execution and 1 randomized replication totalizing 36 (13*3)
-   executions in the case of characterization.
+   totalizing 1170 (13*3*30) distincts executions in the case of the
+   execution and 1 randomized replication totalizing 36 (12*3)
+   executions in the case of characterization (MPI PingPong benchmarks
+   was not executed in the characterization step).
 
-- Factor 1 - Apps: The applications name totaling 13 (~bt.D.x~, ~ep.D.x~,
-  ~cg.D.x~, ~mg.D.x~, ~lu.D.x~, ~sp.D.x~, ~is.D.x~, ~ft.D.x~, ~imb_memory~, ~imb_CPU~,
-  ~ondes3d~, ~intel~, and ~Alya.x~).
-- Factor 2 - Interface - The network interface name, totaling 3 (~eth~,
+Execution factors:
+- Factor 1 - Apps: The applications name totaling 13 (~bt_exec~,
+  ~ep_exec~, ~cg_exec~, ~mg_exec~, ~lu_exec~, ~sp_exec~, ~is_exec~, ~ft_exec~,
+  ~imb_memory_exec~, ~imb_CPU_exec~, ~ondes3d_exec~, ~intel_exec~, and
+  ~alya_exec~).
+- Factor 2 - Interface: The network interface name, totaling 3 (~eth~,
   ~ib~, ~ipoib~).
+
+Characterization factors:
+- Factor 1 - Apps: The applications name totaling 13 (~bt_charac~,
+  ~ep_charac~, ~cg_charac~, ~mg_charac~, ~lu_charac~, ~sp_charac~, ~is_charac~,
+  ~ft_charac~, ~imb_memory_charac~, ~imb_CPU_charac~, ~ondes3d_charac~, and
+  ~alya_charac~).
+- Factor 2 - Interface: The network interface name, totaling 3 (~eth~,
+  ~ib~, ~ipoib~).
+
+Below is the R code which generate the CSV files.
+#+begin_src R :results output :session *R* :exports both
+options(crayon.enabled=FALSE)
+library(DoE.base)
+library(tidyverse)
+set.seed(0)
+  cmp223 <- fac.design(factor.names = list(
+    apps = c("bt_exec", "ep_exec", "cg_exec", "mg_exec", "lu_exec", "sp_exec",
+             "is_exec", "ft_exec", "imb_memory_exec", "imb_CPU_exec", "ondes3d_exec", 
+             "intel_exec", "alya_exec"),
+    interface = c("eth", "ib", "ipoib")),
+    replications=30,
+    randomize=TRUE)
+
+cmp223 %>%
+select(-Blocks) -> cmp223
+write_csv(cmp223, "R/exec.csv")
+read_csv("R/exec.csv") 
+
+options(crayon.enabled=FALSE)
+library(DoE.base)
+library(tidyverse)
+set.seed(0)
+  cmp223 <- fac.design(factor.names = list(
+    apps = c("bt_charac", "ep_charac", "cg_charac", "mg_charac", "lu_charac", "sp_charac",
+             "is_charac", "ft_charac", "imb_memory_charac", "imb_CPU_charac", "ondes3d_charac", 
+             "alya_charac"),
+    interface = c("eth", "ib", "ipoib")),
+    replications=1,
+    randomize=TRUE)
+
+cmp223 %>%
+select(-Blocks) -> cmp223
+write_csv(cmp223, "R/charac.csv")
+read_csv("R/charac.csv") 
+
+#+begin_src R :results output :session *R* :exports both
+ 
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+creating full factorial with 39 runs ...
+
+Parsed with column specification:
+cols(
+  apps = col_character(),
+  interface = col_character()
+)
+# A tibble: 1,170 x 2
+   apps         interface
+   <
+       <
+   
+ 1 bt_exec      ib       
+ 2 mg_exec      eth      
+ 3 bt_exec      eth      
+ 4 ft_exec      ipoib    
+ 5 imb_CPU_exec ib       
+ 6 alya_exec    ipoib    
+ 7 lu_exec      ib       
+ 8 bt_exec      ipoib    
+ 9 sp_exec      ib       
+10 ondes3d_exec ipoib    
+# … with 1,160 more rows
+
+creating full factorial with 36 runs ...
+
+Error in is_character(x) : object 'Blocks' not found
+
+Parsed with column specification:
+cols(
+  apps = col_character(),
+  interface = col_character()
+)
+# A tibble: 36 x 2
+   apps           interface
+   <
+         <
+   
+ 1 ep_charac      ib       
+ 2 mg_charac      eth      
+ 3 bt_charac      eth      
+ 4 ondes3d_charac ib       
+ 5 ondes3d_charac eth      
+ 6 alya_charac    ipoib    
+ 7 sp_charac      ib       
+ 8 cg_charac      ipoib    
+ 9 is_charac      ib       
+10 imb_CPU_charac ipoib    
+# … with 26 more rows
+#+end_example
+
+The shell block of code below was created to join both CSV files and
+re-randomize them, and the final output is the ~experimental_project.csv~.
+#+begin_src shell :session *shell* :results output :exports both 
+cd R
+sed -i '1d' exec.csv charac.csv
+cat exec.csv charac.csv > new; rm *.csv
+shuf new > new.csv; rm new
+awk '{printf "%s,%s\n", NR,$0}' new.csv > experimental_project.csv; rm new.csv
+sed -i '1s/^/number,apps,interface\n/' experimental_project.csv
+#+end_src
+
+#+RESULTS:
 
 ** Bash Scripts Descriptions
 - [[SH/benchmarks_exec.sh][Benchmarks Execution]] - 
