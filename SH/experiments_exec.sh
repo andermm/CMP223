@@ -95,32 +95,34 @@ for (( i = 0; i < 4; i++ )); do
 done
 
 mkdir -p $BENCHMARKS
+mkdir -p $LOGS
 mkdir -p $BASE/LOGS/BACKUP
 mkdir -p $SOFTWARES 
 mkdir -p $TRACE
 
 ########################################Score-P#############################################
 cd $SOFTWARES
-wget -c https://www.vi-hps.org/cms/upload/packages/scorep/scorep-6.0.tar.gz
+wget -c https://www.vi-hps.org/cms/upload/packages/scorep/scorep-6.0.tar.gz -S -a $LOGS/scorep-6.0.download.log
 tar -zxf scorep-6.0.tar.gz; rm -f scorep-6.0.tar.gz 
 cd scorep-6.0; ./configure --prefix=/tmp/install; make; make install
 
 ########################################Akypuera#############################################
 cd $SOFTWARES
-git clone --recursive https://github.com/schnorr/akypuera.git
+git clone --recursive --progress https://github.com/schnorr/akypuera.git 2> $LOGS/akypuera.download.log
+
 mkdir -p akypuera/build; cd akypuera/build; 
 cmake -DOTF2=ON -DOTF2_PATH=/tmp/install/ -DCMAKE_INSTALL_PREFIX=/tmp/akypuera/ ..
 make; make install
 
 ########################################PajeNG#############################################
 cd $SOFTWARES
-git clone --recursive https://github.com/schnorr/pajeng.git 
+git clone --recursive --progress https://github.com/schnorr/pajeng.git 2> $LOGS/pajeng.download.log
 mkdir -p pajeng/build ; cd pajeng/build; cmake .. ; make install
 
 ########################################IMB#################################################
 #Exec
 cd $BENCHMARKS
-git clone --recursive https://github.com/Roloff/ImbBench.git
+git clone --recursive --progress https://github.com/Roloff/ImbBench.git 2> $LOGS/ImbBench.download.log
 mv ImbBench Imbbench_Exec; cp -r Imbbench_Exec Imbbench_Charac
 cd $IMBE; mkdir bin; make
 
@@ -132,7 +134,7 @@ cd $IMBC; mkdir bin; make
 ########################################Alya################################################
 #Exec
 cd $BENCHMARKS
-git clone --recursive https://gitlab.com/ammaliszewski/alya.git
+git clone --recursive --progress https://gitlab.com/ammaliszewski/alya.git 2> $LOGS/Alya.download.log
 mv alya Alya_Exec; cp -r Alya_Exec Alya_Charac
 cd $ALYAE_DIR
 cp configure.in/config_gfortran.in config.in
@@ -151,7 +153,7 @@ make metis4; make
 #######################################Ondes3d##############################################
 #Exec
 cd $BENCHMARKS
-git clone --recursive https://bitbucket.org/fdupros/ondes3d.git
+git clone --recursive --progress https://bitbucket.org/fdupros/ondes3d.git 2> $LOGS/Ondes3d.download.log
 mv ondes3d Ondes3de; cp -r Ondes3de Ondes3dc 
 sed -i 's,./../,./BENCHMARKS/ondes3de/,g' $APP_CONFIG_ONDES3DE
 sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/ondes3de/LOGS,g' $APP_CONFIG_ONDES3DE_PRM
@@ -170,7 +172,7 @@ cp $APP_CONFIG_ONDES3DC $APP_SRC_ONDES3DC; cd $APP_SRC_ONDES3DC; make clean; mak
 #######################################NPB##################################################
 #Exec
 cd $BENCHMARKS
-wget -c https://www.nas.nasa.gov/assets/npb/NPB3.4.tar.gz
+wget -c https://www.nas.nasa.gov/assets/npb/NPB3.4.tar.gz -S -a $LOGS/NPB3.4.download.log
 tar -xzf NPB3.4.tar.gz --transform="s/NPB3.4/NPB3.4_Exec/"; cp -r NPB3.4_Exec NPB3.4_Charac
 rm -rf NPB3.4.tar.gz
 
@@ -213,7 +215,7 @@ cd $APP_COMPILE_NPBC; make suite; cd $BASE
 
 #################################Intel MPI Benchmarks#############################################
 cd $BENCHMARKS
-git clone --recursive https://github.com/intel/mpi-benchmarks.git
+git clone --recursive --progress https://github.com/intel/mpi-benchmarks.git 2> mpi-benchmarks.download.log
 sed -i 's,mpiicc,mpicc,g' $INTEL_SOURCE
 sed -i 's,mpiicpc,mpicxx,g' $INTEL_SOURCE
 cd $INTEL; make IMB-MPI1
