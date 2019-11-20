@@ -1,4 +1,4 @@
-cl#+TITLE: LabBook
+#+TITLE: LabBook
 #+AUTHOR: Anderson Mattheus Maliszewski
 #+STARTUP: overview indent
 #+TAGS: noexport(n) deprecated(d) 
