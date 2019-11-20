@@ -54,3 +54,9 @@ accurately. They are:
   to generate the graphics.
  
 
+#+BEGIN_QUOTE
+*Reporting errors*: This repository has several links to self-contained
+ files as well as links from the Internet. So if you try to reproduce
+ this work and find broken links or other issues, please tell me
+ everything so that I can improve it. :)
+#+END_QUOTE
