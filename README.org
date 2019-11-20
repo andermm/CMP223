@@ -9,7 +9,7 @@
 This repository is for the *CMP223 - Computer System Performance*
 *Analysis (2019/2)* final work, and has the entire project used to
 perform it. Below are the files and folders, along with the analysis
-environment. Mode details on how to reproduce the experiments are in
+environment and references. Mode details on how to reproduce the experiments are in
 [[LabBook.org]].
 
 * Folders and Files Description
@@ -73,12 +73,12 @@ the checklist and concepts are still current today.
 + Legrand. Arnaud, Schnorr. Lucas, [[https://github.com/alegrand/SMPE.git][Scientific Methodology and
   Performance Evaluation for Computer Scientists]], GitHub Repository.
 #+BEGIN_QUOTE
-In this repository is a course named *Scientific Methodology and
-Performance Evaluation for Computer Scientists,* which is based on
-several renowed books (including Jain's one). The aim of it is to
-provide the fundamental basis for sound scientific methodology of
-performance evaluation of computer systems. This course completly
-changed the way I see and create performance evaluations, and I truly
-recommend it to you.
+In this repository is a course called *Scientific Methodology and
+Performance Evaluation for Computer Scientists*, based on several
+renowned books (including Jain's). The aim is to provide the
+fundamental basis for a sound scientific methodology for performance
+evaluation of computer systems. This course has completely changed the
+way I view and create performance evaluations, and I really recommend
+it to you.
 #+END_QUOTE
 
