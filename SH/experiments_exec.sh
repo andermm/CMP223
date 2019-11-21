@@ -94,7 +94,6 @@ done
 #############################################################################################################
 
 mkdir -p $BENCHMARKS
-mkdir -p $LOGS
 mkdir -p $BASE/LOGS/LOGS_BACKUP
 mkdir -p $LOGS_DOWNLOAD
 mkdir -p $LOGS_BACKUP_SRC_CODE
