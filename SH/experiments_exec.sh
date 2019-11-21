@@ -110,6 +110,7 @@ done
 mkdir -p $BENCHMARKS
 mkdir -p $LOGS
 mkdir -p $BASE/LOGS/BACKUP
+mkdir -p $DOWNLOAD_LOGS
 mkdir -p $SOFTWARES 
 mkdir -p $TRACE
 
@@ -225,7 +226,7 @@ for (( n = 0; n < 8; n++ )); do
 	done
 done
 
-cd $APP_COMPILE_NPBC; make suite; cd $BASE
+cd $APP_COMPILE_NPBC; make suite
 
 #################################Intel MPI Benchmarks#############################################
 cd $BENCHMARKS
