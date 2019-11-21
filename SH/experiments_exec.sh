@@ -81,16 +81,7 @@ OUTPUT_INTEL_EXEC=$LOGS/intel.$START.csv
 PARTITION=(hype2 hype3 hype4 hype5)
 
 #############################################################################################################
-#################################Step 2: Collect the System Information######################################
-#############################################################################################################
-
-#Executes the system information collector script
-for (( i = 0; i < 4; i++ )); do
-	ssh ${PARTITION[i]} '/home/users/ammaliszewski/CMP223/SH/./sys_info_collect.sh'
-done
-
-#############################################################################################################
-#######################Step 3: Create the Folders/Download and Compile the Programs##########################
+#######################Step 2: Create the Folders/Download and Compile the Programs##########################
 #############################################################################################################
 
 mkdir -p $BENCHMARKS
@@ -100,6 +91,15 @@ mkdir -p $LOGS_DOWNLOAD
 mkdir -p $LOGS_BACKUP_SRC_CODE
 mkdir -p $SOFTWARES 
 mkdir -p $TRACE
+
+#############################################################################################################
+#################################Step 3: Collect the System Information######################################
+#############################################################################################################
+
+#Executes the system information collector script
+for (( i = 0; i < 4; i++ )); do
+	ssh ${PARTITION[i]} '/home/users/ammaliszewski/CMP223/SH/./sys_info_collect.sh'
+done
 
 ########################################Score-P#############################################
 cd $SOFTWARES
