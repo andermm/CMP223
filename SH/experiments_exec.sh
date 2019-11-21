@@ -316,7 +316,6 @@ do
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
 
 	elif [[ $apps == charac_ondes3d ]]; then
-		runline+="-x SCOREP_TOTAL_MEMORY=16384000 "
 		runline+="$BENCHMARKS/$APP_BIN_ONDES3DC 0 "
 		runline+="2>> $LOGS/apps_std_error "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
