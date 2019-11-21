@@ -14,6 +14,7 @@ SOFTWARES=$BASE/SOFTWARES
 TRACE=$LOGS/TRACE
 MACHINE_FILES=$BASE/MACHINE_FILES
 DOWNLOAD_LOGS=$LOGS/DOWNLOAD_LOGS
+BACKUP_SOFTWARES_SOURCE_CODE=$LOGS/BACKUP_SRC_CODE
 
 #NPB Variables
 NPBE=NPB3.4_Exec
@@ -92,7 +93,7 @@ OUTPUT_APPS_CHARAC=$LOGS/apps_charac.$START.csv
 OUTPUT_APPS_EXEC_IMB=$LOGS/imb_exec.$START.csv
 OUTPUT_APPS_CHARAC_IMB=$LOGS/imb_charac.$START.csv
 OUTPUT_INTEL_EXEC=$LOGS/intel.$START.csv
-PARTITION=(hype1 hype2 hype4 hype5)
+PARTITION=(hype2 hype3 hype4 hype5)
 
 #############################################################################################################
 #################################Step 2: Collect the System Information######################################
@@ -113,30 +114,33 @@ mkdir -p $BASE/LOGS/BACKUP
 mkdir -p $DOWNLOAD_LOGS
 mkdir -p $SOFTWARES 
 mkdir -p $TRACE
+mkdir -p $BACKUP_SOFTWARES_SOURCE_CODE
 
 ########################################Score-P#############################################
 cd $SOFTWARES
-wget -c https://www.vi-hps.org/cms/upload/packages/scorep/scorep-6.0.tar.gz -S -a $LOGS/scorep-6.0.download.log
-tar -zxf scorep-6.0.tar.gz; rm -f scorep-6.0.tar.gz 
+wget -c https://www.vi-hps.org/cms/upload/packages/scorep/scorep-6.0.tar.gz -S -a $DOWNLOAD_LOGS/scorep-6.0.download.log
+tar -zxf scorep-6.0.tar.gz; mv scorep-6.0.tar.gz $BACKUP_SOFTWARES_SOURCE_CODE
 cd scorep-6.0; ./configure --prefix=/tmp/install; make; make install
 
 ########################################Akypuera#############################################
 cd $SOFTWARES
-git clone --recursive --progress https://github.com/schnorr/akypuera.git 2> $LOGS/akypuera.download.log
-
+git clone --recursive --progress https://github.com/schnorr/akypuera.git 2> $DOWNLOAD_LOGS/akypuera.download.log
+cp -r akypuera $BACKUP_SOFTWARES_SOURCE_CODE
 mkdir -p akypuera/build; cd akypuera/build; 
 cmake -DOTF2=ON -DOTF2_PATH=/tmp/install/ -DCMAKE_INSTALL_PREFIX=/tmp/akypuera/ ..
 make; make install
 
 ########################################PajeNG#############################################
 cd $SOFTWARES
-git clone --recursive --progress https://github.com/schnorr/pajeng.git 2> $LOGS/pajeng.download.log
+git clone --recursive --progress https://github.com/schnorr/pajeng.git 2> $DOWNLOAD_LOGS/pajeng.download.log
+cp -r pajeng $BACKUP_SOFTWARES_SOURCE_CODE
 mkdir -p pajeng/build ; cd pajeng/build; cmake .. ; make install
 
 ########################################IMB#################################################
 #Exec
 cd $BENCHMARKS
-git clone --recursive --progress https://github.com/Roloff/ImbBench.git 2> $LOGS/ImbBench.download.log
+git clone --recursive --progress https://github.com/Roloff/ImbBench.git 2> $DOWNLOAD_LOGS/ImbBench.download.log
+cp -r ImbBench $BACKUP_SOFTWARES_SOURCE_CODE
 mv ImbBench Imbbench_Exec; cp -r Imbbench_Exec Imbbench_Charac
 cd $IMBE; mkdir bin; make
 
@@ -148,7 +152,8 @@ cd $IMBC; mkdir bin; make
 ########################################Alya################################################
 #Exec
 cd $BENCHMARKS
-git clone --recursive --progress https://gitlab.com/ammaliszewski/alya.git 2> $LOGS/Alya.download.log
+git clone --recursive --progress https://gitlab.com/ammaliszewski/alya.git 2> $DOWNLOAD_LOGS/Alya.download.log
+cp -r Alya $BACKUP_SOFTWARES_SOURCE_CODE
 mv alya Alya_Exec; cp -r Alya_Exec Alya_Charac
 cd $ALYAE_DIR
 cp configure.in/config_gfortran.in config.in
@@ -167,7 +172,8 @@ make metis4; make
 #######################################Ondes3d##############################################
 #Exec
 cd $BENCHMARKS
-git clone --recursive --progress https://bitbucket.org/fdupros/ondes3d.git 2> $LOGS/Ondes3d.download.log
+git clone --recursive --progress https://bitbucket.org/fdupros/ondes3d.git 2> $DOWNLOAD_LOGS/Ondes3d.download.log
+cp -r ondes3d $BACKUP_SOFTWARES_SOURCE_CODE
 mv ondes3d Ondes3de; cp -r Ondes3de Ondes3dc 
 sed -i 's,./../,./BENCHMARKS/Ondes3de/,g' $APP_CONFIG_ONDES3DE  
 sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/Ondes3de/LOGS,g' $APP_CONFIG_ONDES3DE_PRM
@@ -187,7 +193,8 @@ cp $APP_CONFIG_ONDES3DC $APP_SRC_ONDES3DC; cd $APP_SRC_ONDES3DC; make clean; mak
 #######################################NPB##################################################
 #Exec
 cd $BENCHMARKS
-wget -c https://www.nas.nasa.gov/assets/npb/NPB3.4.tar.gz -S -a $LOGS/NPB3.4.download.log
+wget -c https://www.nas.nasa.gov/assets/npb/NPB3.4.tar.gz -S -a $DOWNLOAD_LOGS/NPB3.4.download.log
+cp -r NPB3.4.tar.gz $BACKUP_SOFTWARES_SOURCE_CODE
 tar -xzf NPB3.4.tar.gz --transform="s/NPB3.4/NPB3.4_Exec/"; cp -r NPB3.4_Exec NPB3.4_Charac
 rm -rf NPB3.4.tar.gz
 
@@ -230,7 +237,8 @@ cd $APP_COMPILE_NPBC; make suite
 
 #################################Intel MPI Benchmarks#############################################
 cd $BENCHMARKS
-git clone --recursive --progress https://github.com/intel/mpi-benchmarks.git 2> $LOGS/mpi-benchmarks.download.log
+git clone --recursive --progress https://github.com/intel/mpi-benchmarks.git 2> $DOWNLOAD_LOGS/mpi-benchmarks.download.log
+cp -r mpi-benchmarks $BACKUP_SOFTWARES_SOURCE_CODE
 sed -i 's,mpiicc,mpicc,g' $INTEL_SOURCE
 sed -i 's,mpiicpc,mpicxx,g' $INTEL_SOURCE
 cd $INTEL; make IMB-MPI1
@@ -308,6 +316,7 @@ do
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
 
 	elif [[ $apps == charac_ondes3d ]]; then
+		runline+="-x SCOREP_TOTAL_MEMORY=16384000 "
 		runline+="$BENCHMARKS/$APP_BIN_ONDES3DC 0 "
 		runline+="2>> $LOGS/apps_std_error "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
