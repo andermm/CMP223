@@ -256,13 +256,13 @@ while IFS=, read -r number apps interface
 do
 
 #Define a single key
-	KEY="$name-$apps-$interface"
+	KEY="$number-$apps-$interface"
 	echo $KEY
 
 #Prepare the command for execution
 	runline=""
 	if [[ ${apps:0:4} == exec ]]; then
-		runline+="mpiexec --mca btl self, "
+		runline+="mpiexec --mca btl self,"
 	else
 		runline+="mpiexec "
 		runline+="-x SCOREP_EXPERIMENT_DIRECTORY=$TRACE/$apps.$interface "
@@ -283,7 +283,7 @@ do
 #Select app
 #Ondes3d, Alya, IMB
 	if [[ ${#apps} == 12 || ${#apps} == 14 || ${#apps} == 15 || 
-		${#apps} == 18 || ${#apps} == 11 || ${#apps} == 9 ]]; then
+		${#apps} == 18 || ${#apps} == 11 ]]; then
 		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
 #Intel
@@ -380,6 +380,8 @@ do
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/alya.out)"
 		TIME=`cat $BENCHMARKS/$ALYAE_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
+		$AKY_BUILD/./otf22paje $TRACE/$apps.$interface/traces.otf2 > $TRACE/$apps.$interface/$apps.$interface.trace
+		$PAJE_BUILD/./pj_dump $TRACE/$apps.$interface/$apps.$interface.trace | grep ^State > $TRACE/$apps.$interface/$apps$interface.csv
 
 	elif [[ $apps == charac_alya ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_ALYAE BENCHMARKS/$APP_ALYAC_TUFAN "
@@ -387,19 +389,27 @@ do
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/alya.out)"
 		TIME=`cat $BENCHMARKS/$ALYAC_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_CHARAC
+		$AKY_BUILD/./otf22paje $TRACE/$apps.$interface/traces.otf2 > $TRACE/$apps.$interface/$apps.$interface.trace
+		$PAJE_BUILD/./pj_dump $TRACE/$apps.$interface/$apps.$interface.trace | grep ^State > $TRACE/$apps.$interface/$apps$interface.csv
 
 	elif [[ ${#apps} == 7 ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_NPBE/${app:5:7}.x "
+		runline+="$BENCHMARKS/$APP_BIN_NPBE/${apps:5:7}.D.x "
 		runline+="2>> $LOGS/app_std_error "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/nas.out)"
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
+		$AKY_BUILD/./otf22paje $TRACE/$apps.$interface/traces.otf2 > $TRACE/$apps.$interface/$apps.$interface.trace
+		$PAJE_BUILD/./pj_dump $TRACE/$apps.$interface/$apps.$interface.trace | grep ^State > $TRACE/$apps.$interface/$apps$interface.csv
+
 	else
-		runline+="$BENCHMARKS/$APP_BIN_NPBC/${app:7:9}.x "
+		runline+="$BENCHMARKS/$APP_BIN_NPBC/${apps:7:9}.D.x "
 		runline+="2>> $LOGS/app_std_error "
 		runline+="&> >(tee -a $LOGS/BACKUP/$apps.$interface.log > /tmp/nas.out)"
 		TIME=`grep -i "Time in seconds" /tmp/nas.out | awk {'print $5'}`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_CHARAC
+		$AKY_BUILD/./otf22paje $TRACE/$apps.$interface/traces.otf2 > $TRACE/$apps.$interface/$apps.$interface.trace
+		$PAJE_BUILD/./pj_dump $TRACE/$apps.$interface/$apps.$interface.trace | grep ^State > $TRACE/$apps.$interface/$apps$interface.csv
+
 	fi	
 	echo "Done!"
 
