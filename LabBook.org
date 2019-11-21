@@ -192,7 +192,7 @@ Below is the R code which generate the CSV files.
 options(crayon.enabled=FALSE)
 library(DoE.base)
 library(tidyverse)
-#Exec
+
 set.seed(0)
   cmp223_exec <- fac.design(factor.names = list(
     apps = c("exec_bt", "exec_ep", "exec_cg", "exec_mg", "exec_lu",
@@ -203,94 +203,37 @@ set.seed(0)
     randomize=TRUE)
 
 cmp223_exec %>%
-  select(-Blocks) -> cmp223_exec
-write_csv(cmp223_exec, "R/exec.csv")
-read_csv("R/exec.csv") 
+  select(-Blocks) %>%
+  mutate(number=1:n()) -> cmp223_exec
+write_csv(cmp223_exec, "R/experimental_project_exec.csv")
+#+end_src
 
+#+RESULTS:
+: 
+: creating full factorial with 39 runs ...
+
+#+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 library(DoE.base)
 library(tidyverse)
 
-#Charac
 set.seed(0)
   cmp223_charac <- fac.design(factor.names = list(
-    apps = c("charac_bt", "charac_ep", "charac_cg", "charac_mg",
-             "charac_lu", "charac_sp", "charac_is", "charac_ft",
-             "charac_imb_memory", "charac_imb_CPU", "charac_ondes3d",
-             "charac_intel", "charac_alya"),
+    apps = c("charac_bt", "charac_ep", "charac_cg", "charac_mg", "charac_lu",
+             "charac_sp", "charac_is", "charac_ft", "charac_imb_memory",
+             "charac_imb_CPU", "charac_ondes3d", "charac_intel", "charac_alya"),
     interface = c("eth", "ib", "ipoib")),
     replications=1,
     randomize=TRUE)
 
-write_csv(cmp223_charac, "R/charac.csv")
-read_csv("R/charac.csv") 
+cmp223_charac %>%
+  mutate(number=1:n()) -> cmp223_charac
+write_csv(cmp223_charac, "R/experimental_project_charac.csv")
 #+end_src
 
 #+RESULTS:
-#+begin_example
-
-creating full factorial with 39 runs ...
-
-Parsed with column specification:
-cols(
-  apps = col_character(),
-  interface = col_character()
-)
-# A tibble: 1,170 x 2
-   apps         interface
-   <
-       <
-   
- 1 exec_bt      ib       
- 2 exec_mg      eth      
- 3 exec_bt      eth      
- 4 exec_ft      ipoib    
- 5 exec_imb_CPU ib       
- 6 exec_alya    ipoib    
- 7 exec_lu      ib       
- 8 exec_bt      ipoib    
- 9 exec_sp      ib       
-10 exec_ondes3d ipoib    
-# … with 1,160 more rows
-
-creating full factorial with 39 runs ...
-
-Parsed with column specification:
-cols(
-  apps = col_character(),
-  interface = col_character()
-)
-# A tibble: 39 x 2
-   apps           interface
-   <
-         <
-   
- 1 charac_bt      ib       
- 2 charac_mg      eth      
- 3 charac_bt      eth      
- 4 charac_ft      ipoib    
- 5 charac_imb_CPU ib       
- 6 charac_alya    ipoib    
- 7 charac_lu      ib       
- 8 charac_bt      ipoib    
- 9 charac_sp      ib       
-10 charac_ondes3d ipoib    
-# … with 29 more rows
-#+end_example
-
-The shell code block below is designed to merge the CSV files and
-re-randomize them again. The final output is ~experimental_project.csv~.
-#+begin_src shell :session *shell* :results output :exports both 
-cd R
-sed -i '1d' exec.csv charac.csv
-cat exec.csv charac.csv > new; rm *.csv
-shuf new > new.csv; rm new
-awk '{printf "%s,%s\n", NR,$0}' new.csv > experimental_project.csv; rm new.csv
-sed -i '1s/^/number,apps,interface\n/' experimental_project.csv
-#+end_src
-
-#+RESULTS:
-: bash: cd: R: No such file or directory
+: 
+: creating full factorial with 39 runs ...
 
 ** Bash Scripts Descriptions
 - [[SH/experiments_exec.sh][Experiments Execution]] - This is the most essential script for this
