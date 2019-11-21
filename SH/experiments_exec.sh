@@ -275,7 +275,7 @@ do
 	elif [[ $apps == exec_intel ]]; then
 		PROCS=2
 		runline+="-np $PROCS -machinefile $MACHINEFILE_INTEL "
-	elif [[ $app == exec_bt || $app == exec_sp ]]; then
+	elif [[ $apps == exec_bt || $apps == exec_sp ]]; then
 		PROCS=144							
 		runline+="-np $PROCS -machinefile $MACHINEFILE_SQUARE_ROOT "
 	else

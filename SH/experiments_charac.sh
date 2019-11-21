@@ -96,7 +96,7 @@ do
 	if [[ $apps == charac_ondes3d || $apps == charac_alya || $apps == charac_imb_memory || $apps == charac_imb_CPU ]]; then
 		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
-	elif [[ $app == charac_bt || $app == charac_sp ]]; then
+	elif [[ $apps == charac_bt || $apps == charac_sp ]]; then
 		PROCS=144							
 		runline+="-np $PROCS -machinefile $MACHINEFILE_SQUARE_ROOT "
 	else
