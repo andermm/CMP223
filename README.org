@@ -30,15 +30,15 @@ environment and references. Mode details on how to reproduce the experiments are
 - [[PLOTS]] - Here are the graphs of the analysis made with the execution
   time of the applications, as well as its characterization genereted
   with R statistical language.
-- [[R]] - This folder has the Design of Experiments output (made in the
+- [[R]] - This folder has the Design of Experiments outputs (made in the
   [[LabBook.org][LabBook.org]] → Experiment Project → Design of Experiments), called
-  [[R/experimental_project][experimental_project]], which is responsible for random
-  applications/network interface combinations using 30 execution
-  replications for normal execution and 1 replication for
-  characterization execution.
-- [[SH]] - Here are five bash scripts ([[SH/experiments_exec.sh][experiments_exec]], [[SH/central.sh][central]],
-  [[SH/software_install.sh][software_install]], and [[SH/sys_info_collect.sh][sys_info_collect]]) that are used to perform the
-  experiments and collect system information.
+  [[R/experimental_project_exec.csv][experimental_project_exec]] and [[experimental_project_charac.csv][exeperimental_project_charac]] which are
+  responsible for random applications/network interface combinations
+  using 30 execution replications for normal execution (exec) and 1
+  replication for characterization execution (charac).
+- [[SH]] - Here are six bash scripts ([[SH/experiments_exec.sh][experiments_exec]], [[SH/experiments_charac.sh][experiments_charac]],
+  [[SH/central.sh][central]], [[SH/software_install.sh][software_install]], and [[SH/sys_info_collect.sh][sys_info_collect]]) that are used to
+  perform the experiments and collect system information.
 - [[BENCHMARKS]] - This folder has all the five benchmarks (Alya,
   ImbBench, Intel MPI Benchmarks, Nas Parallel Benchmarks, and
   Ondes3d) subdivided into execution and characterization
