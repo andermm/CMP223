@@ -231,7 +231,7 @@ write_csv(cmp223_charac, "R/experimental_project_charac.csv")
 
 #+RESULTS:
 : 
-: creating full factorial with 39 runs ...
+: creating full factorial with 33 runs ...
 
 ** Bash Scripts Descriptions
 - [[SH/experiments_exec.sh][Experiments Execution]] - This is the most essential script for this

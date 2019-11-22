@@ -39,13 +39,13 @@ environment and references. Mode details on how to reproduce the experiments are
 - [[SH]] - Here are six bash scripts ([[SH/experiments_exec.sh][experiments_exec]], [[SH/experiments_charac.sh][experiments_charac]],
   [[SH/central.sh][central]], [[SH/software_install.sh][software_install]], and [[SH/sys_info_collect.sh][sys_info_collect]]) that are used to
   perform the experiments and collect system information.
-- [[BENCHMARKS]] - This folder has all the five benchmarks (Alya,
-  ImbBench, Intel MPI Benchmarks, Nas Parallel Benchmarks, and
-  Ondes3d) subdivided into execution and characterization
-  folders. This was made because the benchamarks execution used the
-  mpicc and/or mpifort compiler, and the benchmarks characterization
-  used the Score-P and the mpicc and/or mpifort compiler to generate
-  the binaries that are traced during its execution.
+- [[BENCHMARKS]] - This folder has all the four benchmarks (Alya,
+  ImbBench, Intel MPI Benchmarks and NAS Parallel Benchmarks)
+  subdivided into execution and characterization folders. This was
+  made because the benchamarks execution used the mpicc and/or mpifort
+  compiler, and the benchmarks characterization used the Score-P and
+  the mpicc and/or mpifort compiler to generate the binaries that are
+  traced during its execution.
 - [[SOFTWARE]] - Here are the three softwares ([[https://www.vi-hps.org/projects/score-p/][Score-P]], [[https://github.com/schnorr/akypuera][Akypuera]], and
   [[https://github.com/schnorr/pajeng][PajeNG]]) used in the tracing process.
 - [[LabBook.org]] - In this file is described the objective of this work,

@@ -27,21 +27,6 @@ NPBC=NPB3.4_Charac
 APP_CONFIG_NPBC=$NPBC/NPB3.4-MPI/config
 APP_COMPILE_NPBC=$NPBC/NPB3.4-MPI
 
-#Ondes3d Exec Variables
-ONDES3DE=Ondes3de
-APP_BIN_ONDES3DE=$ONDES3DE/ondes3d
-APP_TEST_ONDES3DE_SISHUAN=$ONDES3DE/SISHUAN-XML
-APP_CONFIG_ONDES3DE=$APP_TEST_ONDES3DE_SISHUAN/options.h
-APP_CONFIG_ONDES3DE_PRM=$APP_TEST_ONDES3DE_SISHUAN/sishuan.prm
-APP_SRC_ONDES3DE=$ONDES3DE/SRC
-
-#Ondes3d Charac Variables
-ONDES3DC=Ondes3dc
-APP_TEST_ONDES3DC_SISHUAN=$ONDES3DC/SISHUAN-XML
-APP_CONFIG_ONDES3DC=$APP_TEST_ONDES3DC_SISHUAN/options.h
-APP_CONFIG_ONDES3DC_PRM=$APP_TEST_ONDES3DC_SISHUAN/sishuan.prm
-APP_SRC_ONDES3DC=$ONDES3DC/SRC
-
 #Alya Exec Variables
 ALYAE=Alya_Exec
 ALYAE_DIR=$ALYAE/Executables/unix
@@ -154,27 +139,6 @@ sed -i 's,mpicc,/tmp/install/bin/./scorep mpicc,g' config.in
 ./configure -x nastin parall
 make metis4; make
 
-#######################################Ondes3d##############################################
-#Exec
-cd $BENCHMARKS
-git clone --recursive --progress https://bitbucket.org/fdupros/ondes3d.git 2> $LOGS_DOWNLOAD/Ondes3d.download.log
-cp -r ondes3d $LOGS_BACKUP_SRC_CODE
-mv ondes3d Ondes3de; cp -r Ondes3de Ondes3dc 
-sed -i 's,./../,./BENCHMARKS/Ondes3de/,g' $APP_CONFIG_ONDES3DE  
-sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/Ondes3de/LOGS,g' $APP_CONFIG_ONDES3DE_PRM
-mkdir -p $ONDES3DE/LOGS
-sed -i 's,./SISHUAN-XML,./BENCHMARKS/Ondes3de/SISHUAN-XML,g' $APP_CONFIG_ONDES3DE_PRM
-cp $APP_CONFIG_ONDES3DE $APP_SRC_ONDES3DE; cd $APP_SRC_ONDES3DE; make clean; make 
-
-#Charac
-cd $BENCHMARKS
-sed -i 's,./../,./BENCHMARKS/Ondes3dc/,g' $APP_CONFIG_ONDES3DC
-sed -i 's,./SISHUAN-OUTPUT,./BENCHMARKS/Ondes3dc/LOGS,g' $APP_CONFIG_ONDES3DC_PRM
-sed -i 's,mpicc,/tmp/install/bin/./scorep mpicc,g' $APP_SRC_ONDES3DC/Makefile
-mkdir -p $ONDES3DC/LOGS
-sed -i 's,./SISHUAN-XML,./BENCHMARKS/Ondes3dc/SISHUAN-XML,g' $APP_CONFIG_ONDES3DC_PRM
-cp $APP_CONFIG_ONDES3DC $APP_SRC_ONDES3DC; cd $APP_SRC_ONDES3DC; make clean; make 
-
 #######################################NPB##################################################
 #Exec
 cd $BENCHMARKS
@@ -268,8 +232,8 @@ do
 	fi
 
 #Select app
-#Ondes3d, Alya, IMB
-	if [[ $apps == exec_ondes3d || $apps == exec_alya || $apps == exec_imb_memory || $apps == exec_imb_CPU ]]; then
+##Alya, IMB
+	if [[ $apps == exec_alya || $apps == exec_imb_memory || $apps == exec_imb_CPU ]]; then
 		PROCS=160
 		runline+="-np $PROCS -machinefile $MACHINEFILE_FULL "
 	elif [[ $apps == exec_intel ]]; then
@@ -284,12 +248,7 @@ do
 	fi
 
 #Save the output according to the app
-	if [[ $apps == exec_ondes3d ]]; then
-		runline+="$BENCHMARKS/$APP_BIN_ONDES3DE 0 "
-		runline+="2>> $LOGS/apps_exec_std_error "
-		runline+="&> >(tee -a $LOGS/LOGS_BACKUP/$apps.$interface.log > /tmp/ondes3d.out)"
-	
-	elif [[ $apps == exec_intel ]]; then
+	if [[ $apps == exec_intel ]]; then
 		runline+="$BENCHMARKS/$APP_BIN_INTEL $APP_TEST_INTEL "
 		runline+="2>> $LOGS/apps_exec_std_error "
 		runline+="&> >(tee -a $LOGS/LOGS_BACKUP/$apps.$interface.log > /tmp/intel_mb.out)"
@@ -320,11 +279,7 @@ do
 	eval "$runline < /dev/null"
 	
 	#Save the output according to the app
-	if [[ $apps == exec_ondes3d ]]; then
-		TIME=`grep -i "Timing total" /tmp/ondes3d.out | awk {'print $3'} | head -n 1`
-		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
-	
-	elif [[ $apps == exec_intel ]]; then
+	if [[ $apps == exec_intel ]]; then
 		N=`tail -n +35 /tmp/intel_mb.out | awk {'print $1'} | grep -v '[^ 0.0-9.0]' | sed '/^[[:space:]]*$/d' | wc -l`
 		for (( i = 0; i < $N; i++ )); do
 			echo "$apps,$interface" >> /tmp/for.out
