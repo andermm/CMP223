@@ -182,8 +182,8 @@ Execution factors:
 Characterization factors:
 - Factor 1 - Apps: The applications name totaling 13 (~charac_bt~,
   ~charac_ep~, ~charac_cg~, ~charac_mg~, ~charac_lu~, ~charac_sp~, ~charac_is~,
-  ~charac_ft~, ~charac_imb_memory~, ~charac_imb_CPU~, ~charac_ondes3d~,
-  ~charac_intel~, and ~charac_alya~).
+  ~charac_ft~, ~charac_imb_memory~, ~charac_imb_CPU~, ~charac_ondes3d~, and
+  ~charac_alya~).
 - Factor 2 - Interface: The network interface name, totaling 3 (~eth~,
   ~ib~, ~ipoib~).
 
@@ -221,7 +221,7 @@ set.seed(0)
   cmp223_charac <- fac.design(factor.names = list(
     apps = c("charac_bt", "charac_ep", "charac_cg", "charac_mg", "charac_lu",
              "charac_sp", "charac_is", "charac_ft", "charac_imb_memory",
-             "charac_imb_CPU", "charac_ondes3d", "charac_intel", "charac_alya"),
+             "charac_imb_CPU", "charac_ondes3d", "charac_alya"),
     interface = c("eth", "ib", "ipoib")),
     replications=1,
     randomize=TRUE)
@@ -294,7 +294,7 @@ directory, set the server names in the PARTITION variable ([[SH/experiments_exec
 execution]] script line 81), adjust the machine files in [[MACHINE_FILES][Machine Files]]
 folder also with the name of the servers, adjust the number of
 processes (in [[SH/experiments_exec.sh][experiments execution]] script lines 273, 276, 279 and,
-282 and [[SH/experiments_charac.sh][experiments_characterization]] script lines 97, 100 and, 103) to
+282 and [[SH/experiments_charac.sh][experiments characterization]] script lines 97, 100 and, 103) to
 be used during the execution, respecting the power of two or square
 root requirements, and finally executes the [[SH/experiments_exec.sh][experiments execution]]
 script like a normal bash script.
