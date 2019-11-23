@@ -490,10 +490,10 @@ df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
 ggplot(df_apps[df_apps$apps %in% c("exec_bt", "exec_sp"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.2) +
+geom_bar(stat="identity", position = "dodge", width = 0.2, colour="black") +
 geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.2)) +
 theme_minimal() +
-scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = c(0.15, 0.85), 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
@@ -516,10 +516,10 @@ df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
    
 ggplot(df_apps[df_apps$apps %in% c("exec_ft"), ] , aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.11) +
+geom_bar(stat="identity", position = "dodge", width = 0.11, colour="black") +
 geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.11)) +
 theme_minimal() +
-scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = c(0.15, 0.85), 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
@@ -543,10 +543,10 @@ df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
 ggplot(df_apps[df_apps$apps %in% c("exec_ep", "exec_is", "exec_mg"), ] , aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.3) +
+geom_bar(stat="identity", position = "dodge", width = 0.3, colour="black") +
 geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.3)) +
 theme_minimal() +
-scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = c(0.15, 0.85), 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
@@ -569,10 +569,10 @@ df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
 ggplot(df_apps[df_apps$apps %in% c("exec_cg", "exec_lu"), ] , aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.2) +
+geom_bar(stat="identity", position = "dodge", width = 0.2, colour="black") +
 geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.2)) +
 theme_minimal() +
-scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = c(0.15, 0.85), 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
@@ -595,10 +595,10 @@ df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
 ggplot(df_apps[df_apps$apps %in% c("exec_alya"), ] , aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.15) +
+geom_bar(stat="identity", position = "dodge", width = 0.15, colour="black") +
 geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.15)) +
 theme_minimal() +
-scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = c(0.15, 0.85), 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
@@ -621,10 +621,10 @@ df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
 ggplot(df_apps[df_apps$apps %in% c("exec_imb_memory", "exec_imb_CPU"), ] , aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.18) +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.18), color="red") +
+geom_bar(stat="identity", position = "dodge", width = 0.18, colour="black") +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.18)) +
 theme_minimal() +
-scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = c(0.15, 0.85), 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
