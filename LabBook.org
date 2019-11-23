@@ -298,7 +298,7 @@ Next, four graphs are created according to the number of
 processes, in which BT and SP have 121, and according to a similar
 execution time range.
 
-*** Read CSV
+*** Read CSVsVVVss
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 library("tidyverse")
@@ -324,21 +324,24 @@ df_intel %>%
     std=sd(time),
     ste=std/sqrt(n()),
     N=n()) %>%
-  arrange(interface,bytes) -> df_intel
-df_intel
+  arrange(interface,bytes) -> df_intel_latency
+df_intel_latency
+
+df_intel %>%
+  filter(bytes != 0) %>%
+  group_by(interface,bytes) %>%
+  summarise(
+    average=mean(`mbytes-sec`),
+    std=sd(`mbytes-sec`),
+    ste=std/sqrt(n()),
+    N=n()) %>%
+  arrange(interface,bytes) -> df_intel_band
+df_intel_band
+
 #+end_src
 
 #+RESULTS:
 #+begin_example
-
-── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
-✔ ggplot2 3.2.1     ✔ purrr   0.3.2
-✔ tibble  2.1.3     ✔ dplyr   0.8.3
-✔ tidyr   1.0.0     ✔ stringr 1.4.0
-✔ readr   1.3.1     ✔ forcats 0.4.0
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
 
 Parsed with column specification:
 cols(
@@ -377,18 +380,39 @@ Error: object 'df_npb' not found
  9 eth         256    5.94 0.142  0.0821     3
 10 eth         512    5.98 0.0961 0.0555     3
 # … with 59 more rows
+
+# A tibble: 69 x 6
+# Groups:   interface [3]
+   interface bytes average    std    ste     N
+   <
+    <
+  <
+ <
+ <
+<int>
+ 1 eth           1   0.137 0.0321 0.0186     3
+ 2 eth           2   0.290 0.0794 0.0458     3
+ 3 eth           4   0.613 0.103  0.0593     3
+ 4 eth           8   1.38  0.0404 0.0233     3
+ 5 eth          16   2.73  0.0586 0.0338     3
+ 6 eth          32   5.55  0.0954 0.0551     3
+ 7 eth          64  11.0   0.147  0.0851     3
+ 8 eth         128  21.7   0.274  0.158      3
+ 9 eth         256  43.1   1.01   0.585      3
+10 eth         512  85.7   1.37   0.791      3
+# … with 59 more rows
 #+end_example
 
-*** PingPong
+*** PingPong - Latency
 #+begin_src R :results output graphics :file R/PLOTS/PingPong.png :exports both :width 600 :height 400 :session *R* 
-ggplot(df_intel,aes(x=bytes, y=average)) +
+ggplot(df_intel_latency,aes(x=bytes, y=average)) +
   geom_line(aes(col = interface), alpha = 1) +
   geom_point(aes(col = interface), size = 2.5) +
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .25) +
   theme_bw() +
   scale_y_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
-  ylab('Average Latency Time\n(uSec in Logscale)') +
+  ylab('Average Latency Time\n(Microseconds in Logscale)') +
   xlab('Message Size (Bytes)') +
   scale_colour_manual(values=c("#808080", "#000000", "#4F4F4F"), name="Network Interface",
                     breaks=c("ib", "ipoib", "eth"),
@@ -404,6 +428,32 @@ ggplot(df_intel,aes(x=bytes, y=average)) +
 
 #+RESULTS:
 [[file:R/PLOTS/PingPong.png]]
+
+*** PingPong - Bandwidth
+#+begin_src R :results output graphics :file R/PLOTS/Bandwidth.png :exports both :width 600 :height 400 :session *R* 
+ggplot(df_intel_band,aes(x=bytes, y=average)) +
+  geom_line(aes(col = interface), alpha = 1) +
+  geom_point(aes(col = interface), size = 2.5) +
+  geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .25) +
+  theme_bw() +
+  scale_y_log10(breaks=c(0.1, 1, 10, 100, 1000, 10000)) +
+  scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
+  ylab('Average Bandwidth\n(Megabytes per Second in Logscale)') +
+  xlab('Message Size (Bytes)') +
+  scale_colour_manual(values=c("#808080", "#000000", "#4F4F4F"), name="Network Interface",
+                    breaks=c("ib", "ipoib", "eth"),
+                    labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+  theme (legend.position = c(0.2, 0.8),
+         legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+         axis.title=element_text(size=16), 
+         legend.title = element_text(color = "black", size = 16),
+         legend.text = element_text(color = "black", size = 16),
+         axis.text.x = element_text(angle=55, hjust=1, size =14, color = "black"),
+         axis.text.y = element_text(size =14, color = "black"))
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/Bandwidth.png]]
 
 *** BT-SP(121 Procs)
 #+begin_src R :results output graphics :file PLOTS/BT_SP.png :exports both :width 600 :height 400 :session *R*
