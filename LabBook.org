@@ -302,7 +302,7 @@ execution time range.
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 library("tidyverse")
-df_intel <- read_csv("/home/anderson/Desktop/LOGS/intel.21-11-2019.14h59m33s.csv")
+df_intel <- read_csv("/home/anderson/Desktop/LOGS/intel.22-11-2019.16h44m04s.csv")
 df_apps <- read_csv("/home/anderson/Desktop/LOGS/apps_exec.22-11-2019.16h44m04s.csv")
     
 df_apps %>%
@@ -342,6 +342,15 @@ df_intel_band
 #+RESULTS:
 #+begin_example
 
+── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 3.2.1     ✔ purrr   0.3.2
+✔ tibble  2.1.3     ✔ dplyr   0.8.3
+✔ tidyr   1.0.0     ✔ stringr 1.4.0
+✔ readr   1.3.1     ✔ forcats 0.4.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+
 Parsed with column specification:
 cols(
   apps = col_character(),
@@ -358,8 +367,8 @@ cols(
   time = col_double()
 )
 
-# A tibble: 27 x 6
-# Groups:   apps [9]
+# A tibble: 33 x 6
+# Groups:   apps [11]
    apps      interface average   std    ste     N
    <
     <
@@ -368,16 +377,16 @@ cols(
  <
 <int>
  1 exec_alya eth         297.  1.55  0.547      8
- 2 exec_alya ib          254.  1.13  0.426      7
- 3 exec_alya ipoib       281.  1.01  0.382      7
- 4 exec_bt   eth         504.  1.56  0.550      8
- 5 exec_bt   ib          381.  2.73  1.03       7
- 6 exec_bt   ipoib       545.  2.82  1.07       7
- 7 exec_cg   eth         754.  2.90  1.09       7
- 8 exec_cg   ib          183.  1.19  0.451      7
- 9 exec_cg   ipoib       181.  1.74  0.658      7
-10 exec_ep   eth          37.3 0.152 0.0538     8
-# … with 17 more rows
+ 2 exec_alya ib          254.  1.06  0.373      8
+ 3 exec_alya ipoib       281.  1.07  0.356      9
+ 4 exec_bt   eth         504.  1.58  0.528      9
+ 5 exec_bt   ib          381.  2.41  0.804      9
+ 6 exec_bt   ipoib       545.  2.89  1.02       8
+ 7 exec_cg   eth         753.  2.90  0.966      9
+ 8 exec_cg   ib          183.  1.04  0.347      9
+ 9 exec_cg   ipoib       181.  1.69  0.565      9
+10 exec_ep   eth          37.3 0.143 0.0476     9
+# … with 23 more rows
 
 # A tibble: 69 x 6
 # Groups:   interface [3]
@@ -388,37 +397,37 @@ cols(
  <
  <
 <int>
- 1 eth           1    7.60 2.18   1.26       3
- 2 eth           2    7.34 2.33   1.35       3
- 3 eth           4    6.71 1.22   0.704      3
- 4 eth           8    5.82 0.173  0.1000     3
- 5 eth          16    5.85 0.123  0.0709     3
- 6 eth          32    5.77 0.100  0.0578     3
- 7 eth          64    5.79 0.0737 0.0426     3
- 8 eth         128    5.91 0.0764 0.0441     3
- 9 eth         256    5.94 0.142  0.0821     3
-10 eth         512    5.98 0.0961 0.0555     3
+ 1 eth           1    6.47 0.497  0.166      9
+ 2 eth           2    6.31 0.439  0.146      9
+ 3 eth           4    6.24 0.412  0.137      9
+ 4 eth           8    6.13 0.326  0.109      9
+ 5 eth          16    6.07 0.257  0.0855     9
+ 6 eth          32    6.01 0.187  0.0622     9
+ 7 eth          64    5.99 0.147  0.0490     9
+ 8 eth         128    5.98 0.131  0.0436     9
+ 9 eth         256    5.96 0.106  0.0352     9
+10 eth         512    5.99 0.0875 0.0292     9
 # … with 59 more rows
 
 # A tibble: 69 x 6
 # Groups:   interface [3]
-   interface bytes average    std    ste     N
+   interface bytes average    std     ste     N
    <
     <
   <
  <
- <
+  <
 <int>
- 1 eth           1   0.137 0.0321 0.0186     3
- 2 eth           2   0.290 0.0794 0.0458     3
- 3 eth           4   0.613 0.103  0.0593     3
- 4 eth           8   1.38  0.0404 0.0233     3
- 5 eth          16   2.73  0.0586 0.0338     3
- 6 eth          32   5.55  0.0954 0.0551     3
- 7 eth          64  11.0   0.147  0.0851     3
- 8 eth         128  21.7   0.274  0.158      3
- 9 eth         256  43.1   1.01   0.585      3
-10 eth         512  85.7   1.37   0.791      3
+ 1 eth           1   0.156 0.0101 0.00338     9
+ 2 eth           2   0.318 0.0222 0.00741     9
+ 3 eth           4   0.646 0.0403 0.0134      9
+ 4 eth           8   1.31  0.0665 0.0222      9
+ 5 eth          16   2.64  0.107  0.0358      9
+ 6 eth          32   5.33  0.161  0.0537      9
+ 7 eth          64  10.7   0.256  0.0853      9
+ 8 eth         128  21.4   0.468  0.156       9
+ 9 eth         256  42.9   0.768  0.256       9
+10 eth         512  85.4   1.23   0.409       9
 # … with 59 more rows
 #+end_example
 
@@ -581,7 +590,7 @@ theme(legend.position = c(0.15, 0.85),
 [[file:R/PLOTS/CG_LU.png]]
 *** Alya(160 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/Alya.png :exports both :width 600 :height 400 :session *R*  
-labs <- c("Alya")
+labs <- c("ALYA")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
@@ -605,4 +614,29 @@ theme(legend.position = c(0.15, 0.85),
 
 #+RESULTS:
 [[file:R/PLOTS/Alya.png]]
+*** IMB-Memory
+#+begin_src R :results output graphics :file R/PLOTS/IMB.png :exports both :width 600 :height 400 :session *R*  
+labs <- c("IMB_Memory", "IMB_CPU")
+df_apps$interface <- factor(df_apps$interface,
+levels=c("ib", "ipoib", "eth"))
 
+ggplot(df_apps[df_apps$apps %in% c("exec_imb_memory", "exec_imb_CPU"), ] , aes(x=apps, y=average, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.18) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.18), color="red") +
+theme_minimal() +
+scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+theme(legend.position = c(0.15, 0.85), 
+      legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+      axis.text.x = element_text(size =14, color = "black"),
+      axis.text.y = element_text(size =14, color = "black"),
+      axis.title=element_text(size=16), 
+      legend.title = element_text(color = "black", size = 16),
+      legend.text = element_text(color = "black", size = 16)) +
+      scale_x_discrete(labels=labs) +
+      labs(x="Application", y="Execution Time in Seconds")  
+
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/IMB.png]]
