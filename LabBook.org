@@ -501,55 +501,82 @@ theme(legend.position = c(0.15, 0.85),
 [[file:R/PLOTS/BT_SP.png]]
 
 *** FT(128 Procs)
-#+begin_src R :results output graphics :file PLOTS/FT.png :exports both :width 600 :height 400 :session *R* 
-   ggplot(newdf[newdf$apps %in% c("FT"), ] , aes(x=apps, y=mean, fill=interface)) +
-    geom_bar(stat="identity", position = "dodge", width = 0.1) +
-    geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.05, position = position_dodge(.1)) +
-    theme_minimal() +
-    scale_fill_manual(values=c("#006dff", "#5ca3ff", "#b2d3ff"), name="Network\nInterface",
-    breaks=c("ETH", "IB", "IPoIB"), labels=c("Ethernet", "InfiniBand", "IP-over-IB")) +
-    theme(legend.position = c(0.15, 0.85), legend.background = element_rect(color = "black",
-    size = 0.3, linetype = "solid"), axis.text=element_text(size=12), 
-    axis.title=element_text(size=12), legend.title = element_text(color = "black", size = 14),
-    legend.text = element_text(color = "black", size = 12)) +
-    labs(x="Application", y="Execution Time [s]")
+#+begin_src R :results output graphics :file R/PLOTS/FT.png :exports both :width 600 :height 400 :session *R* 
+labs <- c("FT")
+df_npb$interface <- factor(df_npb$interface,
+levels=c("ib", "ipoib", "eth"))
+   
+ggplot(df_npb[df_npb$apps %in% c("exec_ft"), ] , aes(x=apps, y=mean, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.11) +
+geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.05, position = position_dodge(.11)) +
+theme_minimal() +
+scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+theme(legend.position = c(0.15, 0.85), 
+      legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+      axis.text.x = element_text(size =14, color = "black"),
+      axis.text.y = element_text(size =14, color = "black"),
+      axis.title=element_text(size=16), 
+      legend.title = element_text(color = "black", size = 16),
+      legend.text = element_text(color = "black", size = 16)) +
+      scale_x_discrete(labels=labs) +
+      labs(x="Application", y="Execution Time in Seconds")  
+  
 #+end_src
 
 #+RESULTS:
-[[file:PLOTS/FT.png]]
+[[file:R/PLOTS/FT.png]]
 
 *** EP-IS-MG(128 Procs)
-#+begin_src R :results output graphics :file PLOTS/EP_IS_MG.png :exports both :width 600 :height 400 :session *R* 
-ggplot(newdf[newdf$apps %in% c("EP", "IS", "MG"), ] , aes(x=apps, y=mean, fill=interface)) +
-    geom_bar(stat="identity", position = "dodge", width = 0.3) +
-    geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.1, position = position_dodge(.3)) +
-    theme_minimal() +
-    scale_fill_manual(values=c("#006dff", "#5ca3ff", "#b2d3ff"), name="Network\nInterface",
-    breaks=c("ETH", "IB", "IPoIB"), labels=c("Ethernet", "InfiniBand", "IP-over-IB")) +
-    theme(legend.position = c(0.15, 0.85), legend.background = element_rect(color = "black",
-    size = 0.3, linetype = "solid"), axis.text=element_text(size=12), 
-    axis.title=element_text(size=12), legend.title = element_text(color = "black", size = 14),
-    legend.text = element_text(color = "black", size = 12)) +
-    labs(x="Application", y="Execution Time [s]")
+#+begin_src R :results output graphics :file R/PLOTS/EP_IS_MG.png :exports both :width 600 :height 400 :session *R* 
+labs <- c("EP", "IS", "MG")
+df_npb$interface <- factor(df_npb$interface,
+levels=c("ib", "ipoib", "eth"))
+
+ggplot(df_npb[df_npb$apps %in% c("exec_ep", "exec_is", "exec_mg"), ] , aes(x=apps, y=mean, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.3) +
+geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.05, position = position_dodge(.3)) +
+theme_minimal() +
+scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+theme(legend.position = c(0.15, 0.85), 
+      legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+      axis.text.x = element_text(size =14, color = "black"),
+      axis.text.y = element_text(size =14, color = "black"),
+      axis.title=element_text(size=16), 
+      legend.title = element_text(color = "black", size = 16),
+      legend.text = element_text(color = "black", size = 16)) +
+      scale_x_discrete(labels=labs) +
+      labs(x="Application", y="Execution Time in Seconds")  
+
 #+end_src
 
 #+RESULTS:
-[[file:PLOTS/EP_IS_MG.png]]
+[[file:R/PLOTS/EP_IS_MG.png]]
 *** CG-LU(128 Procs)
-#+begin_src R :results output graphics :file PLOTS/CG_LU.png :exports both :width 600 :height 400 :session *R* 
-ggplot(newdf[newdf$apps %in% c("CG", "LU"), ] , aes(x=apps, y=mean, fill=interface)) +
-    geom_bar(stat="identity", position = "dodge", width = 0.2) +
-    geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.05, position = position_dodge(.2)) +
-    theme_minimal() +
-    scale_fill_manual(values=c("#006dff", "#5ca3ff", "#b2d3ff"), name="Network\nInterface",
-    breaks=c("ETH", "IB", "IPoIB"), labels=c("Ethernet", "InfiniBand", "IP-over-IB")) +
-    theme(legend.position = c(0.9, 0.85), legend.background = element_rect(color = "black",
-    size = 0.3, linetype = "solid"), axis.text=element_text(size=12), 
-    axis.title=element_text(size=12), legend.title = element_text(color = "black", size = 14),
-    legend.text = element_text(color = "black", size = 12)) +
-    labs(x="Application", y="Execution Time [s]")
+#+begin_src R :results output graphics :file R/PLOTS/CG_LU.png :exports both :width 600 :height 400 :session *R* 
+labs <- c("CG", "LU")
+df_npb$interface <- factor(df_npb$interface,
+levels=c("ib", "ipoib", "eth"))
+
+ggplot(df_npb[df_npb$apps %in% c("exec_cg", "exec_lu"), ] , aes(x=apps, y=mean, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.2) +
+geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.05, position = position_dodge(.2)) +
+theme_minimal() +
+scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+theme(legend.position = c(0.15, 0.85), 
+      legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+      axis.text.x = element_text(size =14, color = "black"),
+      axis.text.y = element_text(size =14, color = "black"),
+      axis.title=element_text(size=16), 
+      legend.title = element_text(color = "black", size = 16),
+      legend.text = element_text(color = "black", size = 16)) +
+      scale_x_discrete(labels=labs) +
+      labs(x="Application", y="Execution Time in Seconds")  
+
 #+end_src
 
 #+RESULTS:
-[[file:PLOTS/CG_LU.png]]
+[[file:R/PLOTS/CG_LU.png]]
 
