@@ -310,7 +310,7 @@ df_apps %>%
       summarise(
         average=mean(time),
         std=sd(time),
-        ste=std/sqrt(n()),
+        ste=3*std/sqrt(n()),
         N=n()) %>%
       arrange(apps,interface) -> df_apps
 df_apps
@@ -321,7 +321,7 @@ df_intel %>%
   summarise(
     average=mean(time),
     std=sd(time),
-    ste=std/sqrt(n()),
+    ste=3*std/sqrt(n()),
     N=n()) %>%
   arrange(interface,bytes) -> df_intel_latency
 df_intel_latency
@@ -332,7 +332,7 @@ df_intel %>%
   summarise(
     average=mean(`mbytes-sec`),
     std=sd(`mbytes-sec`),
-    ste=std/sqrt(n()),
+    ste=3*std/sqrt(n()),
     N=n()) %>%
   arrange(interface,bytes) -> df_intel_band
 df_intel_band
@@ -369,23 +369,23 @@ cols(
 
 # A tibble: 33 x 6
 # Groups:   apps [11]
-   apps      interface average   std    ste     N
+   apps      interface average   std   ste     N
    <
     <
       <
 <
- <
+<
 <int>
- 1 exec_alya eth         297.  1.55  0.547      8
- 2 exec_alya ib          254.  1.06  0.373      8
- 3 exec_alya ipoib       281.  1.07  0.356      9
- 4 exec_bt   eth         504.  1.58  0.528      9
- 5 exec_bt   ib          381.  2.41  0.804      9
- 6 exec_bt   ipoib       545.  2.89  1.02       8
- 7 exec_cg   eth         753.  2.90  0.966      9
- 8 exec_cg   ib          183.  1.04  0.347      9
- 9 exec_cg   ipoib       181.  1.69  0.565      9
-10 exec_ep   eth          37.3 0.143 0.0476     9
+ 1 exec_alya eth         297.  1.55  1.64      8
+ 2 exec_alya ib          254.  1.06  1.12      8
+ 3 exec_alya ipoib       281.  1.07  1.07      9
+ 4 exec_bt   eth         504.  1.58  1.58      9
+ 5 exec_bt   ib          381.  2.41  2.41      9
+ 6 exec_bt   ipoib       545.  2.89  3.07      8
+ 7 exec_cg   eth         753.  2.90  2.90      9
+ 8 exec_cg   ib          183.  1.04  1.04      9
+ 9 exec_cg   ipoib       181.  1.69  1.69      9
+10 exec_ep   eth          37.3 0.143 0.143     9
 # … with 23 more rows
 
 # A tibble: 69 x 6
@@ -397,37 +397,37 @@ cols(
  <
  <
 <int>
- 1 eth           1    6.47 0.497  0.166      9
- 2 eth           2    6.31 0.439  0.146      9
- 3 eth           4    6.24 0.412  0.137      9
- 4 eth           8    6.13 0.326  0.109      9
- 5 eth          16    6.07 0.257  0.0855     9
- 6 eth          32    6.01 0.187  0.0622     9
- 7 eth          64    5.99 0.147  0.0490     9
- 8 eth         128    5.98 0.131  0.0436     9
- 9 eth         256    5.96 0.106  0.0352     9
-10 eth         512    5.99 0.0875 0.0292     9
+ 1 eth           1    6.47 0.497  0.497      9
+ 2 eth           2    6.31 0.439  0.439      9
+ 3 eth           4    6.24 0.412  0.412      9
+ 4 eth           8    6.13 0.326  0.326      9
+ 5 eth          16    6.07 0.257  0.257      9
+ 6 eth          32    6.01 0.187  0.187      9
+ 7 eth          64    5.99 0.147  0.147      9
+ 8 eth         128    5.98 0.131  0.131      9
+ 9 eth         256    5.96 0.106  0.106      9
+10 eth         512    5.99 0.0875 0.0875     9
 # … with 59 more rows
 
 # A tibble: 69 x 6
 # Groups:   interface [3]
-   interface bytes average    std     ste     N
+   interface bytes average    std    ste     N
    <
     <
   <
  <
-  <
+ <
 <int>
- 1 eth           1   0.156 0.0101 0.00338     9
- 2 eth           2   0.318 0.0222 0.00741     9
- 3 eth           4   0.646 0.0403 0.0134      9
- 4 eth           8   1.31  0.0665 0.0222      9
- 5 eth          16   2.64  0.107  0.0358      9
- 6 eth          32   5.33  0.161  0.0537      9
- 7 eth          64  10.7   0.256  0.0853      9
- 8 eth         128  21.4   0.468  0.156       9
- 9 eth         256  42.9   0.768  0.256       9
-10 eth         512  85.4   1.23   0.409       9
+ 1 eth           1   0.156 0.0101 0.0101     9
+ 2 eth           2   0.318 0.0222 0.0222     9
+ 3 eth           4   0.646 0.0403 0.0403     9
+ 4 eth           8   1.31  0.0665 0.0665     9
+ 5 eth          16   2.64  0.107  0.107      9
+ 6 eth          32   5.33  0.161  0.161      9
+ 7 eth          64  10.7   0.256  0.256      9
+ 8 eth         128  21.4   0.468  0.468      9
+ 9 eth         256  42.9   0.768  0.768      9
+10 eth         512  85.4   1.23   1.23       9
 # … with 59 more rows
 #+end_example
 
