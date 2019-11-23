@@ -281,36 +281,51 @@ characterization execution.
 To reproduce this evaluation in an environment without Slurm job
 scheduler, simply clone this repository into the server's HOME
 directory, set the server names in the PARTITION variable ([[SH/experiments_exec.sh][experiments
-execution]] script line 81), adjust the machine files in [[MACHINE_FILES][Machine Files]]
+execution]] script line 66), adjust the machine files in [[MACHINE_FILES][Machine Files]]
 folder also with the name of the servers, adjust the number of
-processes (in [[SH/experiments_exec.sh][experiments execution]] script lines 273, 276, 279 and,
-282 and [[SH/experiments_charac.sh][experiments characterization]] script lines 97, 100 and, 103) to
-be used during the execution, respecting the power of two or square
+processes (in [[SH/experiments_exec.sh][experiments execution]] script lines 237, 240, 243 and,
+246 and in [[SH/experiments_charac.sh][experiments characterization]] script lines 93, 96 and, 99)
+to be used during the execution, respecting the power of two or square
 root requirements, and finally executes the [[SH/experiments_exec.sh][experiments execution]]
 script like a normal bash script.
 
 ** Graphical Analysis 
 After the conclusion of the experiments, in this topic, graphs
-containing the execution time of the applications were created. The
-first step is to read the CSV file. Next, four graphs are created
-according to the number of processes, in which BT and SP have 121, and
-according to a similar execution time range 
+containing the execution time and the characterization of the
+applications were created. The first step is to read the CSV
+file. 
+Next, four graphs are created according to the number of
+processes, in which BT and SP have 121, and according to a similar
+execution time range.
+
 *** Read CSV
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 library("tidyverse")
-df <- read_csv("LOGS/npb.02-11-2019.21h37m51s.csv")
- df$apps=toupper(df$apps) 
+df_intel <- read_csv("/home/anderson/Desktop/LOGS/intel.21-11-2019.14h59m33s.csv")
+df_npb <- read_csv("LOGS/npb.02-11-2019.21h37m51s.csv")
+ df_npb$apps=toupper(df_npb$apps) 
     
-    df %>%
+    df_npb %>%
       group_by(apps,interface) %>%
       summarise(
         mean=mean(time),
         sd=sd(time),
         se=sd/sqrt(n()),
         N=n()) %>%
-      arrange(apps,interface) -> newdf
-newdf
+      arrange(apps,interface) -> df_npb
+df_npb
+
+df_intel %>%
+  filter(bytes != 0) %>%
+  group_by(interface,bytes) %>%
+  summarise(
+    average=mean(time),
+    std=sd(time),
+    ste=std/sqrt(n()),
+    N=n()) %>%
+  arrange(interface,bytes) -> df_intel
+df_intel
 #+end_src
 
 #+RESULTS:
@@ -329,30 +344,67 @@ Parsed with column specification:
 cols(
   apps = col_character(),
   interface = col_character(),
-  time = col_double()
+  bytes = col_double(),
+  time = col_double(),
+  `mbytes-sec` = col_double()
 )
 
-# A tibble: 24 x 6
-# Groups:   apps [8]
-   apps  interface   mean     sd     se     N
+Error: 'LOGS/npb.02-11-2019.21h37m51s.csv' does not exist in current working directory ('/home/anderson/Desktop/GIT/CMP223').
+
+Error in toupper(df_npb$apps) : object 'df_npb' not found
+
+Error in eval(lhs, parent, parent) : object 'df_npb' not found
+
+Error: object 'df_npb' not found
+
+# A tibble: 69 x 6
+# Groups:   interface [3]
+   interface bytes average    std    ste     N
    <
-<
-     <
+    <
+  <
  <
  <
 <int>
- 1 BT    ETH        558.   2.01  0.366     30
- 2 BT    IB         414.   1.22  0.222     30
- 3 BT    IPoIB      690.  10.5   1.92      30
- 4 CG    ETH        771.   3.49  0.637     30
- 5 CG    IB         184.   1.97  0.360     30
- 6 CG    IPoIB      182.   2.44  0.445     30
- 7 EP    ETH         37.5  1.14  0.209     30
- 8 EP    IB          37.3  0.222 0.0406    30
- 9 EP    IPoIB       38.2  1.91  0.349     30
-10 FT    ETH       1584.   0.726 0.132     30
-# … with 14 more rows
+ 1 eth           1    7.60 2.18   1.26       3
+ 2 eth           2    7.34 2.33   1.35       3
+ 3 eth           4    6.71 1.22   0.704      3
+ 4 eth           8    5.82 0.173  0.1000     3
+ 5 eth          16    5.85 0.123  0.0709     3
+ 6 eth          32    5.77 0.100  0.0578     3
+ 7 eth          64    5.79 0.0737 0.0426     3
+ 8 eth         128    5.91 0.0764 0.0441     3
+ 9 eth         256    5.94 0.142  0.0821     3
+10 eth         512    5.98 0.0961 0.0555     3
+# … with 59 more rows
 #+end_example
+
+*** PingPong
+#+begin_src R :results output graphics :file R/PLOTS/PingPong.png :exports both :width 600 :height 400 :session *R* 
+ggplot(df_intel,aes(x=bytes, y=average)) +
+  geom_line(aes(col = interface), alpha = 1) +
+  geom_point(aes(col = interface), size = 2.5) +
+  geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .25) +
+  theme_bw() +
+  scale_y_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)) +
+  scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
+  ylab('Average Latency Time\n(uSec in Logscale)') +
+  xlab('Message Size (Bytes)') +
+  scale_colour_manual(values=c("#808080", "#000000", "#4F4F4F"), name="Network Interface",
+                    breaks=c("ib", "ipoib", "eth"),
+                    labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+  theme (legend.position = c(0.2, 0.8),
+         legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+         axis.title=element_text(size=16), 
+         legend.title = element_text(color = "black", size = 16),
+         legend.text = element_text(color = "black", size = 16),
+         axis.text.x = element_text(angle=55, hjust=1, size =14, color = "black"),
+         axis.text.y = element_text(size =14, color = "black"))
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/PingPong.png]]
+
 *** BT-SP(121 Procs)
 #+begin_src R :results output graphics :file PLOTS/BT_SP.png :exports both :width 600 :height 400 :session *R*
 ggplot(newdf[newdf$apps %in% c("BT", "SP"), ] , aes(x=apps, y=mean, fill=interface)) +
