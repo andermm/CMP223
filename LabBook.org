@@ -303,17 +303,17 @@ execution time range.
 options(crayon.enabled=FALSE)
 library("tidyverse")
 df_intel <- read_csv("/home/anderson/Desktop/LOGS/intel.21-11-2019.14h59m33s.csv")
-df_npb <- read_csv("/home/anderson/Desktop/LOGS/apps_exec.22-11-2019.16h44m04s.csv")
+df_apps <- read_csv("/home/anderson/Desktop/LOGS/apps_exec.22-11-2019.16h44m04s.csv")
     
-    df_npb %>%
+df_apps %>%
       group_by(apps,interface) %>%
       summarise(
-        mean=mean(time),
-        sd=sd(time),
-        se=sd/sqrt(n()),
+        average=mean(time),
+        std=sd(time),
+        ste=std/sqrt(n()),
         N=n()) %>%
-      arrange(apps,interface) -> df_npb
-df_npb
+      arrange(apps,interface) -> df_apps
+df_apps
 
 df_intel %>%
   filter(bytes != 0) %>%
@@ -360,23 +360,23 @@ cols(
 
 # A tibble: 27 x 6
 # Groups:   apps [9]
-   apps      interface  mean     sd     se     N
+   apps      interface average   std    ste     N
    <
     <
-    <
- <
+      <
+<
  <
 <int>
- 1 exec_alya eth       298.  2.06   1.19       3
- 2 exec_alya ib        253.  0.134  0.0950     2
- 3 exec_alya ipoib     280.  0.523  0.302      3
- 4 exec_bt   eth       505.  0.685  0.396      3
- 5 exec_bt   ib        382.  2.18   1.26       3
- 6 exec_bt   ipoib     544.  0.985  0.569      3
- 7 exec_cg   eth       753.  0.789  0.456      3
- 8 exec_cg   ib        183.  2.01   1.42       2
- 9 exec_cg   ipoib     181.  1.45   0.838      3
-10 exec_ep   eth        37.2 0.0586 0.0338     3
+ 1 exec_alya eth         297.  1.55  0.547      8
+ 2 exec_alya ib          254.  1.13  0.426      7
+ 3 exec_alya ipoib       281.  1.01  0.382      7
+ 4 exec_bt   eth         504.  1.56  0.550      8
+ 5 exec_bt   ib          381.  2.73  1.03       7
+ 6 exec_bt   ipoib       545.  2.82  1.07       7
+ 7 exec_cg   eth         754.  2.90  1.09       7
+ 8 exec_cg   ib          183.  1.19  0.451      7
+ 9 exec_cg   ipoib       181.  1.74  0.658      7
+10 exec_ep   eth          37.3 0.152 0.0538     8
 # … with 17 more rows
 
 # A tibble: 69 x 6
@@ -477,12 +477,12 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
 *** BT-SP(144 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/BT_SP.png :exports both :width 600 :height 400 :session *R*
 labs <- c("BT", "SP")
-df_npb$interface <- factor(df_npb$interface,
+df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
-ggplot(df_npb[df_npb$apps %in% c("exec_bt", "exec_sp"), ] , aes(x=reorder(apps, +mean), y=mean, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_bt", "exec_sp"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.2) +
-geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.05, position = position_dodge(.2)) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.2)) +
 theme_minimal() +
 scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
@@ -503,12 +503,12 @@ theme(legend.position = c(0.15, 0.85),
 *** FT(128 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/FT.png :exports both :width 600 :height 400 :session *R* 
 labs <- c("FT")
-df_npb$interface <- factor(df_npb$interface,
+df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
    
-ggplot(df_npb[df_npb$apps %in% c("exec_ft"), ] , aes(x=apps, y=mean, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_ft"), ] , aes(x=apps, y=average, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.11) +
-geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.05, position = position_dodge(.11)) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.11)) +
 theme_minimal() +
 scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
@@ -530,12 +530,12 @@ theme(legend.position = c(0.15, 0.85),
 *** EP-IS-MG(128 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/EP_IS_MG.png :exports both :width 600 :height 400 :session *R* 
 labs <- c("EP", "IS", "MG")
-df_npb$interface <- factor(df_npb$interface,
+df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
-ggplot(df_npb[df_npb$apps %in% c("exec_ep", "exec_is", "exec_mg"), ] , aes(x=apps, y=mean, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_ep", "exec_is", "exec_mg"), ] , aes(x=apps, y=average, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.3) +
-geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.05, position = position_dodge(.3)) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.3)) +
 theme_minimal() +
 scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
@@ -556,12 +556,12 @@ theme(legend.position = c(0.15, 0.85),
 *** CG-LU(128 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/CG_LU.png :exports both :width 600 :height 400 :session *R* 
 labs <- c("CG", "LU")
-df_npb$interface <- factor(df_npb$interface,
+df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
-ggplot(df_npb[df_npb$apps %in% c("exec_cg", "exec_lu"), ] , aes(x=apps, y=mean, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_cg", "exec_lu"), ] , aes(x=apps, y=average, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.2) +
-geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.05, position = position_dodge(.2)) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.2)) +
 theme_minimal() +
 scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
@@ -579,4 +579,30 @@ theme(legend.position = c(0.15, 0.85),
 
 #+RESULTS:
 [[file:R/PLOTS/CG_LU.png]]
+*** Alya(160 Procs)
+#+begin_src R :results output graphics :file R/PLOTS/Alya.png :exports both :width 600 :height 400 :session *R*  
+labs <- c("Alya")
+df_apps$interface <- factor(df_apps$interface,
+levels=c("ib", "ipoib", "eth"))
+
+ggplot(df_apps[df_apps$apps %in% c("exec_alya"), ] , aes(x=apps, y=average, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.15) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.15)) +
+theme_minimal() +
+scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+theme(legend.position = c(0.15, 0.85), 
+      legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+      axis.text.x = element_text(size =14, color = "black"),
+      axis.text.y = element_text(size =14, color = "black"),
+      axis.title=element_text(size=16), 
+      legend.title = element_text(color = "black", size = 16),
+      legend.text = element_text(color = "black", size = 16)) +
+      scale_x_discrete(labels=labs) +
+      labs(x="Application", y="Execution Time in Seconds")  
+
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/Alya.png]]
 

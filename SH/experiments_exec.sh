@@ -61,7 +61,6 @@ APP_TEST_INTEL=PingPong
 #Other Variables
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
 OUTPUT_APPS_EXEC=$LOGS/apps_exec.$START.csv
-OUTPUT_APPS_EXEC_IMB=$LOGS/imb_exec.$START.csv
 OUTPUT_INTEL_EXEC=$LOGS/intel.$START.csv
 PARTITION=(hype2 hype3 hype4 hype5)
 
@@ -292,19 +291,13 @@ do
     	rm /tmp/for.out; rm /tmp/BYTES; rm /tmp/TIME; rm /tmp/Mbytes
 
 	elif [[ $apps == exec_imb_memory ]]; then
-		for (( i = 0; i < 160; i++ )); do
-			echo "$apps,$interface" >> /tmp/imb_tmp.out
-		done
-		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
-		rm /tmp/imb_tmp.out
+		TIME=`cat /tmp/imb.out | awk 'NR >159' | awk {'print $8'}`
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
 
 	elif [[ $apps == exec_imb_CPU ]]; then
-		for (( i = 0; i < 160; i++ )); do
-			echo "$apps,$interface" >> /tmp/imb_tmp.out
-		done
-		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_EXEC_IMB
-		rm /tmp/imb_tmp.out
-
+		TIME=`cat /tmp/imb.out | awk 'NR >159' | awk {'print $8'}`
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
+		
 	elif [[ $apps == exec_alya ]]; then
 		TIME=`cat $BENCHMARKS/$ALYAE_LOG | grep "TOTAL CPU TIME" | awk '{print $4}'`
 		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_EXEC
@@ -317,7 +310,6 @@ do
 	echo "Done!"
 done
 sed -i '1s/^/apps,interface,time\n/' $OUTPUT_APPS_EXEC
-sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_EXEC_IMB
 sed -i '1s/^/apps,interface,bytes,time,mbytes-sec\n/' $OUTPUT_INTEL_EXEC
 
 #############################################################################################################

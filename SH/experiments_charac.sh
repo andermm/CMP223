@@ -42,7 +42,6 @@ PAJE_BUILD=$SOFTWARES/pajeng/build
 #Other Variables
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
 OUTPUT_APPS_CHARAC=$LOGS/apps_charac.$START.csv
-OUTPUT_APPS_CHARAC_IMB=$LOGS/imb_charac.$START.csv
 
 #############################################################################################################
 #######################Step 2: Define the Machine Files and Experimental Project#############################
@@ -128,20 +127,14 @@ do
 	
 	#Save the output according to the app
 	if [[ $apps == charac_imb_memory ]]; then
-		for (( i = 0; i < 160; i++ )); do
-			echo "$apps,$interface" >> /tmp/imb_tmp.out
-		done
-		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_CHARAC_IMB
-		rm /tmp/imb_tmp.out
+		TIME=`cat /tmp/imb.out | awk 'NR >159' | awk {'print $8'}`
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_CHARAC
 		$AKY_BUILD/./otf22paje $TRACE/$apps.$interface/traces.otf2 > $TRACE/$apps.$interface/$apps.$interface.trace
 		$PAJE_BUILD/./pj_dump $TRACE/$apps.$interface/$apps.$interface.trace | grep ^State > $TRACE/$apps.$interface/$apps.$interface.csv
 
 	elif [[ $apps == charac_imb_CPU ]]; then
-		for (( i = 0; i < 160; i++ )); do
-			echo "$apps,$interface" >> /tmp/imb_tmp.out
-		done
-		paste -d, /tmp/imb_tmp.out <(awk '{print $8","$4}' /tmp/imb.out) >> $OUTPUT_APPS_CHARAC_IMB
-		rm /tmp/imb_tmp.out
+		TIME=`cat /tmp/imb.out | awk 'NR >159' | awk {'print $8'}`
+		echo "$apps,$interface,$TIME" >> $OUTPUT_APPS_CHARAC
 		$AKY_BUILD/./otf22paje $TRACE/$apps.$interface/traces.otf2 > $TRACE/$apps.$interface/$apps.$interface.trace
 		$PAJE_BUILD/./pj_dump $TRACE/$apps.$interface/$apps.$interface.trace | grep ^State > $TRACE/$apps.$interface/$apps.$interface.csv
 
@@ -161,5 +154,4 @@ do
 
 done
 sed -i '1s/^/apps,interface,time\n/' $OUTPUT_APPS_CHARAC
-sed -i '1s/^/apps,interface,time,rank\n/' $OUTPUT_APPS_CHARAC_IMB
 exit
