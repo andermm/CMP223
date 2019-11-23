@@ -298,13 +298,12 @@ Next, four graphs are created according to the number of
 processes, in which BT and SP have 121, and according to a similar
 execution time range.
 
-*** Read CSVsVVVss
+*** Read CSVs
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 library("tidyverse")
 df_intel <- read_csv("/home/anderson/Desktop/LOGS/intel.21-11-2019.14h59m33s.csv")
-df_npb <- read_csv("LOGS/npb.02-11-2019.21h37m51s.csv")
- df_npb$apps=toupper(df_npb$apps) 
+df_npb <- read_csv("/home/anderson/Desktop/LOGS/apps_exec.22-11-2019.16h44m04s.csv")
     
     df_npb %>%
       group_by(apps,interface) %>%
@@ -352,13 +351,33 @@ cols(
   `mbytes-sec` = col_double()
 )
 
-Error: 'LOGS/npb.02-11-2019.21h37m51s.csv' does not exist in current working directory ('/home/anderson/Desktop/GIT/CMP223').
+Parsed with column specification:
+cols(
+  apps = col_character(),
+  interface = col_character(),
+  time = col_double()
+)
 
-Error in toupper(df_npb$apps) : object 'df_npb' not found
-
-Error in eval(lhs, parent, parent) : object 'df_npb' not found
-
-Error: object 'df_npb' not found
+# A tibble: 27 x 6
+# Groups:   apps [9]
+   apps      interface  mean     sd     se     N
+   <
+    <
+    <
+ <
+ <
+<int>
+ 1 exec_alya eth       298.  2.06   1.19       3
+ 2 exec_alya ib        253.  0.134  0.0950     2
+ 3 exec_alya ipoib     280.  0.523  0.302      3
+ 4 exec_bt   eth       505.  0.685  0.396      3
+ 5 exec_bt   ib        382.  2.18   1.26       3
+ 6 exec_bt   ipoib     544.  0.985  0.569      3
+ 7 exec_cg   eth       753.  0.789  0.456      3
+ 8 exec_cg   ib        183.  2.01   1.42       2
+ 9 exec_cg   ipoib     181.  1.45   0.838      3
+10 exec_ep   eth        37.2 0.0586 0.0338     3
+# … with 17 more rows
 
 # A tibble: 69 x 6
 # Groups:   interface [3]
@@ -455,23 +474,31 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
 #+RESULTS:
 [[file:R/PLOTS/Bandwidth.png]]
 
-*** BT-SP(121 Procs)
-#+begin_src R :results output graphics :file PLOTS/BT_SP.png :exports both :width 600 :height 400 :session *R*
-ggplot(newdf[newdf$apps %in% c("BT", "SP"), ] , aes(x=apps, y=mean, fill=interface)) +
-    geom_bar(stat="identity", position = "dodge", width = 0.2) +
-    geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=.05, position = position_dodge(.2)) +
-    theme_minimal() +
-    scale_fill_manual(values=c("#006dff", "#5ca3ff", "#b2d3ff"), name="Network\nInterface",
-    breaks=c("ETH", "IB", "IPoIB"), labels=c("Ethernet", "InfiniBand", "IP-over-IB")) +
-    theme(legend.position = c(0.15, 0.85), legend.background = element_rect(color = "black",
-    size = 0.3, linetype = "solid"), axis.text=element_text(size=12), 
-    axis.title=element_text(size=12), legend.title = element_text(color = "black", size = 14),
-    legend.text = element_text(color = "black", size = 12)) +
-    labs(x="Application", y="Execution Time [s]")
+*** BT-SP(144 Procs)
+#+begin_src R :results output graphics :file R/PLOTS/BT_SP.png :exports both :width 600 :height 400 :session *R*
+labs <- c("BT", "SP")
+df_npb$interface <- factor(df_npb$interface,
+levels=c("ib", "ipoib", "eth"))
+
+ggplot(df_npb[df_npb$apps %in% c("exec_bt", "exec_sp"), ] , aes(x=reorder(apps, +mean), y=mean, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.2) +
+geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.05, position = position_dodge(.2)) +
+theme_minimal() +
+scale_fill_manual(values=c("#000000", "#4F4F4F", "#808080"), name="Network Interface",
+breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+theme(legend.position = c(0.15, 0.85), 
+      legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+      axis.text.x = element_text(size =14, color = "black"),
+      axis.text.y = element_text(size =14, color = "black"),
+      axis.title=element_text(size=16), 
+      legend.title = element_text(color = "black", size = 16),
+      legend.text = element_text(color = "black", size = 16)) +
+      scale_x_discrete(labels=labs) +
+      labs(x="Application", y="Execution Time in Seconds")
 #+end_src
 
 #+RESULTS:
-[[file:PLOTS/BT_SP.png]]
+[[file:R/PLOTS/BT_SP.png]]
 
 *** FT(128 Procs)
 #+begin_src R :results output graphics :file PLOTS/FT.png :exports both :width 600 :height 400 :session *R* 
