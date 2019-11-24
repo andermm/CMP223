@@ -490,7 +490,7 @@ levels=c("ib", "ipoib", "eth"))
 
 ggplot(df_apps[df_apps$apps %in% c("exec_bt", "exec_sp"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.3) +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.3)) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.1, position = position_dodge(.3)) +
 theme_bw() +
 scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE"),
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
