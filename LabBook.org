@@ -430,7 +430,6 @@ cols(
 10 eth         512  85.3   1.25    1.18       10
 # … with 59 more rows
 #+end_example
-
 *** PingPong - Latency
 #+begin_src R :results output graphics :file R/PLOTS/PingPong.png :exports both :width 600 :height 400 :session *R* 
 ggplot(df_intel_latency,aes(x=bytes, y=average)) +
@@ -485,22 +484,22 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
 
 *** BT-SP(144 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/BT_SP.png :exports both :width 600 :height 400 :session *R*
-labs <- c("BT", "SP")
+labs <- c(exec_bt ="BT", exec_sp="SP")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
 ggplot(df_apps[df_apps$apps %in% c("exec_bt", "exec_sp"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.25, colour="black") +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.25)) +
+geom_bar(stat="identity", position = "dodge", width = 0.3) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.3)) +
 theme_bw() +
-scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
+scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE"),
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-theme(legend.position = c(0.15, 0.85), 
+theme(legend.position = "top", 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
       axis.text.x = element_text(size =14, color = "black"),
       axis.text.y = element_text(size =14, color = "black"),
       axis.title=element_text(size=16), 
-      legend.title = element_text(color = "black", size = 16),
+      legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 16)) +
       scale_x_discrete(labels=labs) +
       labs(x="Application", y="Execution Time in Seconds") + 
@@ -512,33 +511,6 @@ theme(legend.position = c(0.15, 0.85),
 
 #+RESULTS:
 [[file:R/PLOTS/BT_SP.png]]
-
-*** FT(128 Procs)
-#+begin_src R :results output graphics :file R/PLOTS/FT.png :exports both :width 600 :height 400 :session *R* 
-labs <- c("FT")
-df_apps$interface <- factor(df_apps$interface,
-levels=c("ib", "ipoib", "eth"))
-   
-ggplot(df_apps[df_apps$apps %in% c("exec_ft"), ] , aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.11, colour="black") +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.11)) +
-theme_minimal() +
-scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
-breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-theme(legend.position = c(0.15, 0.85), 
-      legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
-      axis.text.x = element_text(size =14, color = "black"),
-      axis.text.y = element_text(size =14, color = "black"),
-      axis.title=element_text(size=16), 
-      legend.title = element_text(color = "black", size = 16),
-      legend.text = element_text(color = "black", size = 16)) +
-      scale_x_discrete(labels=labs) +
-      labs(x="Application", y="Execution Time in Seconds")  
-  
-#+end_src
-
-#+RESULTS:
-[[file:R/PLOTS/FT.png]]
 
 *** EP-IS-MG(128 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/EP_IS_MG.png :exports both :width 600 :height 400 :session *R* 
@@ -570,81 +542,63 @@ theme(legend.position = "top",
 
 #+RESULTS:
 [[file:R/PLOTS/EP_IS_MG.png]]
-*** CG-LU(128 Procs)
-#+begin_src R :results output graphics :file R/PLOTS/CG_LU.png :exports both :width 600 :height 400 :session *R* 
-labs <- c("CG", "LU")
+*** CG-LU-FT(128 Procs)
+#+begin_src R :results output graphics :file R/PLOTS/CG_LU_FT.png :exports both :width 600 :height 400 :session *R* 
+labs <- c(exec_cg="CG",exec_lu="LU", exec_ft="FT")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
 ggplot(df_apps[df_apps$apps %in% c("exec_cg", "exec_lu", "exec_ft"), ] , aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.2, colour="black") +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.2)) +
+geom_bar(stat="identity", position = "dodge", width = 0.4) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.4)) +
 theme_minimal() +
-scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
+scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE"),
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-theme(legend.position = c(0.15, 0.85), 
+theme(legend.position = "top", 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
       axis.text.x = element_text(size =14, color = "black"),
       axis.text.y = element_text(size =14, color = "black"),
       axis.title=element_text(size=16), 
-      legend.title = element_text(color = "black", size = 16),
+      legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 16)) +
       scale_x_discrete(labels=labs) +
-      labs(x="Application", y="Execution Time in Seconds")  
+      labs(x="Application", y="Execution Time in Seconds") +
+      facet_wrap(.~apps, scales="free") +
+      theme(strip.background = element_blank(),
+            strip.text.x = element_blank())
+     
 
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/CG_LU.png]]
-*** Alya(160 Procs)
-#+begin_src R :results output graphics :file R/PLOTS/Alya.png :exports both :width 600 :height 400 :session *R*  
-labs <- c("ALYA")
+[[file:R/PLOTS/CG_LU_FT.png]]
+*** Alya-IMB(160 Procs)
+#+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.png :exports both :width 600 :height 400 :session *R*  
+labs <- c(exec_alya="ALYA", exec_imb_memory="IMB_Memory", exec_imb_CPU="IMB_CPU")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
-ggplot(df_apps[df_apps$apps %in% c("exec_alya"), ] , aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.15, colour="black") +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.15)) +
-theme_minimal() +
-scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
+ggplot(df_apps[df_apps$apps %in% c("exec_alya", "exec_imb_memory", "exec_imb_CPU"), ] , aes(x=apps, y=average, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.5) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.5)) +
+theme_bw() +
+scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE"),
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-theme(legend.position = c(0.15, 0.85), 
+theme(legend.position = "top", 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
       axis.text.x = element_text(size =14, color = "black"),
       axis.text.y = element_text(size =14, color = "black"),
       axis.title=element_text(size=16), 
-      legend.title = element_text(color = "black", size = 16),
+      legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 16)) +
       scale_x_discrete(labels=labs) +
-      labs(x="Application", y="Execution Time in Seconds")  
+      labs(x="Application", y="Execution Time in Seconds") +
+      facet_wrap(.~apps, scales="free")+
+      theme(strip.background = element_blank(),
+            strip.text.x = element_blank())
+     
 
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/Alya.png]]
-*** IMB-Memory
-#+begin_src R :results output graphics :file R/PLOTS/IMB.png :exports both :width 600 :height 400 :session *R*  
-labs <- c("IMB_Memory", "IMB_CPU")
-df_apps$interface <- factor(df_apps$interface,
-levels=c("ib", "ipoib", "eth"))
-
-ggplot(df_apps[df_apps$apps %in% c("exec_imb_memory", "exec_imb_CPU"), ] , aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.18, colour="black") +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.05, position = position_dodge(.18)) +
-theme_minimal() +
-scale_fill_manual(values=c("#000000", "#888888", "#FFFFFF"), name="Network Interface",
-breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-theme(legend.position = c(0.15, 0.85), 
-      legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
-      axis.text.x = element_text(size =14, color = "black"),
-      axis.text.y = element_text(size =14, color = "black"),
-      axis.title=element_text(size=16), 
-      legend.title = element_text(color = "black", size = 16),
-      legend.text = element_text(color = "black", size = 16)) +
-      scale_x_discrete(labels=labs) +
-      labs(x="Application", y="Execution Time in Seconds")  
-
-#+end_src
-
-#+RESULTS:
-[[file:R/PLOTS/IMB.png]]
+[[file:R/PLOTS/Alya-IMB.png]]
