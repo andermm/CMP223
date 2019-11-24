@@ -441,7 +441,7 @@ ggplot(df_intel_latency,aes(x=bytes, y=average)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
   ylab('Average Latency Time\n(Microseconds in Logscale)') +
   xlab('Message Size (Bytes)') +
-  scale_colour_manual(values=c("#808080", "#000000", "#4F4F4F"), name="Network Interface",
+  scale_colour_manual(values=c( "#BEBEBE", "#303030", "#888888"), name="Network Interface",
                     breaks=c("ib", "ipoib", "eth"),
                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
   theme (legend.position = c(0.2, 0.8),
@@ -467,7 +467,7 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
   ylab('Average Bandwidth\n(Megabytes per Second in Logscale)') +
   xlab('Message Size (Bytes)') +
-  scale_colour_manual(values=c("#808080", "#000000", "#4F4F4F"), name="Network Interface",
+  scale_colour_manual(values=c( "#BEBEBE", "#303030", "#888888"), name="Network Interface",
                     breaks=c("ib", "ipoib", "eth"),
                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
   theme (legend.position = c(0.2, 0.8),
