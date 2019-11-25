@@ -342,15 +342,6 @@ df_intel_band
 #+RESULTS:
 #+begin_example
 
-── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
-✔ ggplot2 3.2.1     ✔ purrr   0.3.2
-✔ tibble  2.1.3     ✔ dplyr   0.8.3
-✔ tidyr   1.0.0     ✔ stringr 1.4.0
-✔ readr   1.3.1     ✔ forcats 0.4.0
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-
 Parsed with column specification:
 cols(
   apps = col_character(),
@@ -376,16 +367,16 @@ cols(
 <
 <
 <int>
- 1 exec_alya eth         298.  2.01  1.82     11
- 2 exec_alya ib          254.  1.80  1.63     11
- 3 exec_alya ipoib       280.  1.03  0.932    11
- 4 exec_bt   eth         504.  1.50  1.42     10
- 5 exec_bt   ib          382.  3.48  3.15     11
- 6 exec_bt   ipoib       545.  2.44  2.21     11
- 7 exec_cg   eth         753.  2.70  2.44     11
- 8 exec_cg   ib          184.  1.10  1.05     10
- 9 exec_cg   ipoib       181.  1.68  1.59     10
-10 exec_ep   eth          37.3 0.135 0.128    10
+ 1 exec_alya eth         298.  2.02  1.52     16
+ 2 exec_alya ib          255.  2.75  2.06     16
+ 3 exec_alya ipoib       281.  1.22  0.917    16
+ 4 exec_bt   eth         504.  1.36  0.987    17
+ 5 exec_bt   ib          381.  3.63  2.72     16
+ 6 exec_bt   ipoib       545.  2.54  1.91     16
+ 7 exec_cg   eth         753.  2.60  1.95     16
+ 8 exec_cg   ib          183.  0.902 0.677    16
+ 9 exec_cg   ipoib       181.  2.11  1.58     16
+10 exec_ep   eth          37.4 0.435 0.317    17
 # … with 23 more rows
 
 # A tibble: 69 x 6
@@ -397,54 +388,57 @@ cols(
  <
  <
 <int>
- 1 eth           1    6.43 0.484  0.459     10
- 2 eth           2    6.29 0.421  0.399     10
- 3 eth           4    6.22 0.395  0.374     10
- 4 eth           8    6.11 0.318  0.302     10
- 5 eth          16    6.04 0.252  0.239     10
- 6 eth          32    5.99 0.184  0.175     10
- 7 eth          64    5.99 0.140  0.133     10
- 8 eth         128    5.98 0.124  0.117     10
- 9 eth         256    5.98 0.105  0.0997    10
-10 eth         512    6.00 0.0890 0.0844    10
+ 1 eth           1    6.39 0.448  0.336     16
+ 2 eth           2    6.26 0.405  0.304     16
+ 3 eth           4    6.16 0.373  0.279     16
+ 4 eth           8    6.05 0.288  0.216     16
+ 5 eth          16    5.98 0.231  0.174     16
+ 6 eth          32    5.93 0.173  0.130     16
+ 7 eth          64    5.94 0.135  0.101     16
+ 8 eth         128    5.95 0.138  0.104     16
+ 9 eth         256    5.94 0.105  0.0786    16
+10 eth         512    5.98 0.0977 0.0733    16
 # … with 59 more rows
 
 # A tibble: 69 x 6
 # Groups:   interface [3]
-   interface bytes average     std     ste     N
+   interface bytes average    std     ste     N
    <
     <
   <
-  <
+ <
   <
 <int>
- 1 eth           1   0.156 0.00966 0.00917    10
- 2 eth           2   0.319 0.0213  0.0202     10
- 3 eth           4   0.647 0.0383  0.0363     10
- 4 eth           8   1.31  0.0648  0.0615     10
- 5 eth          16   2.65  0.106   0.100      10
- 6 eth          32   5.34  0.159   0.151      10
- 7 eth          64  10.7   0.244   0.231      10
- 8 eth         128  21.4   0.441   0.419      10
- 9 eth         256  42.9   0.763   0.724      10
-10 eth         512  85.3   1.25    1.18       10
+ 1 eth           1   0.158 0.0100 0.00750    16
+ 2 eth           2   0.321 0.0198 0.0149     16
+ 3 eth           4   0.652 0.0362 0.0272     16
+ 4 eth           8   1.33  0.0604 0.0453     16
+ 5 eth          16   2.68  0.0992 0.0744     16
+ 6 eth          32   5.40  0.152  0.114      16
+ 7 eth          64  10.8   0.239  0.180      16
+ 8 eth         128  21.5   0.500  0.375      16
+ 9 eth         256  43.1   0.767  0.575      16
+10 eth         512  85.7   1.40   1.05       16
 # … with 59 more rows
 #+end_example
 *** PingPong - Latency
 #+begin_src R :results output graphics :file R/PLOTS/PingPong.png :exports both :width 600 :height 400 :session *R* 
 ggplot(df_intel_latency,aes(x=bytes, y=average)) +
-  geom_line(aes(col = interface), alpha = 1) +
-  geom_point(aes(col = interface), size = 2.5) +
-  geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .25) +
+  geom_line(aes(color = interface), alpha = 1) +
+  geom_point(aes(color=interface, shape=interface),size = 4) +
+  scale_shape_manual(values = c(15, 16, 17),
+                     breaks=c("ib", "ipoib", "eth"),
+                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+  geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .3) +
   theme_bw() +
   scale_y_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
   ylab('Average Latency Time\n(Microseconds in Logscale)') +
   xlab('Message Size (Bytes)') +
-  scale_colour_manual(values=c( "#BEBEBE", "#303030", "#888888"),
+  scale_color_manual(values=c( "#BEBEBE", "#303030", "#888888"),
                     breaks=c("ib", "ipoib", "eth"),
                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-  theme (legend.position = c(0.15, 0.85),
+    theme (legend.position = c(0.15, 0.85),
          legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
          axis.title=element_text(size=18), 
          legend.title = element_blank(),
@@ -460,8 +454,11 @@ ggplot(df_intel_latency,aes(x=bytes, y=average)) +
 #+begin_src R :results output graphics :file R/PLOTS/Bandwidth.png :exports both :width 600 :height 400 :session *R* 
 ggplot(df_intel_band,aes(x=bytes, y=average)) +
   geom_line(aes(col = interface), alpha = 1) +
-  geom_point(aes(col = interface), size = 2.5) +
-  geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .25) +
+  geom_point(aes(col = interface, shape=interface), size = 4) +
+  scale_shape_manual(values = c(15, 16, 17),
+                     breaks=c("ib", "ipoib", "eth"),
+                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +  
+  geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .3) +
   theme_bw() +
   scale_y_log10(breaks=c(0.1, 1, 10, 100, 1000, 10000)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
@@ -484,7 +481,6 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
 
 *** BT-SP(144 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/BT_SP.png :exports both :width 600 :height 400 :session *R*
-labs <- c(exec_bt ="144", exec_sp="144")
 try <- c(exec_bt="BT", exec_sp="SP")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
@@ -497,13 +493,12 @@ scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE") ,
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = "top", 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
-      axis.text.x = element_text(size =16, color = "black"),
+      axis.text.x = element_blank(),
       axis.text.y = element_text(size =16, color = "black"),
       axis.title=element_text(size=18), 
       legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 18)) +
-      scale_x_discrete(labels=labs) +
-      labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+      labs(x="144 MPI Processes", y="Execution Time in Seconds") +
       facet_wrap(.~apps, scales="free", labeller=labeller(apps=try)) +
       theme(strip.text.x=element_text(size=18))
      
@@ -514,7 +509,6 @@ theme(legend.position = "top",
 
 *** EP-IS-MG(128 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/EP_IS_MG.png :exports both :width 600 :height 400 :session *R* 
-labs <- c(exec_ep="128",exec_is="128", exec_mg="128")
 try <- c(exec_ep="EP", exec_is="IS",exec_mg= "MG")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
@@ -527,13 +521,12 @@ scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE"),
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = "top", 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
-      axis.text.x = element_text(size =16, color = "black"),
+      axis.text.x = element_blank(),
       axis.text.y = element_text(size =16, color = "black"),
       axis.title=element_text(size=18), 
       legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 18)) +
-      scale_x_discrete(labels=labs) +
-      labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+      labs(x="128 MPI Processes", y="Execution Time in Seconds") +
       facet_wrap(.~apps, scales="free", labeller=labeller(apps=try)) +
       theme(strip.text.x=element_text(size=18))
      
@@ -544,7 +537,6 @@ theme(legend.position = "top",
 [[file:R/PLOTS/EP_IS_MG.png]]
 *** CG-LU-FT(128 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/CG_LU_FT.png :exports both :width 600 :height 400 :session *R* 
-labs <- c(exec_cg="128",exec_lu="128", exec_ft="128")
 try <- c(exec_cg="CG",exec_lu="LU", exec_ft="FT")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
@@ -557,13 +549,12 @@ scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE"),
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = "top", 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
-      axis.text.x = element_text(size =16, color = "black"),
+      axis.text.x = element_blank(),
       axis.text.y = element_text(size =16, color = "black"),
       axis.title=element_text(size=18), 
       legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 18)) +
-      scale_x_discrete(labels=labs) +
-      labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+      labs(x="128 MPI Processes", y="Execution Time in Seconds") +
       facet_wrap(.~apps, scales="free", labeller=labeller(apps=try)) +
       theme(strip.text.x=element_text(size=18))
      
@@ -574,7 +565,6 @@ theme(legend.position = "top",
 [[file:R/PLOTS/CG_LU_FT.png]]
 *** Alya-IMB(160 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.png :exports both :width 600 :height 400 :session *R*  
-labs <- c(exec_alya="160", exec_imb_memory="160", exec_imb_CPU="160")
 try <- c(exec_alya="Alya",exec_imb_memory="ImbBench-Memory\n8Level", exec_imb_CPU="ImbBench-CPU\n8Level")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
@@ -587,13 +577,12 @@ scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE"),
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = "top", 
       legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
-      axis.text.x = element_text(size =16, color = "black"),
+      axis.text.x = element_blank(),
       axis.text.y = element_text(size =16, color = "black"),
       axis.title=element_text(size=18), 
       legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 18)) +
-      scale_x_discrete(labels=labs) +
-      labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+      labs(x="160 MPI Processes", y="Execution Time in Seconds") +
       facet_wrap(.~apps, scales="free", labeller=labeller(apps=try)) +     
       theme(strip.text.x=element_text(size=18))
 
