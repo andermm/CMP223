@@ -7,9 +7,9 @@
 #+SEQ_TODO: TODO(t!) STARTED(s!) WAITING(w!) | DONE(d!) CANCELLED(c!) DEFERRED(f!)
 
 This LabBook is for the *CMP223 - Computer System Performance* *Analysis
-(2019/2)* final work and has the step-by-step procedure used during the
-proposed experiments. Also, to reproduce this evaluation, you can
-follow the steps below. Have fun!
+(2019/2)* final work and has a wealth of informations about the entire
+process used during the proposed experiments. To reproduce this
+evaluation, you can follow the steps below. Have fun!
 
 #+BEGIN_QUOTE
 *Reporting errors*: This repository has several links to self-contained
@@ -25,24 +25,23 @@ follow the steps below. Have fun!
    well as *IP-over-IB (IPoIB)* interconnections were evaluated using
    the same physical cluster of servers. The MPI-PingPong benchmark of
    the [[https://software.intel.com/en-us/articles/intel-mpi-benchmarks][Intel MPI Benchmarks]] suite was executed to first characterize
-   interconnect latency and throughput. Then two synthetic benchmarks
-   (NPB and ImbBench) and one real application (Alya) were
+   the interconnection latency and throughput. Then two synthetic
+   benchmarks (NPB and ImbBench) and one real application (Alya) were
    executed. [[https://www.nas.nasa.gov/publications/npb.html][NAS Parallel Benchmarks (NPB)]] set version 3.4 with input
    *class D* was used because it represent several patterns of real HPC
    applications, as well as being characterized as a balanced
-   benchmarks sed (when and MPI parallel application makes balanced
-   use of processes and consequently they all end almost together). On
-   the other hand, [[https://github.com/Roloff/ImbBench.git][Inbalanced Benchmark (IMB)]] was created to represent
-   the more common inbalanced application patterns. Thus, with both of
-   the mentioned benchmarks we cover the common HPC application and
-   also the balanced and unbalanced patterns. [[https://www.bsc.es/research-development/research-areas/engineering-simulations/alya-high-performance-computational][Alya]] was used because
-   this work tends to cover not only synthetic benchmarks which try to
-   mimic real applications but rather use a real application and
-   evaluate them. In the next session the benchmarks are described
-   more detail.
+   benchmarks set (when an MPI parallel application distributes work
+   between processes evenly, and therefore all end almost together,
+   making the best use of available resources). On the other hand,
+   [[https://github.com/Roloff/ImbBench.git][Inbalanced Benchmark (IMB)]] was created to represent the more common
+   inbalanced application patterns. Thus, with both of the mentioned
+   benchmarks we cover the common HPC application and also the
+   balanced and inbalanced patterns. [[https://www.bsc.es/research-development/research-areas/engineering-simulations/alya-high-performance-computational][Alya]] was used because this work
+   tends to cover not only synthetic benchmarks which try to mimic
+   real applications but rather use a real application.
 
 ** Benchmarks
-Below the benchmarks used are described.
+Below is a brief overview about the benchmarks used.
 *** Intel MPI Benchmark
 The Intel® MPI Benchmarks perform a set of MPI performance
 measurements for point-to-point and global communication operations
@@ -81,17 +80,17 @@ Three pseudo-applications:
 
 They were executed with 128 processes on 4 nodes, 32 processes per
 node, in the case of IS, EP, CG, FT, MG, and LU (power-of-two). Since
-BT and SP require the number of processes to be a square root, 144
-processes were used, with 36 processes in each node.
+BT and SP require that the number of processes to be a square root,
+144 processes were used, with 36 processes in each node.
 
 *** Inbalanced Benchmark
 Imbalance Benchmark (ImbBench) is a set of MPI-based applications,
 created by the Ph.D. Student Eduardo Roloff, that simulate several
 behaviors in terms of process loads. ImbBench was designed with the
-heterogeneity of the cloud in mind, and its goal is to help the user
-to choose the most suitable configuration to execute an application in
+cloud heterogeneity in mind, and its goal is to help the user to
+choose the most suitable configuration to execute an application in
 the cloud. ImbBench distributes the load among all the available
-processes according to a preselected imbalance pattern.
+processes according to a preselected imbalanced pattern.
 
 ImbBench has a set of microbenchmarks and parameters to benchmark CPU
 and Memory. In this evaluation, it was used both CPU and Memory
@@ -119,7 +118,7 @@ Here it is assumed that your HOME directory is exported with NFS. If
 you don't have the NFS configured, [[https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-16-04][here]] is a tutorial to do it. If
 this step is ok, go ahead to the other topics.
 
-** Software Installation
+** Required Softwares
 To execute the experiments, some required packages need to
 be installed. They are:
 - openmpi-bin - High performance message passing library (mpiexec).
@@ -139,7 +138,7 @@ to use Spack can be seen [[https://spack-tutorial.readthedocs.io/en/latest/][her
    To collect the information of all nodes used in the evaluation, it
    was used the [[SH/sys_info_collect.sh][System Information Collect]] script, which creates the
    [[LOGS/env_info.org][System Information]] log output with ORG extension. The script
-   is executes automatically in the execution script.
+   executes automatically in the execution script.
 
 ** Network Infrastructure Information
 Each node has a Mellanox MT27600 Channel Adapter (CA) configured for
@@ -160,17 +159,17 @@ Execution factors:
 - Factor 1 - Apps: The applications name totaling 12 (~exec_bt~,
   ~exec_ep~, ~exec_cg~, ~exec_mg~, ~exec_lu~, ~exec_sp~, ~exec_is~, ~exec_ft~,
   ~exec_imb_memory~, ~exec_imb_CPU~, ~exec_intel~, and ~exec_alya~).
-- Factor 2 - Interface: The network interface name, totaling 3 (~eth~,
+- Factor 2 - Interface: The network interface names, totaling 3 (~eth~,
   ~ib~, ~ipoib~).
 
 Characterization factors:
 - Factor 1 - Apps: The applications name totaling 11 (~charac_bt~,
   ~charac_ep~, ~charac_cg~, ~charac_mg~, ~charac_lu~, ~charac_sp~, ~charac_is~,
   ~charac_ft~, ~charac_imb_memory~, ~charac_imb_CPU~, and ~charac_alya~).
-- Factor 2 - Interface: The network interface name, totaling 3 (~eth~,
+- Factor 2 - Interface: The network interface names, totaling 3 (~eth~,
   ~ib~, ~ipoib~).
 
-Below is the R block of code which generate the CSV files.
+Below is the R code block which generates the CSV files.
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 library(DoE.base)
@@ -220,36 +219,42 @@ write_csv(cmp223_charac, "R/experimental_project_charac.csv")
 
 ** Bash Scripts Descriptions
 - [[SH/experiments_exec.sh][Experiments Execution]] - This is the most essential script for this
-  evaluation. It comprises from the beggining, when the variables are
+  evaluation. It comprises from the beginning, when the variables are
   defined, until the end, when the experiments execution ends. To
   describe it, it has been divided into a few steps, which are:
 
   - *Step 1*: Define the variables and Create the Folders - Here all the
-    variables with folder, software and bencharmark locations are
+    variables with folders, software and bencharmark locations are
     defined and created.
   - *Step 2*: Collect System Information - In this step, the Execution
     Experiments script calls the System Information script to collect
     information about all nodes used in the evaluation.
   - *Step 3*: Download and Compile the Programs - Here all the softwares
-    and benchmarks are donwloaded and compiled with their respective
+    and benchmarks are downloaded and compiled with their respective
     compilers.
   - *Step 4*: Define Machine Files and Experimental Project - In this
     step the machine files and experimental project used during MPI
     execution are defined.
   - *Step 5*: Read the Experimental Project and Start the Execution
     Loop - This step reads the experimental project, start the MPI
-    command line, executes the experiments with their respective
-    interconnection and binaries. At the end of each execution, the
-    results are sent to the their respective log files.
+    command line, and executes the experiments with their respective
+    interconnection/application. At the end of each execution, the
+    results are sent to the log files.
   - *Step 6*: Call the Experiment Characterization Script - This final
     step calls the experiment characterization script to start the
     characterization execution. Characterization and "normal"
-    execution are done one after another because in characterization
-    execution there is the trace process that records all the MPI
-    primitives in a file and therefore can interfer in the normal
-    execution considering resources usage (e.g., IO) at the end of
-    execution.
-- [[SH/experiments_charac.sh][Experiments Characterization]] - 
+    execution are done one after another because in characterization,
+    the execution trace process records all the MPI primitives in a
+    file and therefore can interfer in the normal execution
+    considering resources usage (e.g., IO).
+- [[SH/experiments_charac.sh][Experiments Characterization]] - This script is similar to the one
+  discribed above, however, it only performs the experiment
+  characterization, subdivided into three steps, which are:
+
+  - *Step 1*: A first definition of the variables.
+  - *Step 2*: Definition of the Machines Files and Experimental Project.
+  - *Step 3*: Read the Experimental Project and Start the Execution Loop
+
 - [[SH/central.sh][Central]] - This script was created to allocate the nodes using the
   ~salloc~ command from Slurm Workload Manager and then pass the bash
   script execution command through ssh to start the Experiments
@@ -262,7 +267,7 @@ write_csv(cmp223_charac, "R/experimental_project_charac.csv")
   which will describe how to install the software using Spack packet
   manager.
 - [[SH/sys_info_collect.sh][System Information Collect]] - This is a crucial script to performance
-  evaluations, which executes before the benchmarks. It saves all the
+  evaluations, which is executed before the benchmarks. It saves all the
   system information and sends the output to an ORG file. This output
   will undoubtedly help describe the results or even add system
   information to the paper/report.
@@ -290,13 +295,12 @@ root requirements, and finally executes the [[SH/experiments_exec.sh][experiment
 script like a normal bash script.
 
 ** Graphical Analysis 
-After the conclusion of the experiments, in this topic, graphs
-containing the execution time and the characterization of the
-applications were created. The first step is to read the CSV
-file. 
-Next, four graphs are created according to the number of
-processes, in which BT and SP have 121, and according to a similar
-execution time range.
+Upon completion of the experiments, in this topic, graphs containing
+the execution time and the characterization of the applications are
+created. The first step is to read the CSV files. Latency and
+bandwidth graphs are then created. Finally, applications graphs are
+created according to the number of processes, in which BT and SP have
+144 and according to a similar execution time range.
 
 *** Read CSVs
 #+begin_src R :results output :session *R* :exports both
