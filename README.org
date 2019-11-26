@@ -9,7 +9,7 @@
 This repository is for the *CMP223 - Computer System Performance*
 *Analysis (2019/2)* final work, and has the entire project used to
 perform it. Below are the files and folders, along with the analysis
-environment and references. Mode details on how to reproduce the experiments are in
+environment and references. More details on how to reproduce the experiments are in
 [[LabBook.org]].
 
 #+BEGIN_QUOTE
@@ -21,24 +21,6 @@ environment and references. Mode details on how to reproduce the experiments are
 
 
 * Folders and Files Description
-- [[LOGS]] - This folder has the benchmark execution logs in the CSV files
-  (~apps_exec~, ~apps_charac~, ~imb_exec~, ~imb_charac~, and ~intel~), four
-  machine files ([[LOGS/nodes_full][nodes_full]], [[LOGS/nodes_power_of_2][nodes_power_of_2]], [[LOGS/nodes_square_root][nodes_square_root]] and
-  [[LOGS/nodes_intel][nodes_intel]] used by the MPI execution line, a file containing the
-  [[LOGS/env_info.org][environment information]] used in the experiments, and a folder called
-  [[LOGS/BACKUP][BACKUP]] that includes the application logs without any modification.
-- [[PLOTS]] - Here are the graphs of the analysis made with the execution
-  time of the applications, as well as its characterization genereted
-  with R statistical language.
-- [[R]] - This folder has the Design of Experiments outputs (made in the
-  [[LabBook.org][LabBook.org]] → Experiment Project → Design of Experiments), called
-  [[R/experimental_project_exec.csv][experimental_project_exec]] and [[experimental_project_charac.csv][exeperimental_project_charac]] which are
-  responsible for random applications/network interface combinations
-  using 30 execution replications for normal execution (exec) and 1
-  replication for characterization execution (charac).
-- [[SH]] - Here are six bash scripts ([[SH/experiments_exec.sh][experiments_exec]], [[SH/experiments_charac.sh][experiments_charac]],
-  [[SH/central.sh][central]], [[SH/software_install.sh][software_install]], and [[SH/sys_info_collect.sh][sys_info_collect]]) that are used to
-  perform the experiments and collect system information.
 - [[BENCHMARKS]] - This folder has all the four benchmarks (Alya,
   ImbBench, Intel MPI Benchmarks and NAS Parallel Benchmarks)
   subdivided into execution and characterization folders. This was
@@ -46,10 +28,37 @@ environment and references. Mode details on how to reproduce the experiments are
   compiler, and the benchmarks characterization used the Score-P and
   the mpicc and/or mpifort compiler to generate the binaries that are
   traced during its execution.
-- [[SOFTWARE]] - Here are the three softwares ([[https://www.vi-hps.org/projects/score-p/][Score-P]], [[https://github.com/schnorr/akypuera][Akypuera]], and
-  [[https://github.com/schnorr/pajeng][PajeNG]]) used in the tracing process.
-- [[LabBook.org]] - In this file is described the objective of this work,
-  as well as the step-by-step execution of the entire project.
+- [[LabBook.org]] - In this file is described the entire experimental
+  project, with the objective, benchmarks, how to reproduce it,
+  software installation, system information, network information,
+  design of experiments, bash script description, experiments
+  execution, and finally the graphical analysis.
+- [[LOGS]] - This folder has the benchmark execution logs in CSV files
+  (~apps_exec~, ~apps_charac~ and ~intel~), a file containing the
+  [[LOGS/env_info.org][environment information]] used in the experiments, a folder called
+  [[LOGS/LOGS_BACKUP][LOGS_BACKUP]] that includes the application logs without any
+  modification, a folder called [[LOGS/LOGS_BACKUP_SRC_ODE][LOGS_BACKUP_SRC_CODE]] that has the
+  source code of the benchmarks as well the softwares used to trace
+  the applications, a folder called [[LOGS/LOGS_DOWNLOAD][LOGS_DOWNLOAD]] with the software
+  download logs, and a folder called [[LOGS/TRACE][TRACE]] that has the trace logs.
+- [[SH/MACHINE_FILES][MACHINE_FILES]] - In this foleder are the four machine files ([[LOGS/nodes_full][nodes_full]],
+  [[LOGS/nodes_power_of_2][nodes_power_of_2]], [[LOGS/nodes_square_root][nodes_square_root]] and [[LOGS/nodes_intel][nodes_intel]] used by the MPI
+  execution line.
+- [[R]] - This folder has the Design of Experiments outputs (made in the
+  [[LabBook.org][LabBook.org]] → Experiment Project → Design of Experiments), called
+  [[R/experimental_project_exec.csv][experimental_project_exec]] and [[experimental_project_charac.csv][experimental_project_charac]] which are
+  responsible for random applications/network interface combinations
+  using 30 execution replications for normal execution (exec) and 1
+  replication for characterization execution (charac). In addition, it
+  has the [[R/PLOTS][PLOTS]] folder, which contains the graphs with the
+  applications execution time, as well as its characterization
+  genereted with R statistical language.
+- [[SH]] - Here are six bash scripts ([[SH/experiments_exec.sh][experiments_exec]],
+  [[SH/experiments_charac.sh][experiments_charac]], [[SH/central.sh][central]], [[SH/software_install.sh][software_install]], and [[SH/sys_info_collect.sh][sys_info_collect]])
+  that are used to perform the experiments and collect system
+  information.
+- [[SOFTWARE]] - Here are three softwares ([[https://www.vi-hps.org/projects/score-p/][Score-P]], [[https://github.com/schnorr/akypuera][Akypuera]], and [[https://github.com/schnorr/pajeng][PajeNG]])
+  used in the tracing process.
 
 * Analysis Environment 
 Some specific softwares are required to reproduce this evaluation
@@ -68,7 +77,7 @@ or RStudio to generate the graphics.
 This was the base book used in the *CMP223 - Computer System
 Performance Analysis (2019/2)* discipline and can be considered the
 oracle for creating performance evaluations even though it is old, but
-the checklist and concepts are still current today.
+the checklists and concepts are still current today.
 #+END_QUOTE
 + Legrand. Arnaud, Schnorr. Lucas, [[https://github.com/alegrand/SMPE.git][Scientific Methodology and
   Performance Evaluation for Computer Scientists]], GitHub Repository.
