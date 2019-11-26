@@ -346,6 +346,15 @@ df_intel_band
 #+RESULTS:
 #+begin_example
 
+── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 3.2.1     ✔ purrr   0.3.2
+✔ tibble  2.1.3     ✔ dplyr   0.8.3
+✔ tidyr   1.0.0     ✔ stringr 1.4.0
+✔ readr   1.3.1     ✔ forcats 0.4.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+
 Parsed with column specification:
 cols(
   apps = col_character(),
@@ -371,37 +380,37 @@ cols(
 <
 <
 <int>
- 1 exec_alya eth         298.  2.02  1.52     16
- 2 exec_alya ib          255.  2.75  2.06     16
- 3 exec_alya ipoib       281.  1.22  0.917    16
- 4 exec_bt   eth         504.  1.36  0.987    17
- 5 exec_bt   ib          381.  3.63  2.72     16
- 6 exec_bt   ipoib       545.  2.54  1.91     16
- 7 exec_cg   eth         753.  2.60  1.95     16
- 8 exec_cg   ib          183.  0.902 0.677    16
- 9 exec_cg   ipoib       181.  2.11  1.58     16
-10 exec_ep   eth          37.4 0.435 0.317    17
+ 1 exec_alya eth         297.  1.82  1.07     26
+ 2 exec_alya ib          255.  2.83  1.70     25
+ 3 exec_alya ipoib       281.  3.11  1.87     25
+ 4 exec_bt   eth         505.  1.33  0.799    25
+ 5 exec_bt   ib          380.  4.17  2.45     26
+ 6 exec_bt   ipoib       544.  3.46  2.04     26
+ 7 exec_cg   eth         759.  8.01  4.80     25
+ 8 exec_cg   ib          183.  0.947 0.568    25
+ 9 exec_cg   ipoib       181.  1.80  1.06     26
+10 exec_ep   eth          37.4 0.451 0.271    25
 # … with 23 more rows
 
 # A tibble: 69 x 6
 # Groups:   interface [3]
-   interface bytes average    std    ste     N
+   interface bytes average   std   ste     N
    <
     <
   <
- <
- <
+<
+<
 <int>
- 1 eth           1    6.39 0.448  0.336     16
- 2 eth           2    6.26 0.405  0.304     16
- 3 eth           4    6.16 0.373  0.279     16
- 4 eth           8    6.05 0.288  0.216     16
- 5 eth          16    5.98 0.231  0.174     16
- 6 eth          32    5.93 0.173  0.130     16
- 7 eth          64    5.94 0.135  0.101     16
- 8 eth         128    5.95 0.138  0.104     16
- 9 eth         256    5.94 0.105  0.0786    16
-10 eth         512    5.98 0.0977 0.0733    16
+ 1 eth           1    6.45 0.452 0.271    25
+ 2 eth           2    6.3  0.459 0.275    25
+ 3 eth           4    6.21 0.464 0.279    25
+ 4 eth           8    6.09 0.352 0.211    25
+ 5 eth          16    6.03 0.315 0.189    25
+ 6 eth          32    6.00 0.286 0.171    25
+ 7 eth          64    5.99 0.264 0.158    25
+ 8 eth         128    6.01 0.271 0.163    25
+ 9 eth         256    6.01 0.247 0.148    25
+10 eth         512    6.03 0.208 0.125    25
 # … with 59 more rows
 
 # A tibble: 69 x 6
@@ -413,16 +422,16 @@ cols(
  <
   <
 <int>
- 1 eth           1   0.158 0.0100 0.00750    16
- 2 eth           2   0.321 0.0198 0.0149     16
- 3 eth           4   0.652 0.0362 0.0272     16
- 4 eth           8   1.33  0.0604 0.0453     16
- 5 eth          16   2.68  0.0992 0.0744     16
- 6 eth          32   5.40  0.152  0.114      16
- 7 eth          64  10.8   0.239  0.180      16
- 8 eth         128  21.5   0.500  0.375      16
- 9 eth         256  43.1   0.767  0.575      16
-10 eth         512  85.7   1.40   1.05       16
+ 1 eth           1   0.156 0.0104 0.00622    25
+ 2 eth           2   0.319 0.0227 0.0136     25
+ 3 eth           4   0.647 0.0466 0.0280     25
+ 4 eth           8   1.32  0.0750 0.0450     25
+ 5 eth          16   2.66  0.135  0.0811     25
+ 6 eth          32   5.35  0.247  0.148      25
+ 7 eth          64  10.7   0.455  0.273      25
+ 8 eth         128  21.3   0.930  0.558      25
+ 9 eth         256  42.7   1.69   1.01       25
+10 eth         512  85.1   2.82   1.69       25
 # … with 59 more rows
 #+end_example
 *** PingPong - Latency
