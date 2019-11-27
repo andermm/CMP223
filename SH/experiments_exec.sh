@@ -323,6 +323,6 @@ sed -i '1s/^/apps,interface,bytes,time,mbytes-sec\n/' $OUTPUT_INTEL_EXEC
 #############################################################################################################
 ##########################Step 6: Call the Experiment Characterization Script################################
 #############################################################################################################
-cd $HOME/CMP223; nohup ./SH/experiments_charac.sh > $BASE/$LOGS/charac_script_std_out-err.log 2>&1 &
+cd $BASE; nohup ./SH/experiments_charac.sh > $BASE/charac_script_std_out-err.log 2>&1 &
 
 exit
