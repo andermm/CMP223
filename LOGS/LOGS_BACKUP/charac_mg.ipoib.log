@@ -1,0 +1,189 @@
+
+
+ NAS Parallel Benchmarks 3.4 -- MG Benchmark
+
+ No input file. Using compiled defaults 
+ Size: 1024x1024x1024  (class D)
+ Iterations:   50
+ Total number of processes:    128
+
+
+ Initialization time:           2.408 seconds
+
+  iter    1
+  iter    5
+  iter   10
+  iter   15
+  iter   20
+  iter   25
+  iter   30
+  iter   35
+  iter   40
+  iter   45
+  iter   50
+
+ Benchmark completed 
+ VERIFICATION SUCCESSFUL 
+ L2 Norm is  0.1583275060422E-09
+ Error is    0.1149371668696E-10
+
+
+ MG Benchmark Completed.
+ Class           =                        D
+ Size            =           1024x1024x1024
+ Iterations      =                       50
+ Time in seconds =                    35.57
+ Total processes =                      128
+ Active procs    =                      128
+ Mop/s total     =                 87543.27
+ Mop/s/process   =                   683.93
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                      3.4
+ Compile date    =              22 Nov 2019
+
+ Compile options:
+    MPIFC        = /tmp/install/bin/./scorep mpifort
+    FLINK        = $(MPIFC)
+    FMPI_LIB     = (none)
+    FMPI_INC     = (none)
+    FFLAGS       = -O3
+    FLINKFLAGS   = $(FFLAGS)
+    RAND         = randi8
+
+
+ Please send feedbacks and/or the results of this run to:
+
+ NPB Development Team 
+ Internet: npb@nas.nasa.gov
+
+
+[Score-P] src/services/timer/SCOREP_Timer.c:395: Warning: Calculated timer (tsc) frequencies differ from average frequency (2295348822 Hz) by more than 22953 Hz. Consider using a timer with a fixed frequency like gettimeofday or clock_gettime. Prolonging the measurement duration might mitigate the frequency variations.
+rank[0]:	 frequency = 2297338038 Hz (outlier)
+rank[1]:	 frequency = 2297337981 Hz (outlier)
+rank[2]:	 frequency = 2297338018 Hz (outlier)
+rank[3]:	 frequency = 2297338022 Hz (outlier)
+rank[4]:	 frequency = 2297338010 Hz (outlier)
+rank[5]:	 frequency = 2297338018 Hz (outlier)
+rank[6]:	 frequency = 2297338024 Hz (outlier)
+rank[7]:	 frequency = 2297338068 Hz (outlier)
+rank[8]:	 frequency = 2297338070 Hz (outlier)
+rank[9]:	 frequency = 2297338039 Hz (outlier)
+rank[10]:	 frequency = 2297338057 Hz (outlier)
+rank[11]:	 frequency = 2297338024 Hz (outlier)
+rank[12]:	 frequency = 2297338090 Hz (outlier)
+rank[13]:	 frequency = 2297338017 Hz (outlier)
+rank[14]:	 frequency = 2297338022 Hz (outlier)
+rank[15]:	 frequency = 2297338010 Hz (outlier)
+rank[16]:	 frequency = 2297338013 Hz (outlier)
+rank[17]:	 frequency = 2297338026 Hz (outlier)
+rank[18]:	 frequency = 2297338091 Hz (outlier)
+rank[19]:	 frequency = 2297338043 Hz (outlier)
+rank[20]:	 frequency = 2297338072 Hz (outlier)
+rank[21]:	 frequency = 2297338065 Hz (outlier)
+rank[22]:	 frequency = 2297338067 Hz (outlier)
+rank[23]:	 frequency = 2297338088 Hz (outlier)
+rank[24]:	 frequency = 2297338104 Hz (outlier)
+rank[25]:	 frequency = 2297338124 Hz (outlier)
+rank[26]:	 frequency = 2297338042 Hz (outlier)
+rank[27]:	 frequency = 2297338088 Hz (outlier)
+rank[28]:	 frequency = 2297338106 Hz (outlier)
+rank[29]:	 frequency = 2297338068 Hz (outlier)
+rank[30]:	 frequency = 2297338034 Hz (outlier)
+rank[31]:	 frequency = 2297338046 Hz (outlier)
+rank[32]:	 frequency = 2294685104 Hz (outlier)
+rank[33]:	 frequency = 2294685109 Hz (outlier)
+rank[34]:	 frequency = 2294685099 Hz (outlier)
+rank[35]:	 frequency = 2294685101 Hz (outlier)
+rank[36]:	 frequency = 2294685093 Hz (outlier)
+rank[37]:	 frequency = 2294685095 Hz (outlier)
+rank[38]:	 frequency = 2294685098 Hz (outlier)
+rank[39]:	 frequency = 2294685074 Hz (outlier)
+rank[40]:	 frequency = 2294685102 Hz (outlier)
+rank[41]:	 frequency = 2294685097 Hz (outlier)
+rank[42]:	 frequency = 2294685161 Hz (outlier)
+rank[43]:	 frequency = 2294685106 Hz (outlier)
+rank[44]:	 frequency = 2294685103 Hz (outlier)
+rank[45]:	 frequency = 2294685119 Hz (outlier)
+rank[46]:	 frequency = 2294685126 Hz (outlier)
+rank[47]:	 frequency = 2294685146 Hz (outlier)
+rank[48]:	 frequency = 2294685125 Hz (outlier)
+rank[49]:	 frequency = 2294685138 Hz (outlier)
+rank[50]:	 frequency = 2294685102 Hz (outlier)
+rank[51]:	 frequency = 2294685144 Hz (outlier)
+rank[52]:	 frequency = 2294685161 Hz (outlier)
+rank[53]:	 frequency = 2294685132 Hz (outlier)
+rank[54]:	 frequency = 2294685136 Hz (outlier)
+rank[55]:	 frequency = 2294685155 Hz (outlier)
+rank[56]:	 frequency = 2294685126 Hz (outlier)
+rank[57]:	 frequency = 2294685119 Hz (outlier)
+rank[58]:	 frequency = 2294685100 Hz (outlier)
+rank[59]:	 frequency = 2294685151 Hz (outlier)
+rank[60]:	 frequency = 2294685184 Hz (outlier)
+rank[61]:	 frequency = 2294685152 Hz (outlier)
+rank[62]:	 frequency = 2294685132 Hz (outlier)
+rank[63]:	 frequency = 2294685103 Hz (outlier)
+rank[64]:	 frequency = 2294686020 Hz (outlier)
+rank[65]:	 frequency = 2294686037 Hz (outlier)
+rank[66]:	 frequency = 2294686026 Hz (outlier)
+rank[67]:	 frequency = 2294686009 Hz (outlier)
+rank[68]:	 frequency = 2294686036 Hz (outlier)
+rank[69]:	 frequency = 2294686074 Hz (outlier)
+rank[70]:	 frequency = 2294686044 Hz (outlier)
+rank[71]:	 frequency = 2294686034 Hz (outlier)
+rank[72]:	 frequency = 2294686013 Hz (outlier)
+rank[73]:	 frequency = 2294686066 Hz (outlier)
+rank[74]:	 frequency = 2294686074 Hz (outlier)
+rank[75]:	 frequency = 2294686068 Hz (outlier)
+rank[76]:	 frequency = 2294686038 Hz (outlier)
+rank[77]:	 frequency = 2294686123 Hz (outlier)
+rank[78]:	 frequency = 2294686072 Hz (outlier)
+rank[79]:	 frequency = 2294686041 Hz (outlier)
+rank[80]:	 frequency = 2294686073 Hz (outlier)
+rank[81]:	 frequency = 2294686070 Hz (outlier)
+rank[82]:	 frequency = 2294686068 Hz (outlier)
+rank[83]:	 frequency = 2294686058 Hz (outlier)
+rank[84]:	 frequency = 2294686085 Hz (outlier)
+rank[85]:	 frequency = 2294686059 Hz (outlier)
+rank[86]:	 frequency = 2294686079 Hz (outlier)
+rank[87]:	 frequency = 2294686041 Hz (outlier)
+rank[88]:	 frequency = 2294686072 Hz (outlier)
+rank[89]:	 frequency = 2294686071 Hz (outlier)
+rank[90]:	 frequency = 2294686101 Hz (outlier)
+rank[91]:	 frequency = 2294686041 Hz (outlier)
+rank[92]:	 frequency = 2294686061 Hz (outlier)
+rank[93]:	 frequency = 2294686108 Hz (outlier)
+rank[94]:	 frequency = 2294686041 Hz (outlier)
+rank[95]:	 frequency = 2294686090 Hz (outlier)
+rank[96]:	 frequency = 2294685970 Hz (outlier)
+rank[97]:	 frequency = 2294686035 Hz (outlier)
+rank[98]:	 frequency = 2294686013 Hz (outlier)
+rank[99]:	 frequency = 2294686040 Hz (outlier)
+rank[100]:	 frequency = 2294686056 Hz (outlier)
+rank[101]:	 frequency = 2294686040 Hz (outlier)
+rank[102]:	 frequency = 2294686029 Hz (outlier)
+rank[103]:	 frequency = 2294686038 Hz (outlier)
+rank[104]:	 frequency = 2294686061 Hz (outlier)
+rank[105]:	 frequency = 2294686083 Hz (outlier)
+rank[106]:	 frequency = 2294686051 Hz (outlier)
+rank[107]:	 frequency = 2294686094 Hz (outlier)
+rank[108]:	 frequency = 2294686042 Hz (outlier)
+rank[109]:	 frequency = 2294686030 Hz (outlier)
+rank[110]:	 frequency = 2294686037 Hz (outlier)
+rank[111]:	 frequency = 2294686029 Hz (outlier)
+rank[112]:	 frequency = 2294686011 Hz (outlier)
+rank[113]:	 frequency = 2294686089 Hz (outlier)
+rank[114]:	 frequency = 2294686030 Hz (outlier)
+rank[115]:	 frequency = 2294686072 Hz (outlier)
+rank[116]:	 frequency = 2294686139 Hz (outlier)
+rank[117]:	 frequency = 2294686105 Hz (outlier)
+rank[118]:	 frequency = 2294686090 Hz (outlier)
+rank[119]:	 frequency = 2294686064 Hz (outlier)
+rank[120]:	 frequency = 2294686144 Hz (outlier)
+rank[121]:	 frequency = 2294686078 Hz (outlier)
+rank[122]:	 frequency = 2294686072 Hz (outlier)
+rank[123]:	 frequency = 2294686046 Hz (outlier)
+rank[124]:	 frequency = 2294686051 Hz (outlier)
+rank[125]:	 frequency = 2294686098 Hz (outlier)
+rank[126]:	 frequency = 2294686111 Hz (outlier)
+rank[127]:	 frequency = 2294686079 Hz (outlier)

@@ -1,0 +1,703 @@
+
+
+ NAS Parallel Benchmarks 3.4 -- LU Benchmark
+
+ Size:  408x 408x 408  (class D)
+ Iterations:  300
+ Total number of processes:   128
+
+ Time step    1
+ Time step   20
+ Time step   40
+ Time step   60
+ Time step   80
+ Time step  100
+[Score-P] Trace buffer flush on rank 17.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 18.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 33.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 19.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 34.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 49.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 20.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 35.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 50.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 21.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 65.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 36.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 51.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 22.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 66.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 81.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 23.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 37.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 52.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 97.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 67.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 82.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 38.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 24.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 53.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 68.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 83.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 98.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 39.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 54.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 25.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 69.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 84.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 99.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 40.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 26.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 55.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 70.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 85.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 100.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 41.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 27.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 71.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 56.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 86.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 101.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 42.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 28.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 57.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 72.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 87.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 102.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 43.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 29.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 58.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 73.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 88.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 103.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 44.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 30.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 59.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 74.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 89.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 104.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 45.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 60.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 75.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 90.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 105.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 46.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 61.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 76.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 106.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 91.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 62.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 77.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 92.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 107.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 78.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 93.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 108.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 94.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 109.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 110.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+ Time step  120
+ Time step  140
+[Score-P] Trace buffer flush on rank 111.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 126.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 95.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 125.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 79.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 124.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 63.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 123.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 47.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 122.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 31.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 121.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 14.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 120.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 13.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 119.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 12.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 118.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 11.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 117.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 10.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 116.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 9.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 115.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 8.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 114.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 7.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 113.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 6.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 96.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 80.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 64.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 48.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 32.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 5.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 4.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 3.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 2.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 1.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 16.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+ Time step  160
+ Time step  180
+ Time step  200
+ Time step  220
+[Score-P] Trace buffer flush on rank 0.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 15.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 17.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 18.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 33.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 49.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 19.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 34.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 50.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 20.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 35.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 21.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 51.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 36.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 22.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 65.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 112.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 52.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 81.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 97.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 37.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 23.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 66.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 53.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 38.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 82.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 98.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 24.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 54.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 67.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 39.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 83.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 99.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 68.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 25.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 55.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 40.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 84.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 69.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 100.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 26.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 56.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 41.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 85.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 70.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 101.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 27.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 42.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 57.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 71.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 86.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 102.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 28.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 58.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 43.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 72.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 87.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 29.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 103.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 59.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 44.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 73.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 88.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 30.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 104.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 60.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 45.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 74.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 89.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 105.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 46.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 61.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 75.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 90.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 106.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 62.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 76.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 91.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 107.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 77.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 92.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 108.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 78.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 93.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 109.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 94.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 110.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 127.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+ Time step  240
+ Time step  260
+ Time step  280
+[Score-P] Trace buffer flush on rank 2.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 3.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 4.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 5.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 6.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 32.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 7.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 8.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 9.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 48.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 10.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 64.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 11.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 80.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 12.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 96.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 13.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 113.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 14.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 114.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 31.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 47.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 63.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 79.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 95.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 111.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 115.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 116.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 117.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 118.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 119.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 120.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 121.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 122.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 123.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 124.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 125.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+[Score-P] Trace buffer flush on rank 126.
+[Score-P] Increase SCOREP_TOTAL_MEMORY and try again.
+ Time step  300
+
+ Verification being performed for class D
+ Accuracy setting for epsilon =  0.1000000000000E-07
+ Comparison of RMS-norms of residual
+           1   0.4868417937025E+05 0.4868417937025E+05 0.1120891484919E-13
+           2   0.4696371050071E+04 0.4696371050071E+04 0.8617827211136E-13
+           3   0.1218114549776E+05 0.1218114549776E+05 0.2991045280571E-12
+           4   0.1033801493461E+05 0.1033801493461E+05 0.1912592982464E-12
+           5   0.7142398413817E+05 0.7142398413817E+05 0.3626570180737E-13
+ Comparison of RMS-norms of solution error
+           1   0.3752393004482E+03 0.3752393004482E+03 0.5332299525957E-13
+           2   0.3084128893659E+02 0.3084128893659E+02 0.1594276990683E-12
+           3   0.9434276905469E+02 0.9434276905469E+02 0.2907159698105E-13
+           4   0.8230686681928E+02 0.8230686681928E+02 0.3625796492466E-13
+           5   0.7002620636210E+03 0.7002620636210E+03 0.1753369075921E-13
+ Comparison of surface integral
+               0.8334101392503E+02 0.8334101392503E+02 0.2966953009078E-13
+ Verification Successful
+
+
+ LU Benchmark Completed.
+ Class           =                        D
+ Size            =            408x 408x 408
+ Iterations      =                      300
+ Time in seconds =                   308.98
+ Total processes =                      128
+ Active procs    =                      128
+ Mop/s total     =                129126.58
+ Mop/s/process   =                  1008.80
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                      3.4
+ Compile date    =              22 Nov 2019
+
+ Compile options:
+    MPIFC        = /tmp/install/bin/./scorep mpifort
+    FLINK        = $(MPIFC)
+    FMPI_LIB     = (none)
+    FMPI_INC     = (none)
+    FFLAGS       = -O3
+    FLINKFLAGS   = $(FFLAGS)
+    RAND         = (none)
+
+
+ Please send feedbacks and/or the results of this run to:
+
+ NPB Development Team 
+ Internet: npb@nas.nasa.gov
+
+
+[Score-P] src/services/timer/SCOREP_Timer.c:395: Warning: Calculated timer (tsc) frequencies differ from average frequency (2295348789 Hz) by more than 22953 Hz. Consider using a timer with a fixed frequency like gettimeofday or clock_gettime. Prolonging the measurement duration might mitigate the frequency variations.
+rank[0]:	 frequency = 2297338012 Hz (outlier)
+rank[1]:	 frequency = 2297338015 Hz (outlier)
+rank[2]:	 frequency = 2297338009 Hz (outlier)
+rank[3]:	 frequency = 2297338013 Hz (outlier)
+rank[4]:	 frequency = 2297338014 Hz (outlier)
+rank[5]:	 frequency = 2297338013 Hz (outlier)
+rank[6]:	 frequency = 2297338011 Hz (outlier)
+rank[7]:	 frequency = 2297338014 Hz (outlier)
+rank[8]:	 frequency = 2297338015 Hz (outlier)
+rank[9]:	 frequency = 2297338007 Hz (outlier)
+rank[10]:	 frequency = 2297338013 Hz (outlier)
+rank[11]:	 frequency = 2297338017 Hz (outlier)
+rank[12]:	 frequency = 2297338016 Hz (outlier)
+rank[13]:	 frequency = 2297338015 Hz (outlier)
+rank[14]:	 frequency = 2297338013 Hz (outlier)
+rank[15]:	 frequency = 2297338015 Hz (outlier)
+rank[16]:	 frequency = 2297338013 Hz (outlier)
+rank[17]:	 frequency = 2297338015 Hz (outlier)
+rank[18]:	 frequency = 2297338015 Hz (outlier)
+rank[19]:	 frequency = 2297338016 Hz (outlier)
+rank[20]:	 frequency = 2297338015 Hz (outlier)
+rank[21]:	 frequency = 2297338012 Hz (outlier)
+rank[22]:	 frequency = 2297338014 Hz (outlier)
+rank[23]:	 frequency = 2297338011 Hz (outlier)
+rank[24]:	 frequency = 2297338013 Hz (outlier)
+rank[25]:	 frequency = 2297338013 Hz (outlier)
+rank[26]:	 frequency = 2297338013 Hz (outlier)
+rank[27]:	 frequency = 2297338009 Hz (outlier)
+rank[28]:	 frequency = 2297338014 Hz (outlier)
+rank[29]:	 frequency = 2297338013 Hz (outlier)
+rank[30]:	 frequency = 2297338009 Hz (outlier)
+rank[31]:	 frequency = 2297338012 Hz (outlier)
+rank[32]:	 frequency = 2294685090 Hz (outlier)
+rank[33]:	 frequency = 2294685089 Hz (outlier)
+rank[34]:	 frequency = 2294685087 Hz (outlier)
+rank[35]:	 frequency = 2294685085 Hz (outlier)
+rank[36]:	 frequency = 2294685091 Hz (outlier)
+rank[37]:	 frequency = 2294685095 Hz (outlier)
+rank[38]:	 frequency = 2294685091 Hz (outlier)
+rank[39]:	 frequency = 2294685090 Hz (outlier)
+rank[40]:	 frequency = 2294685086 Hz (outlier)
+rank[41]:	 frequency = 2294685090 Hz (outlier)
+rank[42]:	 frequency = 2294685086 Hz (outlier)
+rank[43]:	 frequency = 2294685084 Hz (outlier)
+rank[44]:	 frequency = 2294685087 Hz (outlier)
+rank[45]:	 frequency = 2294685085 Hz (outlier)
+rank[46]:	 frequency = 2294685091 Hz (outlier)
+rank[47]:	 frequency = 2294685078 Hz (outlier)
+rank[48]:	 frequency = 2294685082 Hz (outlier)
+rank[49]:	 frequency = 2294685085 Hz (outlier)
+rank[50]:	 frequency = 2294685089 Hz (outlier)
+rank[51]:	 frequency = 2294685091 Hz (outlier)
+rank[52]:	 frequency = 2294685083 Hz (outlier)
+rank[53]:	 frequency = 2294685092 Hz (outlier)
+rank[54]:	 frequency = 2294685086 Hz (outlier)
+rank[55]:	 frequency = 2294685090 Hz (outlier)
+rank[56]:	 frequency = 2294685090 Hz (outlier)
+rank[57]:	 frequency = 2294685085 Hz (outlier)
+rank[58]:	 frequency = 2294685088 Hz (outlier)
+rank[59]:	 frequency = 2294685084 Hz (outlier)
+rank[60]:	 frequency = 2294685088 Hz (outlier)
+rank[61]:	 frequency = 2294685091 Hz (outlier)
+rank[62]:	 frequency = 2294685089 Hz (outlier)
+rank[63]:	 frequency = 2294685086 Hz (outlier)
+rank[64]:	 frequency = 2294686022 Hz (outlier)
+rank[65]:	 frequency = 2294686025 Hz (outlier)
+rank[66]:	 frequency = 2294686031 Hz (outlier)
+rank[67]:	 frequency = 2294686031 Hz (outlier)
+rank[68]:	 frequency = 2294686031 Hz (outlier)
+rank[69]:	 frequency = 2294686028 Hz (outlier)
+rank[70]:	 frequency = 2294686031 Hz (outlier)
+rank[71]:	 frequency = 2294686029 Hz (outlier)
+rank[72]:	 frequency = 2294686024 Hz (outlier)
+rank[73]:	 frequency = 2294686030 Hz (outlier)
+rank[74]:	 frequency = 2294686029 Hz (outlier)
+rank[75]:	 frequency = 2294686030 Hz (outlier)
+rank[76]:	 frequency = 2294686028 Hz (outlier)
+rank[77]:	 frequency = 2294686026 Hz (outlier)
+rank[78]:	 frequency = 2294686026 Hz (outlier)
+rank[79]:	 frequency = 2294686030 Hz (outlier)
+rank[80]:	 frequency = 2294686027 Hz (outlier)
+rank[81]:	 frequency = 2294686028 Hz (outlier)
+rank[82]:	 frequency = 2294686031 Hz (outlier)
+rank[83]:	 frequency = 2294686029 Hz (outlier)
+rank[84]:	 frequency = 2294686021 Hz (outlier)
+rank[85]:	 frequency = 2294686027 Hz (outlier)
+rank[86]:	 frequency = 2294686029 Hz (outlier)
+rank[87]:	 frequency = 2294686027 Hz (outlier)
+rank[88]:	 frequency = 2294686022 Hz (outlier)
+rank[89]:	 frequency = 2294686024 Hz (outlier)
+rank[90]:	 frequency = 2294686028 Hz (outlier)
+rank[91]:	 frequency = 2294686024 Hz (outlier)
+rank[92]:	 frequency = 2294686031 Hz (outlier)
+rank[93]:	 frequency = 2294686023 Hz (outlier)
+rank[94]:	 frequency = 2294686020 Hz (outlier)
+rank[95]:	 frequency = 2294686026 Hz (outlier)
+rank[96]:	 frequency = 2294686029 Hz (outlier)
+rank[97]:	 frequency = 2294686025 Hz (outlier)
+rank[98]:	 frequency = 2294686029 Hz (outlier)
+rank[99]:	 frequency = 2294686029 Hz (outlier)
+rank[100]:	 frequency = 2294686031 Hz (outlier)
+rank[101]:	 frequency = 2294686031 Hz (outlier)
+rank[102]:	 frequency = 2294686031 Hz (outlier)
+rank[103]:	 frequency = 2294686029 Hz (outlier)
+rank[104]:	 frequency = 2294686030 Hz (outlier)
+rank[105]:	 frequency = 2294686030 Hz (outlier)
+rank[106]:	 frequency = 2294686031 Hz (outlier)
+rank[107]:	 frequency = 2294686024 Hz (outlier)
+rank[108]:	 frequency = 2294686027 Hz (outlier)
+rank[109]:	 frequency = 2294686024 Hz (outlier)
+rank[110]:	 frequency = 2294686031 Hz (outlier)
+rank[111]:	 frequency = 2294686024 Hz (outlier)
+rank[112]:	 frequency = 2294686027 Hz (outlier)
+rank[113]:	 frequency = 2294686033 Hz (outlier)
+rank[114]:	 frequency = 2294686032 Hz (outlier)
+rank[115]:	 frequency = 2294686025 Hz (outlier)
+rank[116]:	 frequency = 2294686025 Hz (outlier)
+rank[117]:	 frequency = 2294686030 Hz (outlier)
+rank[118]:	 frequency = 2294686028 Hz (outlier)
+rank[119]:	 frequency = 2294686030 Hz (outlier)
+rank[120]:	 frequency = 2294686027 Hz (outlier)
+rank[121]:	 frequency = 2294686031 Hz (outlier)
+rank[122]:	 frequency = 2294686027 Hz (outlier)
+rank[123]:	 frequency = 2294686029 Hz (outlier)
+rank[124]:	 frequency = 2294686031 Hz (outlier)
+rank[125]:	 frequency = 2294686032 Hz (outlier)
+rank[126]:	 frequency = 2294686030 Hz (outlier)
+rank[127]:	 frequency = 2294686030 Hz (outlier)
