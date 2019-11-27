@@ -1,18 +1,9 @@
 BASE=$HOME/CMP223
 CONTROL_FILE_OUTPUT=$BASE/LOGS/env_info.org
 
-#Collect system information
-##################################################
-# Preambule of the output file
-echo "#+TITLE: $title" >> $CONTROL_FILE_OUTPUT
-echo "#+DATE: $(eval date)" >> $CONTROL_FILE_OUTPUT
-echo "#+AUTHOR: $(eval whoami)" >> $CONTROL_FILE_OUTPUT
-echo "#+MACHINE: $(eval hostname)" >> $CONTROL_FILE_OUTPUT
-echo "#+FILE: $(eval basename $CONTROL_FILE_OUTPUT)" >> $CONTROL_FILE_OUTPUT
-
 ##################################################
 # Collecting metadata
-echo "* MACHINE INFO:" >> $CONTROL_FILE_OUTPUT
+echo "* MACHINE INFO $hostname:" >> $CONTROL_FILE_OUTPUT
 
 echo "** PEOPLE LOGGED WHEN EXPERIMENT STARTED:" >> $CONTROL_FILE_OUTPUT
 who >> $CONTROL_FILE_OUTPUT

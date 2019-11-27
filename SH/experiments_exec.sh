@@ -62,6 +62,7 @@ APP_TEST_INTEL=PingPong
 START=`date +"%d-%m-%Y.%Hh%Mm%Ss"`
 OUTPUT_APPS_EXEC=$LOGS/apps_exec.$START.csv
 OUTPUT_INTEL_EXEC=$LOGS/intel.$START.csv
+CONTROL_FILE_OUTPUT=$BASE/LOGS/env_info.org
 PARTITION=(hype2 hype3 hype4 hype5)
 
 #############################################################################################################
@@ -79,6 +80,13 @@ mkdir -p $TRACE
 #############################################################################################################
 #################################Step 3: Collect the System Information######################################
 #############################################################################################################
+
+echo "#+TITLE: System Information" >> $CONTROL_FILE_OUTPUT
+echo "#+DATE: $(eval date)" >> $CONTROL_FILE_OUTPUT
+echo "#+AUTHOR: $(eval whoami)" >> $CONTROL_FILE_OUTPUT
+echo "#+MACHINE: $(eval hostname)" >> $CONTROL_FILE_OUTPUT
+echo "#+FILE: $(eval basename $CONTROL_FILE_OUTPUT)" >> $CONTROL_FILE_OUTPUT
+echo "" >> $CONTROL_FILE_OUTPUT
 
 #Executes the system information collector script
 for (( i = 0; i < 4; i++ )); do
