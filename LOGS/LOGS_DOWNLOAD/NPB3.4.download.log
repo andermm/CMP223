@@ -1,0 +1,31 @@
+--2019-11-22 17:14:49--  https://www.nas.nasa.gov/assets/npb/NPB3.4.tar.gz
+Resolving www.nas.nasa.gov (www.nas.nasa.gov)... 198.9.3.30, 2001:4d0:6318:903:198:9:3:30
+Connecting to www.nas.nasa.gov (www.nas.nasa.gov)|198.9.3.30|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  Date: Fri, 22 Nov 2019 20:14:52 GMT
+  Server: Apache
+  X-Frame-Options: SAMEORIGIN
+  Strict-Transport-Security: max-age=31536000
+  Last-Modified: Thu, 04 Apr 2019 18:49:32 GMT
+  ETag: "144076a-66a30-585b8d4b0020b"
+  Accept-Ranges: bytes
+  Content-Length: 420400
+  Keep-Alive: timeout=5, max=100
+  Connection: Keep-Alive
+  Content-Type: application/x-gzip
+Length: 420400 (411K) [application/x-gzip]
+Saving to: ‘NPB3.4.tar.gz’
+
+     0K .......... .......... .......... .......... .......... 12% 81,1K 4s
+    50K .......... .......... .......... .......... .......... 24%  122K 3s
+   100K .......... .......... .......... .......... .......... 36%  243K 2s
+   150K .......... .......... .......... .......... .......... 48%  243K 2s
+   200K .......... .......... .......... .......... .......... 60%  244K 1s
+   250K .......... .......... .......... .......... .......... 73% 35,3M 1s
+   300K .......... .......... .......... .......... .......... 85%  243K 0s
+   350K .......... .......... .......... .......... .......... 97% 66,1M 0s
+   400K ..........                                            100% 51,5M=1,9s
+
+2019-11-22 17:14:54 (222 KB/s) - ‘NPB3.4.tar.gz’ saved [420400/420400]
+
