@@ -1,10 +1,10 @@
-#+TITLE: 
 #+DATE: Fri Nov 22 16:44:05 -03 2019
 #+AUTHOR: ammaliszewski
-#+MACHINE: hype2
 #+FILE: env_info.org
-* MACHINE INFO:
+
+* MACHINE INFO hype2:
 ** PEOPLE LOGGED WHEN EXPERIMENT STARTED:
+   
 ############################################
 ** ENVIRONMENT VARIABLES:
 LC_MEASUREMENT=pt_BR.UTF-8
@@ -4031,12 +4031,7 @@ cat /proc/sys/net/ipv4/tcp_wmem
 4096	16384	4194304
 cat /proc/sys/net/ipv4/tcp_mem
 1539090	2052120	3078180
-#+TITLE: 
-#+DATE: Fri Nov 22 16:44:06 -03 2019
-#+AUTHOR: ammaliszewski
-#+MACHINE: hype3
-#+FILE: env_info.org
-* MACHINE INFO:
+* MACHINE INFO hype3:
 ** PEOPLE LOGGED WHEN EXPERIMENT STARTED:
 ############################################
 ** ENVIRONMENT VARIABLES:
@@ -8081,12 +8076,7 @@ cat /proc/sys/net/ipv4/tcp_wmem
 4096	16384	4194304
 cat /proc/sys/net/ipv4/tcp_mem
 1539090	2052120	3078180
-#+TITLE: 
-#+DATE: Fri Nov 22 16:44:07 -03 2019
-#+AUTHOR: ammaliszewski
-#+MACHINE: hype4
-#+FILE: env_info.org
-* MACHINE INFO:
+* MACHINE INFO hype4:
 ** PEOPLE LOGGED WHEN EXPERIMENT STARTED:
 ############################################
 ** ENVIRONMENT VARIABLES:
@@ -12495,12 +12485,7 @@ cat /proc/sys/net/ipv4/tcp_wmem
 4096	16384	4194304
 cat /proc/sys/net/ipv4/tcp_mem
 1539090	2052120	3078180
-#+TITLE: 
-#+DATE: Fri Nov 22 16:44:08 -03 2019
-#+AUTHOR: ammaliszewski
-#+MACHINE: hype5
-#+FILE: env_info.org
-* MACHINE INFO:
+* MACHINE INFO hype5:
 ** PEOPLE LOGGED WHEN EXPERIMENT STARTED:
 ############################################
 ** ENVIRONMENT VARIABLES:
