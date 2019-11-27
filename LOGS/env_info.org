@@ -1,6 +1,6 @@
+#+TITLE: System Information
 #+DATE: Fri Nov 22 16:44:05 -03 2019
 #+AUTHOR: ammaliszewski
-#+FILE: env_info.org
 
 * MACHINE INFO hype2:
 ** PEOPLE LOGGED WHEN EXPERIMENT STARTED:
