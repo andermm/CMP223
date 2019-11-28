@@ -493,7 +493,7 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
 [[file:R/PLOTS/Bandwidth.png]]
 
 *** FT-EP-IS-SP
-#+begin_src R :results output graphics :file R/PLOTS/FT_EP_IS_SP.png :exports both :width 800 :height 600 :session *R*
+#+begin_src R :results output graphics :file R/PLOTS/FT_EP_IS_SP.png :exports both :width 800 :height 400 :session *R*
 try <- c(exec_ft="FT", exec_sp="SP",  exec_ep="EP", exec_is="IS")
 try2 <- c(exec_ft="128", exec_sp="144",  exec_ep="128", exec_is="128")
 df_apps$interface <- factor(df_apps$interface,
@@ -529,7 +529,7 @@ theme(legend.position = "top",
 [[file:R/PLOTS/FT_EP_IS_SP.png]]
 
 *** MG-CG-LU-BT
-#+begin_src R :results output graphics :file R/PLOTS/MG_CG_LU_BT.png :exports both :width 800 :height 600 :session *R*
+#+begin_src R :results output graphics :file R/PLOTS/MG_CG_LU_BT.png :exports both :width 800 :height 400 :session *R*
 try <- c(exec_mg="MG", exec_cg="CG",  exec_lu="LU", exec_bt="BT")
 try2 <- c(exec_mg="128", exec_cg="128",  exec_lu="128", exec_bt="144")
 df_apps$interface <- factor(df_apps$interface,
@@ -564,9 +564,9 @@ theme(legend.position = "top",
 [[file:R/PLOTS/MG_CG_LU_BT.png]]
 
 *** Alya-IMB(160 Procs)
-#+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.png :exports both :width 800 :height 600 :session *R*  
+#+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.png :exports both :width 800 :height 400 :session *R*  
 try <- c(exec_alya="Alya",exec_imb_memory="ImbBench-Memory\n8Level", exec_imb_CPU="ImbBench-CPU\n8Level")
-try2 <- c(exec_alya="160", exec_imb_memory="160",  exec_imb_CPU="160")
+try2 <- c(exec_alya="160", exec_imb_memory="160", exec_imb_CPU="160")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
@@ -583,7 +583,7 @@ theme(legend.position = "top",
       legend.spacing = unit(100, "line"),
       plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
       legend.margin=margin(c(0, 0, -8, 0)),
-      axis.text.x = element_text(size =16, color = "black"),xs
+      axis.text.x = element_text(size =16, color = "black"),
       axis.text.y = element_text(size =16, color = "black"),
       axis.title=element_text(size=18), 
       legend.title = element_blank(),
