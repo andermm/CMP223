@@ -346,6 +346,15 @@ df_intel_band
 #+RESULTS:
 #+begin_example
 
+── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 3.2.1     ✔ purrr   0.3.2
+✔ tibble  2.1.3     ✔ dplyr   0.8.3
+✔ tidyr   1.0.0     ✔ stringr 1.4.0
+✔ readr   1.3.1     ✔ forcats 0.4.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+
 Parsed with column specification:
 cols(
   apps = col_character(),
@@ -483,35 +492,43 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
 #+RESULTS:
 [[file:R/PLOTS/Bandwidth.png]]
 
-*** BT-SP(144 Procs)
-#+begin_src R :results output graphics :file R/PLOTS/BT_SP.png :exports both :width 600 :height 400 :session *R*
-try <- c(exec_bt="BT", exec_sp="SP")
+*** BT-EP-IS-SP
+#+begin_src R :results output graphics :file R/PLOTS/BT_EP_IS_SP.png :exports both :width 800 :height 600 :session *R*
+try <- c(exec_bt="BT", exec_sp="SP",  exec_ep="EP", exec_is="IS")
+try2 <- c(exec_bt="144", exec_sp="144",  exec_ep="128", exec_is="128")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
-ggplot(df_apps[df_apps$apps %in% c("exec_bt", "exec_sp"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.3) +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.08, position = position_dodge(.3)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_bt", "exec_sp", "exec_ep", "exec_is"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.6) +
+geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=0.2, position = position_dodge(.6)) +
 theme_bw() +
 scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE") ,
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
 theme(legend.position = "top", 
-      legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
-      axis.text.x = element_blank(),
+      legend.key = element_rect(colour = "grey"),
+      legend.key.height = unit(0.5, "line"),
+      legend.key.width = unit(4, "line"),
+      legend.spacing = unit(100, "line"),
+      plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
+      legend.margin=margin(c(0, 0, -8, 0)),
+      axis.text.x = element_text(size =16, color = "black"),
       axis.text.y = element_text(size =16, color = "black"),
       axis.title=element_text(size=18), 
       legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 18)) +
-      labs(x="144 MPI Processes", y="Execution Time in Seconds") +
-      facet_wrap(.~apps, scales="free", labeller=labeller(apps=try)) +
-      theme(strip.text.x=element_text(size=18))
+      scale_x_discrete(labels=try2) +
+      labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+      facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
+      theme(strip.text.x=element_text(size=18),
+            strip.background=element_rect(fill='#F5F5F5'))
      
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/BT_SP.png]]
+[[file:R/PLOTS/BT_EP_IS_SP.png]]
 
-*** EP-IS-MG(128 Procs)
+*** MG-CG-LU-FT
 #+begin_src R :results output graphics :file R/PLOTS/EP_IS_MG.png :exports both :width 600 :height 400 :session *R* 
 try <- c(exec_ep="EP", exec_is="IS",exec_mg= "MG")
 df_apps$interface <- factor(df_apps$interface,
