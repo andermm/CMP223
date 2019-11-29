@@ -559,7 +559,7 @@ theme(legend.position = "top",
 #+RESULTS:
 [[file:R/PLOTS/MG_CG_LU_BT.png]]
 
-**** Alya-IMB(160 Procs)
+**** Alya-IMB
 #+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.png :exports both :width 800 :height 400 :session *R*  
 try <- c(exec_alya="Alya",exec_imb_memory="ImbBench-Memory\n8Level", exec_imb_CPU="ImbBench-CPU\n8Level")
 try2 <- c(exec_alya="160", exec_imb_memory="160", exec_imb_CPU="160")
@@ -673,7 +673,7 @@ df.compute %>%
   ggplot(aes(x = Rank, y = Time, fill=Value)) +
   geom_bar(stat='identity', width=1) +
   scale_fill_manual(values=c("#303030", "#BEBEBE")) +
-  scale_x_continuous(breaks=c(0,40,80,120,159)) +
+  scale_x_continuous(breaks=c(0,53,106,159)) +
   theme_bw() +
   theme(legend.position="top",
         legend.key = element_rect(colour = "grey"),
@@ -693,3 +693,6 @@ df.compute %>%
         strip.background=element_rect(fill='#F5F5F5'))
 
 #+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/Alya-IMB.charac.png]]
