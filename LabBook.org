@@ -598,6 +598,7 @@ theme(legend.position = "top",
 [[file:R/PLOTS/Alya-IMB.png]]
 *** Characterization Plots
 **** Alya-IMB
+
 #+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.charac.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 suppressMessages(library(tidyverse))
@@ -696,3 +697,125 @@ df.compute %>%
 
 #+RESULTS:
 [[file:R/PLOTS/Alya-IMB.charac.png]]
+**** FT-EP-IS-SP
+#+begin_src R :results output graphics :file R/PLOTS/FT-EP-IS-SP.charac.png :exports both :width 800 :height 400 :session *R* 
+options(crayon.enabled=FALSE)
+suppressMessages(library(tidyverse))
+df.ft <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "FT") %>%
+  select(Rank, everything())
+df.ft
+
+df.ep <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "EP") %>%
+  select(Rank, everything())
+df.ep
+
+df.is <- read_csv("LOGS/TRACE/charac_is.eth/charac_is.eth.csv", col_names = FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "IS") %>%
+  select(Rank, everything())
+df.is
+
+df.sp <- read_csv("LOGS/TRACE/charac_sp.eth/charac_sp.eth.csv", col_names = FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "SP") %>%
+  select(Rank, everything())
+df.sp
+
+df <- rbind(df.ft, df.ep, df.is, df.sp)
+
+df %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
+  summarize(MPI.Time = sum(Duration),
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
+
+df %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
+
+df %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
+
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
+
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
+
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0, 63, 127),
+    c(0, 63, 127),
+    c(0, 63, 127),
+    c(0, 71, 143)
+  )
+}
+
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
+  scale_fill_manual(values=c("#303030", "#BEBEBE")) +
+  theme_bw() +
+  theme(legend.position="top",
+        legend.key = element_rect(colour = "grey"),
+        legend.key.height = unit(0.5, "line"),
+        legend.key.width = unit(4, "line"),
+        legend.spacing = unit(100, "line"),
+        plot.margin = unit(x = c(0, 0.2, 0, 0), units = "cm"),
+        legend.margin=margin(c(0, 0, -8, 0)),
+        axis.text.x = element_text(size =16, color = "black"),
+        axis.text.y = element_text(size =16, color = "black"),
+        axis.title=element_text(size=18), 
+        legend.title = element_blank(),
+        legend.text = element_text(color = "black", size = 18)) +
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
+        scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
+
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/FT-EP-IS-SP.charac.png]]
