@@ -597,94 +597,98 @@ theme(legend.position = "top",
 #+RESULTS:
 [[file:R/PLOTS/Alya-IMB.png]]
 *** Characterization Plots
-**** IMB-CPU
-#+begin_src R :results output graphics :file R/PLOTS/IMB-CPU.png :exports both :width 800 :height 400 :session *R* 
-  library(tidyverse)
-  df.imb.CPU <- read_csv("LOGS/TRACE/charac_imb_CPU.eth.csv", col_names = FALSE) %>%
-    mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-    select(-X1, -X2, -X3, -X7) %>%
-    rename(Start = X4,
-           End = X5,
-           Duration = X6,
-           Value = X8) %>%
-    mutate(Rank = as.integer(Rank)) %>%
-    select(Rank, everything())
-  df.imb.CPU
-  
-  df.imb.mem <- read_csv("LOGS/TRACE/charac_imb_memory.eth.csv", col_names = FALSE) %>%
-    mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-    select(-X1, -X2, -X3, -X7) %>%
-    rename(Start = X4,
-           End = X5,
-           Duration = X6,
-           Value = X8) %>%
-    mutate(Rank = as.integer(Rank)) %>%
-    select(Rank, everything())
-  df.imb.mem
+**** Alya-IMB
+#+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.charac.png :exports both :width 800 :height 400 :session *R* 
+library(tidyverse)
+df.imb.CPU <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv", col_names = FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "ImbBench-CPU\n8Level") %>%
+  select(Rank, everything())
+df.imb.CPU
 
-  df.imb.CPU %>%
-    filter(Value != "MPI_Finalize") %>%
-    group_by(Rank) %>%
-    summarize(MPI.Time = sum(Duration),
-              Full.Time = max(End) - min(Start)) %>%
-    mutate(Compute.Time = Full.Time - MPI.Time) %>%
-    mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
-    arrange(Rank) -> df.imb.CPU.timings;
-  df.imb.CPU.timings
-  
- df.imb.mem %>%
-    filter(Value != "MPI_Finalize") %>%
-    group_by(Rank) %>%
-    summarize(MPI.Time = sum(Duration),
-              Full.Time = max(End) - min(Start)) %>%
-    mutate(Compute.Time = Full.Time - MPI.Time) %>%
-    mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
-    arrange(Rank) -> df.imb.CPU.timings;
-  df.imb.mem.timings
-  
-  df.imb.CPU %>%
-    group_by(Rank) %>%
-    summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
-    mutate(Value = "Computing") -> df.imb.CPU.compute
-  df.imb.CPU.compute
-  
-  df.imb.mem %>%
-    group_by(Rank) %>%
-    summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
-    mutate(Value = "Computing") -> df.imb.CPU.compute
-  df.imb.mem.compute
-  
-  df.imb.CPU %>%
-    filter(Value != "MPI_Finalize") %>%
-    group_by(Rank,Value) %>%
-    summarize(Time = sum(Duration)) -> df.imb.CPU.communication;
-  
-  df.imb.CPU.communication$Value <- as.character(df.imb.CPU.communication$Value)
-  df.imb.CPU.communication$Value [grepl('MPI_*', df.imb.CPU.communication$Value)] <- 'MPI'
-  
-  df.imb.CPU.communication %>%
-    group_by(Rank, Value) %>%
-    summarize(Time = sum(Time)) -> df.imb.CPU.communication;
-  
-  
-  df.imb.CPU.compute %>%
-    bind_rows(df.imb.CPU.communication) %>%
-    ggplot(aes(x = Rank, y = Time, fill=Value)) +
-    geom_bar(stat='identity', width=1) +
-    scale_fill_brewer(palette="Set1") +
-    scale_x_continuous(breaks=c(0,40,80,120,159)) +
-    theme_bw(base_size = 22) +
-    theme(legend.position="top",
-          legend.title = element_blank(),
-          legend.key = element_rect(colour = "grey"),
-          legend.key.height = unit(0.5, "line"),
-          legend.key.width = unit(4, "line"),
-          legend.spacing = unit(100, "line"),
-          plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
-          legend.margin=margin(c(0, 0, -8, 0))) +
-    ylim(0,NA)
+df.imb.mem <- read_csv("LOGS/TRACE/charac_imb_memory.eth/charac_imb_memory.eth.csv", col_names = FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "ImbBench-Memory\n8Level") %>%
+  select(Rank, everything())
+df.imb.mem
+
+df.alya <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_names = FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "Alya") %>%
+  select(Rank, everything())
+df.alya
+
+df <- rbind(df.imb.CPU, df.imb.mem, df.alya)
+
+df %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
+  summarize(MPI.Time = sum(Duration),
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
+
+df %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
+
+df %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
+
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
+
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
+
+
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
+  scale_fill_manual(values=c("#303030", "#BEBEBE")) +
+  scale_x_continuous(breaks=c(0,40,80,120,159)) +
+  theme_bw() +
+  theme(legend.position="top",
+        legend.key = element_rect(colour = "grey"),
+        legend.key.height = unit(0.5, "line"),
+        legend.key.width = unit(4, "line"),
+        legend.spacing = unit(100, "line"),
+        plot.margin = unit(x = c(0, 0.2, 0, 0), units = "cm"),
+        legend.margin=margin(c(0, 0, -8, 0)),
+        axis.text.x = element_text(size =16, color = "black"),
+        axis.text.y = element_text(size =16, color = "black"),
+        axis.title=element_text(size=18), 
+        legend.title = element_blank(),
+        legend.text = element_text(color = "black", size = 18)) +
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free") +
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
 
 #+end_src
-
-#+RESULTS:
-[[file:R/PLOTS/IMB-CPU.png]]
