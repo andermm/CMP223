@@ -599,7 +599,8 @@ theme(legend.position = "top",
 *** Characterization Plots
 **** Alya-IMB
 #+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.charac.png :exports both :width 800 :height 400 :session *R* 
-library(tidyverse)
+options(crayon.enabled=FALSE)
+suppressMessages(library(tidyverse))
 df.imb.CPU <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv", col_names = FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
