@@ -305,7 +305,7 @@ created according to the number of processes, in which BT and SP have
 *** Read CSVs
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
-library("tidyverse")
+suppressMessages(library("tidyverse"));
 df_intel <- read_csv("LOGS/intel.22-11-2019.16h44m04s.csv")
 df_apps <- read_csv("LOGS/apps_exec.22-11-2019.16h44m04s.csv")
     
@@ -345,15 +345,6 @@ df_intel_band
 
 #+RESULTS:
 #+begin_example
-
-── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
-✔ ggplot2 3.2.1     ✔ purrr   0.3.2
-✔ tibble  2.1.3     ✔ dplyr   0.8.3
-✔ tidyr   1.0.0     ✔ stringr 1.4.0
-✔ readr   1.3.1     ✔ forcats 0.4.0
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
 
 Parsed with column specification:
 cols(
@@ -434,7 +425,8 @@ cols(
 10 eth         512  85.2   2.98   1.63       30
 # … with 59 more rows
 #+end_example
-*** PingPong - Latency
+*** Execution Time Plots
+**** PingPong - Latency
 #+begin_src R :results output graphics :file R/PLOTS/PingPong.png :exports both :width 800 :height 600 :session *R* 
 ggplot(df_intel_latency,aes(x=bytes, y=average)) +
   geom_line(aes(color = interface), alpha = 1) +
@@ -452,18 +444,20 @@ ggplot(df_intel_latency,aes(x=bytes, y=average)) +
                     breaks=c("ib", "ipoib", "eth"),
                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
     theme (legend.position = c(0.15, 0.85),
-         legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
-         axis.title=element_text(size=18), 
-         legend.title = element_blank(),
-         legend.text = element_text(color = "black", size = 18),
-         axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
-         axis.text.y = element_text(size =16, color = "black"))
+           legend.background = element_rect(color = "black", size = 0.5, linetype = "solid"),
+           plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
+           legend.margin=margin(c(0, 0, -8, 0)),
+           axis.title=element_text(size=18), 
+           legend.title = element_blank(),
+           legend.text = element_text(color = "black", size = 18),
+           axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
+           axis.text.y = element_text(size =16, color = "black"))
 #+end_src
 
 #+RESULTS:
 [[file:R/PLOTS/PingPong.png]]
 
-*** PingPong - Bandwidth
+**** PingPong - Bandwidth
 #+begin_src R :results output graphics :file R/PLOTS/Bandwidth.png :exports both :width 800 :height 600 :session *R* 
 ggplot(df_intel_band,aes(x=bytes, y=average)) +
   geom_line(aes(col = interface), alpha = 1) +
@@ -473,15 +467,17 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
                      labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +  
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
   theme_bw() +
-  scale_y_log10(breaks=c(0.1, 1, 10, 100, 1000, 10000)) +
+  scale_y_continuous(breaks=c(0,1000,2000,3000,4000,5000,6000,7000,8000)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
-  ylab('Average Bandwidth\n(Megabytes per Second in 10 Log Scale)') +
+  ylab('Average Bandwidth\n(Megabytes per Second)') +
   xlab('Message Size (Bytes)') +
   scale_colour_manual(values=c( "#BEBEBE", "#303030", "#888888"),
                     breaks=c("ib", "ipoib", "eth"),
                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
   theme (legend.position = c(0.15, 0.85),
          legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+          plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
+         legend.margin=margin(c(0, 0, -8, 0)),
          axis.title=element_text(size=18), 
          legend.title = element_blank(),
          legend.text = element_text(color = "black", size = 18),
@@ -492,7 +488,7 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
 #+RESULTS:
 [[file:R/PLOTS/Bandwidth.png]]
 
-*** FT-EP-IS-SP
+**** FT-EP-IS-SP
 #+begin_src R :results output graphics :file R/PLOTS/FT_EP_IS_SP.png :exports both :width 800 :height 400 :session *R*
 try <- c(exec_ft="FT", exec_sp="SP",  exec_ep="EP", exec_is="IS")
 try2 <- c(exec_ft="128", exec_sp="144",  exec_ep="128", exec_is="128")
@@ -528,7 +524,7 @@ theme(legend.position = "top",
 #+RESULTS:
 [[file:R/PLOTS/FT_EP_IS_SP.png]]
 
-*** MG-CG-LU-BT
+**** MG-CG-LU-BT
 #+begin_src R :results output graphics :file R/PLOTS/MG_CG_LU_BT.png :exports both :width 800 :height 400 :session *R*
 try <- c(exec_mg="MG", exec_cg="CG",  exec_lu="LU", exec_bt="BT")
 try2 <- c(exec_mg="128", exec_cg="128",  exec_lu="128", exec_bt="144")
@@ -563,7 +559,7 @@ theme(legend.position = "top",
 #+RESULTS:
 [[file:R/PLOTS/MG_CG_LU_BT.png]]
 
-*** Alya-IMB(160 Procs)
+**** Alya-IMB(160 Procs)
 #+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.png :exports both :width 800 :height 400 :session *R*  
 try <- c(exec_alya="Alya",exec_imb_memory="ImbBench-Memory\n8Level", exec_imb_CPU="ImbBench-CPU\n8Level")
 try2 <- c(exec_alya="160", exec_imb_memory="160", exec_imb_CPU="160")
@@ -600,3 +596,95 @@ theme(legend.position = "top",
 
 #+RESULTS:
 [[file:R/PLOTS/Alya-IMB.png]]
+*** Characterization Plots
+**** IMB-CPU
+#+begin_src R :results output graphics :file R/PLOTS/IMB-CPU.png :exports both :width 800 :height 400 :session *R* 
+  library(tidyverse)
+  df.imb.CPU <- read_csv("LOGS/TRACE/charac_imb_CPU.eth.csv", col_names = FALSE) %>%
+    mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+    select(-X1, -X2, -X3, -X7) %>%
+    rename(Start = X4,
+           End = X5,
+           Duration = X6,
+           Value = X8) %>%
+    mutate(Rank = as.integer(Rank)) %>%
+    select(Rank, everything())
+  df.imb.CPU
+  
+  df.imb.mem <- read_csv("LOGS/TRACE/charac_imb_memory.eth.csv", col_names = FALSE) %>%
+    mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+    select(-X1, -X2, -X3, -X7) %>%
+    rename(Start = X4,
+           End = X5,
+           Duration = X6,
+           Value = X8) %>%
+    mutate(Rank = as.integer(Rank)) %>%
+    select(Rank, everything())
+  df.imb.mem
+
+  df.imb.CPU %>%
+    filter(Value != "MPI_Finalize") %>%
+    group_by(Rank) %>%
+    summarize(MPI.Time = sum(Duration),
+              Full.Time = max(End) - min(Start)) %>%
+    mutate(Compute.Time = Full.Time - MPI.Time) %>%
+    mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+    arrange(Rank) -> df.imb.CPU.timings;
+  df.imb.CPU.timings
+  
+ df.imb.mem %>%
+    filter(Value != "MPI_Finalize") %>%
+    group_by(Rank) %>%
+    summarize(MPI.Time = sum(Duration),
+              Full.Time = max(End) - min(Start)) %>%
+    mutate(Compute.Time = Full.Time - MPI.Time) %>%
+    mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+    arrange(Rank) -> df.imb.CPU.timings;
+  df.imb.mem.timings
+  
+  df.imb.CPU %>%
+    group_by(Rank) %>%
+    summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+    mutate(Value = "Computing") -> df.imb.CPU.compute
+  df.imb.CPU.compute
+  
+  df.imb.mem %>%
+    group_by(Rank) %>%
+    summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+    mutate(Value = "Computing") -> df.imb.CPU.compute
+  df.imb.mem.compute
+  
+  df.imb.CPU %>%
+    filter(Value != "MPI_Finalize") %>%
+    group_by(Rank,Value) %>%
+    summarize(Time = sum(Duration)) -> df.imb.CPU.communication;
+  
+  df.imb.CPU.communication$Value <- as.character(df.imb.CPU.communication$Value)
+  df.imb.CPU.communication$Value [grepl('MPI_*', df.imb.CPU.communication$Value)] <- 'MPI'
+  
+  df.imb.CPU.communication %>%
+    group_by(Rank, Value) %>%
+    summarize(Time = sum(Time)) -> df.imb.CPU.communication;
+  
+  
+  df.imb.CPU.compute %>%
+    bind_rows(df.imb.CPU.communication) %>%
+    ggplot(aes(x = Rank, y = Time, fill=Value)) +
+    geom_bar(stat='identity', width=1) +
+    scale_fill_brewer(palette="Set1") +
+    scale_x_continuous(breaks=c(0,40,80,120,159)) +
+    theme_bw(base_size = 22) +
+    theme(legend.position="top",
+          legend.title = element_blank(),
+          legend.key = element_rect(colour = "grey"),
+          legend.key.height = unit(0.5, "line"),
+          legend.key.width = unit(4, "line"),
+          legend.spacing = unit(100, "line"),
+          plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
+          legend.margin=margin(c(0, 0, -8, 0))) +
+    ylim(0,NA)
+
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/IMB-CPU.png]]
