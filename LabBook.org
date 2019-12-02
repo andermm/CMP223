@@ -307,8 +307,8 @@ created according to the number of processes, in which BT and SP have
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 suppressMessages(library("tidyverse"));
-df_intel <- read_csv("LOGS/intel.22-11-2019.16h44m04s.csv")
-df_apps <- read_csv("LOGS/apps_exec.22-11-2019.16h44m04s.csv")
+df_intel <- read_csv("LOGS/intel.22-11-2019.16h44m04s.csv", progress=FALSE)
+df_apps <- read_csv("LOGS/apps_exec.22-11-2019.16h44m04s.csv", progress=FALSE)
     
 df_apps %>%
       group_by(apps,interface) %>%
@@ -1215,145 +1215,6 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 
 #+RESULTS:
 [[file:R/PLOTS/FT.charac.percentage.png]]
-
-FT-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/FT.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
-options(crayon.enabled=FALSE)
-options(scipen = 999)
-suppressMessages(library(tidyverse))
-df.ft.ib <- read_csv("LOGS/TRACE/charac_ft.ib/charac_ft.ib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT.ib") %>%
-  select(Rank, everything())
-df.ft.ib
-
-df.ft.ib %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ft.ib
-
-df.ft.ib$Value <- as.character(df.ft.ib$Value)
-df.ft.ib$Value [grepl('MPI_*', df.ft.ib$Value)] <- 'MPI'
-
-df.ft.ib %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.ft.ib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ft.ib;
-df.percent.ft.ib
-
-df.ft.ib$Value <- as.character(df.ft.ib$Value)
-df.ft.ib$Value [grepl('MPI', df.ft.ib$Value)] <- 'Computing'
-
-df.ft.ib %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.ft.ib$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ft.ib
-
-df.ft.ipoib <- read_csv("LOGS/TRACE/charac_ft.ipoib/charac_ft.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT.ipoib") %>%
-  select(Rank, everything())
-df.ft.ipoib
-
-df.ft.ipoib %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ft.ipoib
-
-df.ft.ipoib$Value <- as.character(df.ft.ipoib$Value)
-df.ft.ipoib$Value [grepl('MPI_*', df.ft.ipoib$Value)] <- 'MPI'
-
-df.ft.ipoib %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.ft.ipoib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ft.ipoib;
-df.percent.ft.ipoib
-
-df.ft.ipoib$Value <- as.character(df.ft.ipoib$Value)
-df.ft.ipoib$Value [grepl('MPI', df.ft.ipoib$Value)] <- 'Computing'
-
-df.ft.ipoib %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.ft.ipoib$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ft.ipoib
-
-df.ft.eth <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT.eth") %>%
-  select(Rank, everything())
-df.ft.eth
-
-df.ft.eth %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ft.eth
-
-df.ft.eth$Value <- as.character(df.ft.eth$Value)
-df.ft.eth$Value [grepl('MPI_*', df.ft.eth$Value)] <- 'MPI'
-
-df.ft.eth %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.ft.eth$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ft.eth;
-df.percent.ft.eth
-
-df.ft.eth$Value <- as.character(df.ft.eth$Value)
-df.ft.eth$Value [grepl('MPI', df.ft.eth$Value)] <- 'Computing'
-
-df.ft.eth %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.ft.eth$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ft.eth
-
-df <- rbind(df.comp.ft.eth, df.comp.ft.ib, df.comp.ft.ipoib, df.percent.ft.eth, df.percent.ft.ib, df.percent.ft.ipoib)
-
-ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
-  geom_bar(position = "fill", stat = "identity", width = 0.3) +
-  scale_fill_manual(values=c("#303030", "#BEBEBE")) +
-  scale_y_continuous(labels = scales::percent_format()) +
-  theme_bw() +
-  theme(legend.position = "top",
-        legend.key = element_rect(colour = "grey"),
-        legend.key.height = unit(0.5, "line"),
-        legend.key.width = unit(4, "line"),
-        legend.spacing = unit(100, "line"),
-        plot.margin = unit(x = c(0, 0.2, 0, 0), units = "cm"),
-        legend.margin=margin(c(0, 0, -8, 0)),
-        axis.text.x = element_text(size =16, color = "black"),
-        axis.text.y = element_text(size =16, color = "black"),
-        axis.title=element_text(size=18), 
-        legend.title = element_blank(),
-        legend.text = element_text(color = "black", size = 18)) +
-  labs(x="Applications", y="Operation Percentage")
-
-#+end_src
-
-#+RESULTS:
-[[file:R/PLOTS/FT.charac.percentage.png]]
 ***** EP-Percentage
 #+begin_src R :results output graphics :file R/PLOTS/EP.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
@@ -2084,9 +1945,6 @@ df.bt %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.bt
 
-options(crayon.enabled=FALSE)
-options(scipen = 999)
-suppressMessages(library(tidyverse))
 df.mg <- read_csv("LOGS/TRACE/charac_mg.eth/charac_mg.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
@@ -2123,9 +1981,6 @@ df.mg %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.mg
 
-options(crayon.enabled=FALSE)
-options(scipen = 999)
-suppressMessages(library(tidyverse))
 df.cg <- read_csv("LOGS/TRACE/charac_cg.eth/charac_cg.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
@@ -2162,9 +2017,6 @@ df.cg %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.cg
 
-options(crayon.enabled=FALSE)
-options(scipen = 999)
-suppressMessages(library(tidyverse))
 df.lu <- read_csv("LOGS/TRACE/charac_lu.eth/charac_lu.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
@@ -3136,12 +2988,12 @@ df <- rbind(df.comp.alya,df.comp.imb_cpu,df.comp.imb_memory, df.percent.alya, df
 
 #+RESULTS:
 [[file:Alya-IMB.charac.percentage.png]]
-***** EP-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/EP.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+***** Alya-Percentage
+#+begin_src R :results output graphics :file R/PLOTS/Alya.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
-df.ep.ib <- read_csv("LOGS/TRACE/charac_ep.ib/charac_ep.ib.csv", col_names = FALSE, progress=FALSE) %>%
+df.alya.ib <- read_csv("LOGS/TRACE/charac_alya.ib/charac_alya.ib.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3149,35 +3001,35 @@ df.ep.ib <- read_csv("LOGS/TRACE/charac_ep.ib/charac_ep.ib.csv", col_names = FAL
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP.ib") %>%
+  mutate(App = "Alya.ib") %>%
   select(Rank, everything())
-df.ep.ib
+df.alya.ib
 
-df.ep.ib %>%
+df.alya.ib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ep.ib
+  summarize(Total = sum(End))  -> df.total.alya.ib
 
-df.ep.ib$Value <- as.character(df.ep.ib$Value)
-df.ep.ib$Value [grepl('MPI_*', df.ep.ib$Value)] <- 'MPI'
+df.alya.ib$Value <- as.character(df.alya.ib$Value)
+df.alya.ib$Value [grepl('MPI_*', df.alya.ib$Value)] <- 'MPI'
 
-df.ep.ib %>%
+df.alya.ib %>%
   group_by(Value,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.ep.ib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ep.ib;
-df.percent.ep.ib
+            Total = df.total.alya.ib$Total,
+            Percent=(MPI.Time*100)/Total) -> df.percent.alya.ib;
+df.percent.alya.ib
 
-df.ep.ib$Value <- as.character(df.ep.ib$Value)
-df.ep.ib$Value [grepl('MPI', df.ep.ib$Value)] <- 'Computing'
+df.alya.ib$Value <- as.character(df.alya.ib$Value)
+df.alya.ib$Value [grepl('MPI', df.alya.ib$Value)] <- 'Computing'
 
-df.ep.ib %>%
+df.alya.ib %>%
   group_by(Value,App) %>%
-  summarize(Total = df.total.ep.ib$Total,
+  summarize(Total = df.total.alya.ib$Total,
             MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ep.ib
+            Percent=(MPI.Time*100)/Total) -> df.comp.alya.ib
 
-df.ep.ipoib <- read_csv("LOGS/TRACE/charac_ep.ipoib/charac_ep.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+df.alya.ipoib <- read_csv("LOGS/TRACE/charac_alya.ipoib/charac_alya.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3185,35 +3037,35 @@ df.ep.ipoib <- read_csv("LOGS/TRACE/charac_ep.ipoib/charac_ep.ipoib.csv", col_na
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP.ipoib") %>%
+  mutate(App = "Alya.ipoib") %>%
   select(Rank, everything())
-df.ep.ipoib
+df.alya.ipoib
 
-df.ep.ipoib %>%
+df.alya.ipoib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ep.ipoib
+  summarize(Total = sum(End))  -> df.total.alya.ipoib
 
-df.ep.ipoib$Value <- as.character(df.ep.ipoib$Value)
-df.ep.ipoib$Value [grepl('MPI_*', df.ep.ipoib$Value)] <- 'MPI'
+df.alya.ipoib$Value <- as.character(df.alya.ipoib$Value)
+df.alya.ipoib$Value [grepl('MPI_*', df.alya.ipoib$Value)] <- 'MPI'
 
-df.ep.ipoib %>%
+df.alya.ipoib %>%
   group_by(Value,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.ep.ipoib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ep.ipoib;
-df.percent.ep.ipoib
+            Total = df.total.alya.ipoib$Total,
+            Percent=(MPI.Time*100)/Total) -> df.percent.alya.ipoib;
+df.percent.alya.ipoib
 
-df.ep.ipoib$Value <- as.character(df.ep.ipoib$Value)
-df.ep.ipoib$Value [grepl('MPI', df.ep.ipoib$Value)] <- 'Computing'
+df.alya.ipoib$Value <- as.character(df.alya.ipoib$Value)
+df.alya.ipoib$Value [grepl('MPI', df.alya.ipoib$Value)] <- 'Computing'
 
-df.ep.ipoib %>%
+df.alya.ipoib %>%
   group_by(Value,App) %>%
-  summarize(Total = df.total.ep.ipoib$Total,
+  summarize(Total = df.total.alya.ipoib$Total,
             MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ep.ipoib
+            Percent=(MPI.Time*100)/Total) -> df.comp.alya.ipoib
 
-df.ep.eth <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.alya.eth <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3221,35 +3073,35 @@ df.ep.eth <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP.eth") %>%
+  mutate(App = "Alya.eth") %>%
   select(Rank, everything())
-df.ep.eth
+df.alya.eth
 
-df.ep.eth %>%
+df.alya.eth %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ep.eth
+  summarize(Total = sum(End))  -> df.total.alya.eth
 
-df.ep.eth$Value <- as.character(df.ep.eth$Value)
-df.ep.eth$Value [grepl('MPI_*', df.ep.eth$Value)] <- 'MPI'
+df.alya.eth$Value <- as.character(df.alya.eth$Value)
+df.alya.eth$Value [grepl('MPI_*', df.alya.eth$Value)] <- 'MPI'
 
-df.ep.eth %>%
+df.alya.eth %>%
   group_by(Value,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.ep.eth$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ep.eth;
-df.percent.ep.eth
+            Total = df.total.alya.eth$Total,
+            Percent=(MPI.Time*100)/Total) -> df.percent.alya.eth;
+df.percent.alya.eth
 
-df.ep.eth$Value <- as.character(df.ep.eth$Value)
-df.ep.eth$Value [grepl('MPI', df.ep.eth$Value)] <- 'Computing'
+df.alya.eth$Value <- as.character(df.alya.eth$Value)
+df.alya.eth$Value [grepl('MPI', df.alya.eth$Value)] <- 'Computing'
 
-df.ep.eth %>%
+df.alya.eth %>%
   group_by(Value,App) %>%
-  summarize(Total = df.total.ep.eth$Total,
+  summarize(Total = df.total.alya.eth$Total,
             MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ep.eth
+            Percent=(MPI.Time*100)/Total) -> df.comp.alya.eth
 
-df <- rbind(df.comp.ep.eth, df.comp.ep.ib, df.comp.ep.ipoib, df.percent.ep.eth, df.percent.ep.ib, df.percent.ep.ipoib)
+df <- rbind(df.comp.alya.eth, df.comp.alya.ib, df.comp.alya.ipoib, df.percent.alya.eth, df.percent.alya.ib, df.percent.alya.ipoib)
 
 ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
   geom_bar(position = "fill", stat = "identity", width = 0.3) +
@@ -3271,12 +3123,12 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
   labs(x="Applications", y="Operation Percentage")
 
 #+end_src
-***** IS-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/IS.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+***** IMB-CPU-Percentage
+#+begin_src R :results output graphics :file R/PLOTS/imb_CPU.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
-df.is.ib <- read_csv("LOGS/TRACE/charac_is.ib/charac_is.ib.csv", col_names = FALSE, progress=FALSE) %>%
+df.imb_CPU.ib <- read_csv("LOGS/TRACE/charac_imb_CPU.ib/charac_imb_CPU.ib.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3284,35 +3136,35 @@ df.is.ib <- read_csv("LOGS/TRACE/charac_is.ib/charac_is.ib.csv", col_names = FAL
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IS.ib") %>%
+  mutate(App = "IMB_CPU.ib") %>%
   select(Rank, everything())
-df.is.ib
+df.imb_CPU.ib
 
-df.is.ib %>%
+df.imb_CPU.ib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.is.ib
+  summarize(Total = sum(End))  -> df.total.imb_CPU.ib
 
-df.is.ib$Value <- as.character(df.is.ib$Value)
-df.is.ib$Value [grepl('MPI_*', df.is.ib$Value)] <- 'MPI'
+df.imb_CPU.ib$Value <- as.character(df.imb_CPU.ib$Value)
+df.imb_CPU.ib$Value [grepl('MPI_*', df.imb_CPU.ib$Value)] <- 'MPI'
 
-df.is.ib %>%
+df.imb_CPU.ib %>%
   group_by(Value,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.is.ib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.is.ib;
-df.percent.is.ib
+            Total = df.total.imb_CPU.ib$Total,
+            Percent=(MPI.Time*100)/Total) -> df.percent.imb_CPU.ib;
+df.percent.imb_CPU.ib
 
-df.is.ib$Value <- as.character(df.is.ib$Value)
-df.is.ib$Value [grepl('MPI', df.is.ib$Value)] <- 'Computing'
+df.imb_CPU.ib$Value <- as.character(df.imb_CPU.ib$Value)
+df.imb_CPU.ib$Value [grepl('MPI', df.imb_CPU.ib$Value)] <- 'Computing'
 
-df.is.ib %>%
+df.imb_CPU.ib %>%
   group_by(Value,App) %>%
-  summarize(Total = df.total.is.ib$Total,
+  summarize(Total = df.total.imb_CPU.ib$Total,
             MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.is.ib
+            Percent=(MPI.Time*100)/Total) -> df.comp.imb_CPU.ib
 
-df.is.ipoib <- read_csv("LOGS/TRACE/charac_is.ipoib/charac_is.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+df.imb_CPU.ipoib <- read_csv("LOGS/TRACE/charac_imb_CPU.ipoib/charac_imb_CPU.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3320,35 +3172,35 @@ df.is.ipoib <- read_csv("LOGS/TRACE/charac_is.ipoib/charac_is.ipoib.csv", col_na
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IS.ipoib") %>%
+  mutate(App = "IMB_CPU.ipoib") %>%
   select(Rank, everything())
-df.is.ipoib
+df.imb_CPU.ipoib
 
-df.is.ipoib %>%
+df.imb_CPU.ipoib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.is.ipoib
+  summarize(Total = sum(End))  -> df.total.imb_CPU.ipoib
 
-df.is.ipoib$Value <- as.character(df.is.ipoib$Value)
-df.is.ipoib$Value [grepl('MPI_*', df.is.ipoib$Value)] <- 'MPI'
+df.imb_CPU.ipoib$Value <- as.character(df.imb_CPU.ipoib$Value)
+df.imb_CPU.ipoib$Value [grepl('MPI_*', df.imb_CPU.ipoib$Value)] <- 'MPI'
 
-df.is.ipoib %>%
+df.imb_CPU.ipoib %>%
   group_by(Value,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.is.ipoib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.is.ipoib;
-df.percent.is.ipoib
+            Total = df.total.imb_CPU.ipoib$Total,
+            Percent=(MPI.Time*100)/Total) -> df.percent.imb_CPU.ipoib;
+df.percent.imb_CPU.ipoib
 
-df.is.ipoib$Value <- as.character(df.is.ipoib$Value)
-df.is.ipoib$Value [grepl('MPI', df.is.ipoib$Value)] <- 'Computing'
+df.imb_CPU.ipoib$Value <- as.character(df.imb_CPU.ipoib$Value)
+df.imb_CPU.ipoib$Value [grepl('MPI', df.imb_CPU.ipoib$Value)] <- 'Computing'
 
-df.is.ipoib %>%
+df.imb_CPU.ipoib %>%
   group_by(Value,App) %>%
-  summarize(Total = df.total.is.ipoib$Total,
+  summarize(Total = df.total.imb_CPU.ipoib$Total,
             MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.is.ipoib
+            Percent=(MPI.Time*100)/Total) -> df.comp.imb_CPU.ipoib
 
-df.is.eth <- read_csv("LOGS/TRACE/charac_is.eth/charac_is.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.imb_CPU.eth <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3356,35 +3208,35 @@ df.is.eth <- read_csv("LOGS/TRACE/charac_is.eth/charac_is.eth.csv", col_names = 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IS.eth") %>%
+  mutate(App = "IMB_CPU.eth") %>%
   select(Rank, everything())
-df.is.eth
+df.imb_CPU.eth
 
-df.is.eth %>%
+df.imb_CPU.eth %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.is.eth
+  summarize(Total = sum(End))  -> df.total.imb_CPU.eth
 
-df.is.eth$Value <- as.character(df.is.eth$Value)
-df.is.eth$Value [grepl('MPI_*', df.is.eth$Value)] <- 'MPI'
+df.imb_CPU.eth$Value <- as.character(df.imb_CPU.eth$Value)
+df.imb_CPU.eth$Value [grepl('MPI_*', df.imb_CPU.eth$Value)] <- 'MPI'
 
-df.is.eth %>%
+df.imb_CPU.eth %>%
   group_by(Value,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.is.eth$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.is.eth;
-df.percent.is.eth
+            Total = df.total.imb_CPU.eth$Total,
+            Percent=(MPI.Time*100)/Total) -> df.percent.imb_CPU.eth;
+df.percent.imb_CPU.eth
 
-df.is.eth$Value <- as.character(df.is.eth$Value)
-df.is.eth$Value [grepl('MPI', df.is.eth$Value)] <- 'Computing'
+df.imb_CPU.eth$Value <- as.character(df.imb_CPU.eth$Value)
+df.imb_CPU.eth$Value [grepl('MPI', df.imb_CPU.eth$Value)] <- 'Computing'
 
-df.is.eth %>%
+df.imb_CPU.eth %>%
   group_by(Value,App) %>%
-  summarize(Total = df.total.is.eth$Total,
+  summarize(Total = df.total.imb_CPU.eth$Total,
             MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.is.eth
+            Percent=(MPI.Time*100)/Total) -> df.comp.imb_CPU.eth
 
-df <- rbind(df.comp.is.eth, df.comp.is.ib, df.comp.is.ipoib, df.percent.is.eth, df.percent.is.ib, df.percent.is.ipoib)
+df <- rbind(df.comp.imb_CPU.eth, df.comp.imb_CPU.ib, df.comp.imb_CPU.ipoib, df.percent.imb_CPU.eth, df.percent.imb_CPU.ib, df.percent.imb_CPU.ipoib)
 
 ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
   geom_bar(position = "fill", stat = "identity", width = 0.3) +
@@ -3406,12 +3258,12 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
   labs(x="Applications", y="Operation Percentage")
 
 #+end_src
-***** SP-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/SP.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+***** IMB-Memory-Percentage
+#+begin_src R :results output graphics :file R/PLOTS/imb_memory.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
-df.sp.ib <- read_csv("LOGS/TRACE/charac_sp.ib/charac_sp.ib.csv", col_names = FALSE, progress=FALSE) %>%
+df.imb_memory.ib <- read_csv("LOGS/TRACE/charac_imb_memory.ib/charac_imb_memory.ib.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3419,35 +3271,35 @@ df.sp.ib <- read_csv("LOGS/TRACE/charac_sp.ib/charac_sp.ib.csv", col_names = FAL
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "SP.ib") %>%
+  mutate(App = "IMB_Memory.ib") %>%
   select(Rank, everything())
-df.sp.ib
+df.imb_memory.ib
 
-df.sp.ib %>%
+df.imb_memory.ib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.sp.ib
+  summarize(Total = sum(End))  -> df.total.imb_memory.ib
 
-df.sp.ib$Value <- as.character(df.sp.ib$Value)
-df.sp.ib$Value [grepl('MPI_*', df.sp.ib$Value)] <- 'MPI'
+df.imb_memory.ib$Value <- as.character(df.imb_memory.ib$Value)
+df.imb_memory.ib$Value [grepl('MPI_*', df.imb_memory.ib$Value)] <- 'MPI'
 
-df.sp.ib %>%
+df.imb_memory.ib %>%
   group_by(Value,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.sp.ib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.sp.ib;
-df.percent.sp.ib
+            Total = df.total.imb_memory.ib$Total,
+            Percent=(MPI.Time*100)/Total) -> df.percent.imb_memory.ib;
+df.percent.imb_memory.ib
 
-df.sp.ib$Value <- as.character(df.sp.ib$Value)
-df.sp.ib$Value [grepl('MPI', df.sp.ib$Value)] <- 'Computing'
+df.imb_memory.ib$Value <- as.character(df.imb_memory.ib$Value)
+df.imb_memory.ib$Value [grepl('MPI', df.imb_memory.ib$Value)] <- 'Computing'
 
-df.sp.ib %>%
+df.imb_memory.ib %>%
   group_by(Value,App) %>%
-  summarize(Total = df.total.sp.ib$Total,
+  summarize(Total = df.total.imb_memory.ib$Total,
             MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.sp.ib
+            Percent=(MPI.Time*100)/Total) -> df.comp.imb_memory.ib
 
-df.sp.ipoib <- read_csv("LOGS/TRACE/charac_sp.ipoib/charac_sp.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+df.imb_memory.ipoib <- read_csv("LOGS/TRACE/charac_imb_memory.ipoib/charac_imb_memory.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3455,35 +3307,35 @@ df.sp.ipoib <- read_csv("LOGS/TRACE/charac_sp.ipoib/charac_sp.ipoib.csv", col_na
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "SP.ipoib") %>%
+  mutate(App = "IMB_Memory.ipoib") %>%
   select(Rank, everything())
-df.sp.ipoib
+df.imb_memory.ipoib
 
-df.sp.ipoib %>%
+df.imb_memory.ipoib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.sp.ipoib
+  summarize(Total = sum(End))  -> df.total.imb_memory.ipoib
 
-df.sp.ipoib$Value <- as.character(df.sp.ipoib$Value)
-df.sp.ipoib$Value [grepl('MPI_*', df.sp.ipoib$Value)] <- 'MPI'
+df.imb_memory.ipoib$Value <- as.character(df.imb_memory.ipoib$Value)
+df.imb_memory.ipoib$Value [grepl('MPI_*', df.imb_memory.ipoib$Value)] <- 'MPI'
 
-df.sp.ipoib %>%
+df.imb_memory.ipoib %>%
   group_by(Value,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.sp.ipoib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.sp.ipoib;
-df.percent.sp.ipoib
+            Total = df.total.imb_memory.ipoib$Total,
+            Percent=(MPI.Time*100)/Total) -> df.percent.imb_memory.ipoib;
+df.percent.imb_memory.ipoib
 
-df.sp.ipoib$Value <- as.character(df.sp.ipoib$Value)
-df.sp.ipoib$Value [grepl('MPI', df.sp.ipoib$Value)] <- 'Computing'
+df.imb_memory.ipoib$Value <- as.character(df.imb_memory.ipoib$Value)
+df.imb_memory.ipoib$Value [grepl('MPI', df.imb_memory.ipoib$Value)] <- 'Computing'
 
-df.sp.ipoib %>%
+df.imb_memory.ipoib %>%
   group_by(Value,App) %>%
-  summarize(Total = df.total.sp.ipoib$Total,
+  summarize(Total = df.total.imb_memory.ipoib$Total,
             MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.sp.ipoib
+            Percent=(MPI.Time*100)/Total) -> df.comp.imb_memory.ipoib
 
-df.sp.eth <- read_csv("LOGS/TRACE/charac_sp.eth/charac_sp.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.imb_memory.eth <- read_csv("LOGS/TRACE/charac_imb_memory.eth/charac_imb_memory.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3491,35 +3343,35 @@ df.sp.eth <- read_csv("LOGS/TRACE/charac_sp.eth/charac_sp.eth.csv", col_names = 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "SP.eth") %>%
+  mutate(App = "IMB_Memory.eth") %>%
   select(Rank, everything())
-df.sp.eth
+df.imb_memory.eth
 
-df.sp.eth %>%
+df.imb_memory.eth %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.sp.eth
+  summarize(Total = sum(End))  -> df.total.imb_memory.eth
 
-df.sp.eth$Value <- as.character(df.sp.eth$Value)
-df.sp.eth$Value [grepl('MPI_*', df.sp.eth$Value)] <- 'MPI'
+df.imb_memory.eth$Value <- as.character(df.imb_memory.eth$Value)
+df.imb_memory.eth$Value [grepl('MPI_*', df.imb_memory.eth$Value)] <- 'MPI'
 
-df.sp.eth %>%
+df.imb_memory.eth %>%
   group_by(Value,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.sp.eth$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.sp.eth;
-df.percent.sp.eth
+            Total = df.total.imb_memory.eth$Total,
+            Percent=(MPI.Time*100)/Total) -> df.percent.imb_memory.eth;
+df.percent.imb_memory.eth
 
-df.sp.eth$Value <- as.character(df.sp.eth$Value)
-df.sp.eth$Value [grepl('MPI', df.sp.eth$Value)] <- 'Computing'
+df.imb_memory.eth$Value <- as.character(df.imb_memory.eth$Value)
+df.imb_memory.eth$Value [grepl('MPI', df.imb_memory.eth$Value)] <- 'Computing'
 
-df.sp.eth %>%
+df.imb_memory.eth %>%
   group_by(Value,App) %>%
-  summarize(Total = df.total.sp.eth$Total,
+  summarize(Total = df.total.imb_memory.eth$Total,
             MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.sp.eth
+            Percent=(MPI.Time*100)/Total) -> df.comp.imb_memory.eth
 
-df <- rbind(df.comp.sp.eth, df.comp.sp.ib, df.comp.sp.ipoib, df.percent.sp.eth, df.percent.sp.ib, df.percent.sp.ipoib)
+df <- rbind(df.comp.imb_memory.eth, df.comp.imb_memory.ib, df.comp.imb_memory.ipoib, df.percent.imb_memory.eth, df.percent.imb_memory.ib, df.percent.imb_memory.ipoib)
 
 ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
   geom_bar(position = "fill", stat = "identity", width = 0.3) +
