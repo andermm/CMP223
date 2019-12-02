@@ -2214,6 +2214,9 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 
 #+end_src
 
+#+RESULTS:
+[[file:R/PLOTS/MG.charac.percentage.png]]
+
 ***** CG-Percentage
 #+begin_src R :results output graphics :file R/PLOTS/CG.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
@@ -2349,6 +2352,9 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
   labs(x="Applications", y="Operation Percentage")
 
 #+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/CG.charac.percentage.png]]
 
 ***** LU-Percentage
 #+begin_src R :results output graphics :file R/PLOTS/LU.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
@@ -2486,6 +2492,9 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 
 #+end_src
 
+#+RESULTS:
+[[file:R/PLOTS/LU.charac.percentage.png]]
+
 ***** BT-Percentage
 #+begin_src R :results output graphics :file R/PLOTS/BT.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
@@ -2621,6 +2630,9 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
   labs(x="Applications", y="Operation Percentage")
 
 #+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/BT.charac.percentage.png]]
 
 **** Alya-IMB
 ***** Read CSVs
@@ -2987,7 +2999,7 @@ df <- rbind(df.comp.alya,df.comp.imb_cpu,df.comp.imb_memory, df.percent.alya, df
 #+end_src
 
 #+RESULTS:
-[[file:Alya-IMB.charac.percentage.png]]
+[[file:R/PLOTS/Alya-IMB.charac.percentage.png]]
 ***** Alya-Percentage
 #+begin_src R :results output graphics :file R/PLOTS/Alya.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
@@ -3123,6 +3135,10 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
   labs(x="Applications", y="Operation Percentage")
 
 #+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/Alya.charac.percentage.png]]
+
 ***** IMB-CPU-Percentage
 #+begin_src R :results output graphics :file R/PLOTS/imb_CPU.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
@@ -3258,6 +3274,10 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
   labs(x="Applications", y="Operation Percentage")
 
 #+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/imb_CPU.charac.percentage.png]]
+
 ***** IMB-Memory-Percentage
 #+begin_src R :results output graphics :file R/PLOTS/imb_memory.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
@@ -3393,3 +3413,6 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
   labs(x="Applications", y="Operation Percentage")
 
 #+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/imb_memory.charac.percentage.png]]
