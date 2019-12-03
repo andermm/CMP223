@@ -1,0 +1,26 @@
+TOP,Interface,N
+TOP 100,InfiniBand,43
+TOP 100,Omni−Path,19
+TOP 100,Custom Interconnects,31
+TOP 100,Gigabit Ethernet,4
+TOP 100,Proprietary Networks,3
+TOP 200,InfiniBand,64
+TOP 200,Omni−Path,31
+TOP 200,Custom Interconnects,36
+TOP 200,Gigabit Ethernet,65
+TOP 200,Proprietary Networks,4
+TOP 300,InfiniBand,80
+TOP 300,Omni−Path,35
+TOP 300,Custom Interconnects,41
+TOP 300,Gigabit Ethernet,140
+TOP 300,Proprietary Networks,4
+TOP 400,InfiniBand,104
+TOP 400,Omni−Path,46
+TOP 400,Custom Interconnects,48
+TOP 400,Gigabit Ethernet,198
+TOP 400,Proprietary Networks,4
+TOP 500,InfiniBand,123
+TOP 500,Omni−Path,49
+TOP 500,Custom Interconnects,52
+TOP 500,Gigabit Ethernet,272
+TOP 500,Proprietary Networks,4
