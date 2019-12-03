@@ -1,5 +1,7 @@
 BASE=$HOME/CMP223
-CONTROL_FILE_OUTPUT=$BASE/LOGS/env_info.org
+CONTROL_FILE_OUTPUT=$BASE/LOGS/SYS_INFO/env_info.org
+
+lstopo $BASE/LOGS/SYS_INFO/$hostname.pdf
 
 ##################################################
 # Collecting metadata
