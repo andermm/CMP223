@@ -3416,3 +3416,28 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 
 #+RESULTS:
 [[file:R/PLOTS/imb_memory.charac.percentage.png]]
+*** TOP500 
+#+begin_src R :results output graphics :file SLIDES/TOP500.png :exports both :width 800 :height 400 :session *R* 
+options(crayon.enabled=FALSE)
+suppressMessages(library(tidyverse))
+df <- read.csv("SLIDES/TOP500.csv")
+
+ggplot(df, aes(y=N, x=TOP, fill=Interface)) +
+  geom_bar(stat="identity", position = "dodge", width = 0.9, colour="black") +
+  geom_text(aes(label=N), position=position_dodge(width=0.9), vjust=-0.3,size=6) +
+  theme_bw() +
+  scale_fill_manual(values=c("#7192ca", "#84b95b", "#808585", "#e0964b", "#d25e5f")) +
+  theme(legend.position = c(0.15, 0.85),
+        legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+        plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
+        axis.text.x = element_text(size =16, color = "black"),
+        axis.text.y = element_blank(),
+        axis.title=element_text(size=18),
+        axis.title.x = element_blank(), 
+        legend.title = element_blank(),
+        legend.text = element_text(color = "black", size = 17.3)) +
+        labs(y="Number of Systems")
+#+end_src
+
+#+RESULTS:
+[[file:SLIDES/TOP500.png]]
