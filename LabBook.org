@@ -505,7 +505,7 @@ breaks_fun <- function(x) {
   )
 }
 
-ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_sp", "exec_ep", "exec_is"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_sp", "exec_ep", "exec_is"), ] , aes(x=apps, y=average, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.6) +
 geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=0.2, position = position_dodge(.6)) +
 theme_bw() +
@@ -555,7 +555,7 @@ breaks_fun <- function(x) {
   )
 }
 
-ggplot(df_apps[df_apps$apps %in% c("exec_mg", "exec_cg", "exec_lu", "exec_bt"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_mg", "exec_cg", "exec_lu", "exec_bt"), ] , aes(x=apps, y=average, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.6) +
 geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=0.2, position = position_dodge(.6)) +
 theme_bw() +
@@ -638,44 +638,40 @@ theme(legend.position = "top",
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 suppressMessages(library("tidyverse"));
-df_apps <- read_csv("/home/anderson/Desktop/GIT/CMP223/LOGS/LOGS_CSV/apps_exec.22-11-2019.16h44m04s.csv", progress=FALSE)
+df_apps <- read_csv("LOGS/LOGS_CSV/apps_exec.22-11-2019.16h44m04s.csv", progress=FALSE)
+
+  A8_h=0.975
+  A8_m=A8_h/60
+  A10_h=0.78
+  A10_m=(A10_h/60)
 
 df_apps %>%
   group_by(apps,interface) %>%
   summarise(
     average_s=mean(time),
     average_m=average_s/60,
-    A8_h=0.975,
-    A8_m=A8_h/60,
-    A8_cost=A8_m*average_m,
-    A10_h=0.78,
-    A10_m=(A10_h/60),
-    A10_cost=A10_m*average_m) %>%
+    cost= ifelse(interface[1] == "eth", A10_m*average_m,  A8_m*average_m)) %>%
   arrange(apps,interface) -> df_apps
-df_apps
 #+end_src
+
+#+RESULTS:
+: 
+: Parsed with column specification:
+: cols(
+:   apps = col_character(),
+:   interface = col_character(),
+:   time = col_double()
+: )
+
 **** FT-EP-IS-SP
-#+begin_src R :results output graphics :file R/PLOTS/FT_EP_IS_SP.png :exports both :width 800 :height 400 :session *R*
+#+begin_src R :results output graphics :file R/PLOTS/FT_EP_IS_SP.cost.png :exports both :width 800 :height 400 :session *R*
 try <- c(exec_ft="FT", exec_sp="SP",  exec_ep="EP", exec_is="IS")
 try2 <- c(exec_ft="128", exec_sp="144",  exec_ep="128", exec_is="128")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
-count <- 0
-breaks_fun <- function(x) {
-  count <<- count + 1L
-  switch(
-    count,
-    c(0,10,20,30,40),
-    c(0,400,800,1200,1600),
-    c(0,50,100,150),
-    c(0,200,400,600,800)
-  )
-}
-
-ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_sp", "exec_ep", "exec_is"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_sp", "exec_ep", "exec_is"), ] , aes(x=apps, y=cost, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.6) +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=0.2, position = position_dodge(.6)) +
 theme_bw() +
 scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE") ,
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
@@ -692,40 +688,26 @@ theme(legend.position = "top",
       legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 18)) +
       scale_x_discrete(labels=try2) +
-      labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+      labs(x="Number of MPI Processes", y="Execution Cost in US$") +
       facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
-      scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
+      #scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
       theme(strip.text.x=element_text(size=18),
             strip.background=element_rect(fill='#F5F5F5'))
      
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/FT_EP_IS_SP.png]]
+[[file:R/PLOTS/FT_EP_IS_SP.cost.png]]
 
 **** MG-CG-LU-BT
-#+begin_src R :results output graphics :file R/PLOTS/MG_CG_LU_BT.png :exports both :width 800 :height 400 :session *R*
+#+begin_src R :results output graphics :file R/PLOTS/MG_CG_LU_BT.cost.png :exports both :width 800 :height 400 :session *R*
 try <- c(exec_mg="MG", exec_cg="CG",  exec_lu="LU", exec_bt="BT")
 try2 <- c(exec_mg="128", exec_cg="128",  exec_lu="128", exec_bt="144")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
-
-count <- 0
-breaks_fun <- function(x) {
-  count <<- count + 1L
-  switch(
-    count,
-    c(0,110,220,330,440,550),
-    c(0,200,400,600,800),
-    c(0,100,200,300),
-    c(0,20,40,60,80)
-  )
-}
-
-ggplot(df_apps[df_apps$apps %in% c("exec_mg", "exec_cg", "exec_lu", "exec_bt"), ] , aes(x=reorder(apps, +average), y=average, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_mg", "exec_cg", "exec_lu", "exec_bt"), ] , aes(x=apps, y=cost, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.6) +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=0.2, position = position_dodge(.6)) +
 theme_bw() +
 scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE") ,
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
@@ -742,37 +724,24 @@ theme(legend.position = "top",
       legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 18)) +
       scale_x_discrete(labels=try2) +
-      labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+      labs(x="Number of MPI Processes", y="Execution Cost in US$") +
       facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
-      scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) +
       theme(strip.text.x=element_text(size=18),
             strip.background=element_rect(fill='#F5F5F5'))
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/MG_CG_LU_BT.png]]
+[[file:R/PLOTS/MG_CG_LU_BT.cost.png]]
 
 **** Alya-IMB
-#+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.png :exports both :width 800 :height 400 :session *R*  
+#+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.cost.png :exports both :width 800 :height 400 :session *R*  
 try <- c(exec_alya="Alya",exec_imb_memory="ImbBench-Memory\n8Level", exec_imb_CPU="ImbBench-CPU\n8Level")
 try2 <- c(exec_alya="160", exec_imb_memory="160", exec_imb_CPU="160")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("ib", "ipoib", "eth"))
 
-count <- 0
-breaks_fun <- function(x) {
-  count <<- count + 1L
-  switch(
-    count,
-    c(0,100,200,300),
-    c(0,3,6,9),
-    c(0,7,14,21,28)
-  )
-}
-
-ggplot(df_apps[df_apps$apps %in% c("exec_alya", "exec_imb_memory", "exec_imb_CPU"), ] , aes(x=apps, y=average, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_alya", "exec_imb_memory", "exec_imb_CPU"), ] , aes(x=apps, y=cost, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.4) +
-geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=.1, position = position_dodge(.4)) +
 theme_bw() +
 scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE"),
 breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
@@ -789,9 +758,8 @@ theme(legend.position = "top",
       legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 18)) +
       scale_x_discrete(labels=try2) +
-      labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+      labs(x="Number of MPI Processes", y="Execution Cost in US$") +
       facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
-      scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
       theme(strip.text.x=element_text(size=18),
             strip.background=element_rect(fill='#F5F5F5'))
 
@@ -800,7 +768,7 @@ theme(legend.position = "top",
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/Alya-IMB.png]]
+[[file:R/PLOTS/Alya-IMB.cost.png]]
 
 *** Characterization Plots
 **** FT-EP-IS-SP
