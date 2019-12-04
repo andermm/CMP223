@@ -58,264 +58,163 @@ Network interconnection is one of the \alert{bottlenecks}
 
 
 \begin{frame}{Objective}
- \vfill
-This work study the application \alert{\texttt{QR\_mumps}}, a parallel task-based
-sparse QR factorization based on the \alert{multifrontal method}
+\vfill
+Assess the impact of the \alert{network interconnection} on HPC applications regarding performance and cost execution
+
 \pause \vfill
-We are interested in the performance analysis of the application
-related to the \alert{ordering algorithms} and the \alert{elimination tree}
+How do the \alert{communication characteristics} of applications influence their performance?
+
 \pause \vfill
-\begin{itemize}
-\item Is an \alert{ordering} algorithm \alert{better than other}? 
-\begin{itemize}
-\item If so, why is it better?
-\end{itemize}
-\end{itemize}
+To answer these questions:
+
 \pause \vfill
 \begin{itemize}
-\item How the algorithm \alert{explores} the tree structure? 
-\begin{itemize}
-\item Does it impacts the performance?
-\end{itemize}
-\end{itemize}
+    \item  Both \alert{InfiniBand (IB)} and \alert{Gigabit Ethernet (ETH)}, as well as \alert{IP-over-IB (IPoIB)} interconnections were evaluated using the same physical cluster of servers
 \pause \vfill
-\begin{itemize}
-\item How \alert{memory constraints} impact performance?
-\end{itemize}
+    \item All applications are also profiled, in which their MPI operations were exposed.
 \pause \vfill
-To answer these questions, we will investigate and analyse the
-application in different scenarios
+    \item The cost was calculated using the Microsoft Azure instance pricing model, in which the instances have the same hardware, differing only by interconnection (IB and Ethernet)
+\end{itemize}
 \vfill
 \end{frame}
 
-\begin{frame}[fragile,label={sec:orge350978}]{Outline}
- \vfill
-\Large
-\begin{itemize}
-\item Background
-\begin{itemize}
-\item Ordering and Fill-In
-\item Elimination Tree
-\item \texttt{QR\_mumps} and StarPU
-\end{itemize}
-\end{itemize}
+\begin{frame}{Outline}
 \vfill
+\Large
 \begin{itemize}
 \item Methodology
 \begin{itemize}
-\item Workload Characterization
+\item Testbed
+\item Applications
+\item Trace
 \item Experimental Design
+\item Reproducible Research
 \end{itemize}
 \end{itemize}
 \vfill
 \begin{itemize}
 \item Results
-\begin{itemize}
-\item Ordering Impact
-\item Interesting Cases Analysis
 \end{itemize}
-\end{itemize}
-\vfill
 \begin{itemize}
 \item Conclusion
+\item Future Work
 \end{itemize}
-\begin{block}{}
-\begin{center}
-\Huge{Background}
-\end{center}
-\end{block}
-\end{frame}
-\begin{frame}[label={sec:org61a82f6}]{Ordering, Fill-In and Sparse Factorization}
-\vfill
-In the sparse factorization case, common dense factorization
-strategies must be rethinked \footnote{[3] Van Loan C., Golub G. - Matrix Computations 4th Edition.} 
-\vfill
-\begin{itemize}
-\item Sparse matrix \alert{data structure} for representation (COO, CSR)
-\item \alert{Fill-in} reducing reordering
-\end{itemize}
-\vfill \pause
-Operations may change the number of non-zeroes (NNZ), need to allocate
-more space for these fill-ins
-\vfill \pause
-If we can \alert{predict} the positions that will be updated, we can add extra
-space in the arrays for the representation of the matrix 
 \end{frame}
 
-\begin{frame}[label={sec:orgf91bff0}]{Ordering, Fill-In and Sparse Factorization}
-\vfill
-Commonly, the sparse factorization is preceeded by an \alert{analysis} step
-\begin{itemize}
-\item Permutate matrix rows and columns to reduce fill-in
-\item Compute the matrix final structure (with fill-ins)
-\end{itemize}
-\vfill
-Finding the \alert{optimal ordering} is a combinatorial problem
-\vfill
-Algorithms must use \alert{heuristics} to determine a good permutation of the
-original matrix 
-\vfill
-\end{frame}
-
-\begin{frame}[label={sec:orgbdefa6e}]{Ordering, Fill-In and Sparse Factorization}
-In this case, the optimal ordering for the matrix allows to factorize
-the matrix \alert{without introducing any fill-in}
-
-%\begin{center}
-%\includegraphics[width=.9\linewidth]{./img/reordering_example.png}
-%\end{center}
-\end{frame}
-
-\begin{frame}[label={sec:orgcf1b76c}]{Elimination Tree}
-\vfill
-A good way to present sparse matrices is using graphs
-\begin{itemize}
-\item \alert{undirected} graphs are used to \alert{symmetric} matrices
-\item \alert{directed} graphs for \alert{non-symmetric}
-\end{itemize}
-\vfill \pause
-In the heart of the multifrontal method is the \alert{elimination tree}
-\vfill
-In its most common case, the tree has \alert{n} nodes, where n is the number
-of columns of the input matrix problem
-\vfill
-Each node holds a denser submatrix called \alert{frontal matrix}
-\vfill
-Practical implementations group columns with similar structure into
-\alert{supernodes} 
-\vfill
-\end{frame}
-\begin{frame}[label={sec:orgf49f41b}]{Elimination Tree}
-Example of a matrix and its elimination tree. The tree guides the
-factorization 
-\begin{columns}
-\begin{column}{0.3\columnwidth}
-\begin{center}
-%\includegraphics[width=.9\linewidth]{./img/matrix_tree2.png}
-\end{center}
-\end{column}
-
-\begin{column}{0.3\columnwidth}
-\begin{center}
-%\includegraphics[width=.9\linewidth]{./img/matrix_elimtree.png}
-\end{center}
-\end{column}
-\end{columns}
-\end{frame}
-\begin{frame}[fragile,label={sec:orgb1800db}]{\texttt{QR\_mumps} and StarPU}
- \texttt{QR\_mumps} implements the multifrontal QR factorization
+\begin{frame}
 \begin{block}{}
 \begin{center}
 \Huge{Methodology}
 \end{center}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org6435587}]{Workload Characterization}
-\vfill
-Before selecting our workloads, we listed some points that are
-important to characterize our system workload: 
-\begin{itemize}
-\item Number of \alert{rows} and \alert{columns}
-\item Non-zero Count (\alert{sparsity})
-\item Shape of the matrix (tall, wide, square)
-\end{itemize}
-\vfill
-We choose 10 matrices looking to explore different values
-\vfill
-They came from different problems: Linear Programming, Combinatorial
-Problems, Economic Problems, Computational Simulation 
-\vfill
-\end{frame}
-\begin{frame}[fragile,label={sec:orge4472a8}]{Workload Characterization}
- \newcommand{\ct}[1]{}
-\setlength{\tabcolsep}{3pt}
-\begin{table}[!h]
-\caption{\label{tab:org3534e7a}
-Workload matrices}
-\centering
-\begin{tabular}{lrrrll}
-\hline
-Name & Rows & Columns & NNZ & Sparsity & Problem\\
-\hline
-\texttt{karted} & 46.502 & 133.115 & 1.770.349 & 0,0285\% & L.P.\\
-\texttt{TF18} & 95.368 & 123.867 & 1.597.545 & 0,0135\% & Comb.\\
-\texttt{EternityII\_E} & 11.077 & 262.144 & 1.503.732 & 0,0517\% & Opt.\\
-\hline
-\texttt{g7jac200} & 59.310 & 59.310 & 837.936 & 0,0238\% & Ec.\\
-\texttt{mk13-b5} & 135.135 & 270.270 & 810.810 & 0,0022\% & Comb.\\
-\texttt{n4c6-b6} & 104.115 & 51.813 & 728.805 & 0,0135\% & Comb.\\
-\hline
-\texttt{ch8-8-b3} & 117.600 & 18.816 & 470.400 & 0,0212\% & Comb.\\
-\texttt{flower\_8\_4} & 55.081 & 125.361 & 375.266 & 0,0054\% & Comb.\\
-\texttt{fxm3\_16} & 41.340 & 85.575 & 392.252 & 0,0110\% & L.P.\\
-\texttt{RAFEM\_16} & 16.729 & 16.729 & 450.450 & 0,0016\% & Sim.\\
-\hline
-\end{tabular}
-\end{table}
-\end{frame}
 
-\begin{frame}[label={sec:orgee2da1f}]{Experimental Design}
-\vfill
-The experimental design follows a \alert{2\(^{\text{k}}\)} factorial design, \alert{k factors}
-varying at \alert{two levels} for each matrix  
-\begin{itemize}
-\item Ordering algorithm: \alert{Metis} and \alert{Scotch}
-\item Memory factor: \alert{Unlimited} and \alert{Sequential Peak}
-\end{itemize}
-\vfill
-Workload selection:
-\begin{itemize}
-\item all 10 matrices
-\end{itemize}
-\vfill
-Computational Environment
+\begin{frame}{Testbed}
+PCAD's Hype cluster \footnote{[1] http://gppd-hpc.inf.ufrgs.br/}
 \begin{itemize}
 \item 2 \texttimes{} Intel Xeon E5-2650 v3 (Q3'14) Haswell, 2.3 GHz
-\item 20 núcleos (10 por CPU)
+\item 20 cores (10 per CPU) with HT enabled resulting in 40 threads
 \item 128 GB DDR4 RAM
+\item Gigabit Ethernet and InfiniBand FDR interconnects
+\item Ubuntu Server 18.04.01
 \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Applications}
+Network characterization (Bandwidth and Latency)
+    \begin{itemize}
+        \item Intel MPI Benchmarks 
+        \begin{itemize}
+            \item PingPong
+        \end{itemize}
+    \end{itemize}
+    \pause \vfill
+Synthetic applications performance
+    \begin{itemize}
+        \item NPB 3.4 MPI
+        \begin{itemize}
+            \item BT, CG, EP, FT, IS, LU, MG, and SP
+            \item Input class D
+        \pause \vfill
+        \end{itemize}
+        \item ImbBench 
+        \begin{itemize}
+            \item CPU and Memory
+            \item 8 Levels of Imbalance
+        \end{itemize}
+        \end{itemize}
+        \pause \vfill
+Real application performance
+    \begin{itemize}
+        \item Alya
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Trace}
+To trace the applications we used: 
+    \pause \vfill
+    \begin{itemize}
+        \item Score-P 6.0
+        \begin{itemize}
+            \item Responsible for introducing the code instrumentation
+        \end{itemize}
+    \pause \vfill
+        \item Akypuera
+        \begin{itemize}
+            \item \texttt{otf22paje}
+                \begin{itemize}
+                    \item Convert the OTF2 output to TRACE file
+                \end{itemize}
+        \end{itemize}
+    \pause \vfill
+        \item PajeNG
+        \begin{itemize}
+            \item \texttt{pj\_dump}
+                \begin{itemize}
+                    \item Convert the TRACE file to a CSV to be analysed in R
+                \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Experimental Design}
+\vfill
+Was created using the DoE.base library in R
+\begin{itemize}
+    \item Follows a full factorial design
+    \item Two levels for each execution
+ \begin{itemize}
+\item Application: \alert{BT}, \alert{EP}, \alert{CG}, \alert{MG}, \alert{LU}, \alert{SP}, \alert{IS}, \alert{FT}, \alert{IMB\_Memory}, \alert{IMB\_CPU}, \alert{PinPong}, and \alert{Alya}
+\item Network Interface: \alert{Gigabit Ethernet}, \alert{InfiniBand}, and \alert{IP-over-IB}
+\end{itemize}
+    \item 30 randomized replications
+   \end{itemize}
+N = (12 applications) \texttimes{} (3 interconnections) \texttimes{} (30 replications) = 1080 experiments\footnote{In the characterization execution the PingPong application was not executed and only one replication was performed, totaling in N = (11 applications) \texttimes{} (3 interconnections) = 33 experiments}   
 \vfill
 \end{frame}
 
-\begin{frame}[label={sec:org1898a0c}]{Experimental Design}
-\vfill
-The experimental design follows a \alert{2\(^{\text{kr}}\)} factorial design, \alert{k factors}
-varying at \alert{two levels} for each matrix with \alert{30 or 10 repetitions}
-\begin{itemize}
-\item 30 repetitions for fast matrices and 10 for slower ones
-\end{itemize}
-\vfill
-The objective of this experiment was to find \alert{interesting cases}
-\begin{enumerate}
-\item There are cases where the ordering changes the performance?
-\begin{itemize}
-\item Factorization time
-\item Estimated total floating point operations
-\item Memory peak consumption
-\end{itemize}
-\item There are cases where memory factor changes the performance?
-\begin{itemize}
-\item Memory peak
-\item Ready and Submitted tasks
-\item Active nodes
-\end{itemize}
-\item The ordering does not change performance at all
-\end{enumerate}
-
-
-\vfill
+\begin{frame}{Reproducible Research}
+    
 \end{frame}
-\begin{frame}[label={sec:org7b38ff4}]{}
+
+
+\begin{frame}{}
 \begin{center}
 \Huge{Results}
 \end{center}
 \end{frame}
+
 \begin{frame}[label={sec:orga503c53}]{Evaluating The Ordering Impact on Performance}
 \end{frame}
+
 \begin{frame}[label={sec:orge83a529}]{Analysis Of Interesting Cases}
 \end{frame}
+
 \begin{frame}[label={sec:org4d8e86e}]{Ordering Impact}
 \end{frame}
+
 \begin{frame}[label={sec:org003c168}]{Interesting Case Analysis}
 \end{frame}
 \begin{frame}[label={sec:org09ae9aa}]{Conclusion}
