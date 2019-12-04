@@ -427,7 +427,7 @@ cols(
 # … with 59 more rows
 #+end_example
 **** PingPong - Latency
-#+begin_src R :results output graphics :file R/PLOTS/PingPong.png :exports both :width 800 :height 600 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/Latency.png :exports both :width 800 :height 400 :session *R* 
 ggplot(df_intel_latency,aes(x=bytes, y=average)) +
   geom_line(aes(color = interface), alpha = 1) +
   geom_point(aes(color=interface, shape=interface),size = 4) +
@@ -438,23 +438,24 @@ ggplot(df_intel_latency,aes(x=bytes, y=average)) +
   theme_bw() +
   scale_y_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
-  ylab('Average Latency Time\n(Microseconds in 2 Log Scale)') +
+  ylab('Average Latency Time\n(Usec in 2 Log Scale)') +
   xlab('Message Size (Bytes)') +
   scale_color_manual(values=c( "#BEBEBE", "#303030", "#888888"),
                     breaks=c("ib", "ipoib", "eth"),
                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
     theme (legend.position = c(0.15, 0.85),
            legend.background = element_rect(color = "black", size = 0.5, linetype = "solid"),
-           plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
+           plot.margin = unit(x = c(0.1, 0, 0, 0), units = "cm"),
            axis.title=element_text(size=18), 
            legend.title = element_blank(),
            legend.text = element_text(color = "black", size = 18),
            axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
            axis.text.y = element_text(size =16, color = "black"))
+ggsave("SLIDES/Latency.pdf")
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/PingPong.png]]
+[[file:R/PLOTS/Latency.png]]
 
 **** PingPong - Bandwidth
 #+begin_src R :results output graphics :file R/PLOTS/Bandwidth.png :exports both :width 800 :height 600 :session *R* 
@@ -3553,7 +3554,8 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 
 #+RESULTS:
 [[file:R/PLOTS/imb_memory.charac.percentage.png]]
-*** TOP500
+*** Slides Plots
+**** TOP500 
 #+begin_src R :results output graphics :file SLIDES/TOP500.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 suppressMessages(library(tidyverse))
