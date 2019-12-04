@@ -634,6 +634,26 @@ theme(legend.position = "top",
 #+RESULTS:
 [[file:R/PLOTS/Alya-IMB.png]]
 *** Cost Plots
+**** Read CSVs 
+#+begin_src R :results output :session *R* :exports both
+options(crayon.enabled=FALSE)
+suppressMessages(library("tidyverse"));
+df_apps <- read_csv("/home/anderson/Desktop/GIT/CMP223/LOGS/LOGS_CSV/apps_exec.22-11-2019.16h44m04s.csv", progress=FALSE)
+
+df_apps %>%
+  group_by(apps,interface) %>%
+  summarise(
+    average_s=mean(time),
+    average_m=average_s/60,
+    A8_h=0.975,
+    A8_m=A8_h/60,
+    A8_cost=A8_m*average_m,
+    A10_h=0.78,
+    A10_m=(A10_h/60),
+    A10_cost=A10_m*average_m) %>%
+  arrange(apps,interface) -> df_apps
+df_apps
+#+end_src
 **** FT-EP-IS-SP
 #+begin_src R :results output graphics :file R/PLOTS/FT_EP_IS_SP.png :exports both :width 800 :height 400 :session *R*
 try <- c(exec_ft="FT", exec_sp="SP",  exec_ep="EP", exec_is="IS")
