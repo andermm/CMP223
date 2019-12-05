@@ -1,4 +1,4 @@
-\documentclass[presentation]{beamer}
+\documentclass{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
@@ -12,9 +12,9 @@
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
-
 \newcommand{\inlinelatex}[1]{#1}
 \usetheme[sectionpage=none, block=fill]{metropolis}
+\setbeamertemplate{frametitle continuation} {}
 \title{Performance and Cost-Aware in HPC: A Network Interconnect Impact Assessment}
 \author{\large{Anderson Mattheus Maliszewski}}
 \vfill
@@ -108,45 +108,50 @@ To answer these questions:
 \end{block}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{System}
+\begin{frame}[noframenumbering, allowframebreaks]{System} 
 \begin{center}
-    \includegraphics[scale=0.5]{SLIDES/img/System1.pdf}
+\vspace{-1.8cm} 
+    \includegraphics[scale=0.65]{SLIDES/img/System1.pdf}
 \end{center}
     \begin{itemize}
-    \item (1) teste te
-    \vfill
-    \vfill
-    \vfill
+    \vspace{-0.6cm}
+    \item (1) User submits a job
+    \vspace{+0.05cm}
     \end{itemize}
     \framebreak
 \begin{center}
-    \includegraphics[scale=0.5]{SLIDES/img/System2.pdf}
+    \includegraphics[scale=0.65]{SLIDES/img/System2.pdf}
 \end{center}
     \begin{itemize}
-    \item (1) teste te
-    \item (2) teste
-    \vfill
-    \vfill
+    \vspace{-0.6cm}
+    \item (1) User submits a job
+    \item (2) Cluster manager allocates the nodes
+    \item[~] 
+    \item[~]
+    \vspace{+0.1cm}
     \end{itemize}
     \framebreak
 \begin{center}
-    \includegraphics[scale=0.5]{SLIDES/img/System3.pdf}
+    \includegraphics[scale=0.65]{SLIDES/img/System3.pdf}
 \end{center}    
     \begin{itemize}
-    \item (1) teste te
-    \item (2) teste
-    \item (3) teste
-    \vfill
+    \vspace{-0.6cm}
+    \item (1) User submits a job
+    \item (2) Cluster manager allocates the nodes
+    \item (3) Job is passed to a switch
+    \item[~]
+    \vspace{+0.1cm}
     \end{itemize}
     \framebreak
-\begin{center}    
-    \includegraphics[scale=0.5]{SLIDES/img/System4.pdf}
+\begin{center}
+    \includegraphics[scale=0.65]{SLIDES/img/System4.pdf}
 \end{center}    
     \begin{itemize}
-    \item (1) teste te
-    \item (2) teste
-    \item (3) teste
-    \item (4) teste
+    \vspace{-0.6cm}
+    \item (1) User submits a job
+    \item (2) Cluster manager allocates the nodes
+    \item (3) Job is passed to a switch
+    \item (4) Switch acts as a central point of nodes communication
     \end{itemize}
 \end{frame}
 
