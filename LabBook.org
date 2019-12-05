@@ -481,7 +481,6 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
          legend.text = element_text(color = "black", size = 18),
          axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
          axis.text.y = element_text(size =16, color = "black"))
-ggsave("SLIDES/img/Bandwidth.pdf")
 #+end_src
 
 #+RESULTS:
@@ -777,7 +776,7 @@ theme(legend.position = "top",
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 suppressMessages(library(tidyverse))
-df.ft <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.ft.eth <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -785,11 +784,11 @@ df.ft <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = FALS
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT") %>%
+  mutate(App = "FT.eth") %>%
   select(Rank, everything())
-df.ft
+df.ft.eth
 
-df.ep <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.ep.eth <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -797,11 +796,11 @@ df.ep <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = FALS
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP") %>%
+  mutate(App = "EP.eth") %>%
   select(Rank, everything())
-df.ep
+df.ep.eth
 
-df.is <- read_csv("LOGS/TRACE/charac_is.eth/charac_is.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.is.eth <- read_csv("LOGS/TRACE/charac_is.eth/charac_is.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -809,11 +808,11 @@ df.is <- read_csv("LOGS/TRACE/charac_is.eth/charac_is.eth.csv", col_names = FALS
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IS") %>%
+  mutate(App = "IS.eth") %>%
   select(Rank, everything())
-df.is
+df.is.eth
 
-df.sp <- read_csv("LOGS/TRACE/charac_sp.eth/charac_sp.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.sp.eth <- read_csv("LOGS/TRACE/charac_sp.eth/charac_sp.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -821,13 +820,177 @@ df.sp <- read_csv("LOGS/TRACE/charac_sp.eth/charac_sp.eth.csv", col_names = FALS
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "SP") %>%
+  mutate(App = "SP.eth") %>%
   select(Rank, everything())
-df.sp
+df.sp.eth
+
+df.ft.ipoib <- read_csv("LOGS/TRACE/charac_ft.ipoib/charac_ft.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "FT.ipoib") %>%
+  select(Rank, everything())
+df.ft.ipoib
+
+df.ep.ipoib <- read_csv("LOGS/TRACE/charac_ep.ipoib/charac_ep.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "EP.ipoib") %>%
+  select(Rank, everything())
+df.ep.ipoib
+
+df.is.ipoib <- read_csv("LOGS/TRACE/charac_is.ipoib/charac_is.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "IS.ipoib") %>%
+  select(Rank, everything())
+df.is.ipoib
+
+df.sp.ipoib <- read_csv("LOGS/TRACE/charac_sp.ipoib/charac_sp.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "SP.ipoib") %>%
+  select(Rank, everything())
+df.sp.ipoib
+
+df.ft.ib <- read_csv("LOGS/TRACE/charac_ft.ib/charac_ft.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "FT.ib") %>%
+  select(Rank, everything())
+df.ft.ib
+
+df.ep.ib <- read_csv("LOGS/TRACE/charac_ep.ib/charac_ep.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "EP.ib") %>%
+  select(Rank, everything())
+df.ep.ib
+
+
+df.is.ib <- read_csv("LOGS/TRACE/charac_is.ib/charac_is.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "IS.ib") %>%
+  select(Rank, everything())
+df.is.ib
+
+df.sp.ib <- read_csv("LOGS/TRACE/charac_sp.ib/charac_sp.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "SP.ib") %>%
+  select(Rank, everything())
+df.sp.ib
+
 #+end_src
 
 #+RESULTS:
 #+begin_example
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 8,193 x 6
+    Rank Start   End Duration Value          App   
+   <
+<
+<
+   <
+<
+         <
+
+ 1    99 0.779  1.52 0.745    MPI_Init       FT.eth
+ 2    99 1.52   1.52 0.000001 MPI_Comm_size  FT.eth
+ 3    99 1.52   1.52 0        MPI_Comm_rank  FT.eth
+ 4    99 1.52   1.53 0.00158  MPI_Bcast      FT.eth
+ 5    99 1.53   1.53 0.000094 MPI_Bcast      FT.eth
+ 6    99 1.53   1.53 0.000101 MPI_Bcast      FT.eth
+ 7    99 1.53   1.53 0.000054 MPI_Bcast      FT.eth
+ 8    99 1.53   1.53 0.000001 MPI_Bcast      FT.eth
+ 9    99 1.53   1.53 0.00254  MPI_Comm_split FT.eth
+10    99 1.53   1.53 0.00188  MPI_Comm_split FT.eth
+# … with 8,183 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 8,193 x 6
+    Rank Start   End Duration Value          App     
+   <
+<
+<
+   <
+<
+         <
+  
+ 1    99 0.722  2.70 1.98     MPI_Init       FT.ipoib
+ 2    99 2.70   2.70 0.000008 MPI_Comm_size  FT.ipoib
+ 3    99 2.70   2.70 0        MPI_Comm_rank  FT.ipoib
+ 4    99 2.70   2.70 0.00149  MPI_Bcast      FT.ipoib
+ 5    99 2.70   2.70 0.000184 MPI_Bcast      FT.ipoib
+ 6    99 2.70   2.70 0.000086 MPI_Bcast      FT.ipoib
+ 7    99 2.70   2.70 0.00017  MPI_Bcast      FT.ipoib
+ 8    99 2.70   2.70 0.000171 MPI_Bcast      FT.ipoib
+ 9    99 2.70   2.71 0.00242  MPI_Comm_split FT.ipoib
+10    99 2.71   2.71 0.00193  MPI_Comm_split FT.ipoib
+# … with 8,183 more rows
 
 Parsed with column specification:
 cols(
@@ -849,17 +1012,83 @@ cols(
    <
 <
          <chr>
- 1    99 0.779  1.52 0.745    MPI_Init       FT   
- 2    99 1.52   1.52 0.000001 MPI_Comm_size  FT   
- 3    99 1.52   1.52 0        MPI_Comm_rank  FT   
- 4    99 1.52   1.53 0.00158  MPI_Bcast      FT   
- 5    99 1.53   1.53 0.000094 MPI_Bcast      FT   
- 6    99 1.53   1.53 0.000101 MPI_Bcast      FT   
- 7    99 1.53   1.53 0.000054 MPI_Bcast      FT   
- 8    99 1.53   1.53 0.000001 MPI_Bcast      FT   
- 9    99 1.53   1.53 0.00254  MPI_Comm_split FT   
-10    99 1.53   1.53 0.00188  MPI_Comm_split FT   
+ 1    99 0.981  6.82 5.84     MPI_Init       FT.ib
+ 2    99 6.82   6.82 0.000004 MPI_Comm_size  FT.ib
+ 3    99 6.82   6.82 0        MPI_Comm_rank  FT.ib
+ 4    99 6.82   6.82 0.000739 MPI_Bcast      FT.ib
+ 5    99 6.82   6.82 0.000008 MPI_Bcast      FT.ib
+ 6    99 6.82   6.82 0.00001  MPI_Bcast      FT.ib
+ 7    99 6.82   6.82 0.000045 MPI_Bcast      FT.ib
+ 8    99 6.82   6.82 0.000028 MPI_Bcast      FT.ib
+ 9    99 6.82   6.82 0.00278  MPI_Comm_split FT.ib
+10    99 6.82   6.82 0.00140  MPI_Comm_split FT.ib
 # … with 8,183 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 1,280 x 6
+    Rank  Start   End Duration Value         App   
+   <
+ <
+<
+   <
+<
+        <
+
+ 1    99  0.800  1.72 0.920    MPI_Init      EP.eth
+ 2    99  1.72   1.72 0.000001 MPI_Comm_rank EP.eth
+ 3    99  1.72   1.72 0        MPI_Comm_size EP.eth
+ 4    99  1.72   1.72 0.00199  MPI_Bcast     EP.eth
+ 5    99  1.72   1.72 0.000323 MPI_Barrier   EP.eth
+ 6    99 38.3   38.9  0.595    MPI_Allreduce EP.eth
+ 7    99 38.9   38.9  0.000558 MPI_Allreduce EP.eth
+ 8    99 38.9   38.9  0.000432 MPI_Allreduce EP.eth
+ 9    99 38.9   38.9  0.000344 MPI_Allreduce EP.eth
+10    99 38.9   38.9  0.000841 MPI_Finalize  EP.eth
+# … with 1,270 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 1,280 x 6
+    Rank  Start   End Duration Value         App     
+   <
+ <
+<
+   <
+<
+        <
+  
+ 1    99  0.737  2.63 1.90     MPI_Init      EP.ipoib
+ 2    99  2.63   2.63 0.000002 MPI_Comm_rank EP.ipoib
+ 3    99  2.63   2.63 0        MPI_Comm_size EP.ipoib
+ 4    99  2.63   2.64 0.00114  MPI_Bcast     EP.ipoib
+ 5    99  2.64   2.64 0.000569 MPI_Barrier   EP.ipoib
+ 6    99 39.3   39.8  0.531    MPI_Allreduce EP.ipoib
+ 7    99 39.8   39.8  0.000349 MPI_Allreduce EP.ipoib
+ 8    99 39.8   39.8  0.000338 MPI_Allreduce EP.ipoib
+ 9    99 39.8   39.8  0.000294 MPI_Allreduce EP.ipoib
+10    99 39.8   39.8  0.00066  MPI_Finalize  EP.ipoib
+# … with 1,270 more rows
 
 Parsed with column specification:
 cols(
@@ -881,16 +1110,16 @@ cols(
    <
 <
         <chr>
- 1    99  0.800  1.72 0.920    MPI_Init      EP   
- 2    99  1.72   1.72 0.000001 MPI_Comm_rank EP   
- 3    99  1.72   1.72 0        MPI_Comm_size EP   
- 4    99  1.72   1.72 0.00199  MPI_Bcast     EP   
- 5    99  1.72   1.72 0.000323 MPI_Barrier   EP   
- 6    99 38.3   38.9  0.595    MPI_Allreduce EP   
- 7    99 38.9   38.9  0.000558 MPI_Allreduce EP   
- 8    99 38.9   38.9  0.000432 MPI_Allreduce EP   
- 9    99 38.9   38.9  0.000344 MPI_Allreduce EP   
-10    99 38.9   38.9  0.000841 MPI_Finalize  EP   
+ 1    99  0.274  6.29 6.01     MPI_Init      EP.ib
+ 2    99  6.29   6.29 0.000004 MPI_Comm_rank EP.ib
+ 3    99  6.29   6.29 0.000001 MPI_Comm_size EP.ib
+ 4    99  6.29   6.29 0.000624 MPI_Bcast     EP.ib
+ 5    99  6.29   6.29 0.000163 MPI_Barrier   EP.ib
+ 6    99 42.7   43.5  0.868    MPI_Allreduce EP.ib
+ 7    99 43.5   43.5  0.000179 MPI_Allreduce EP.ib
+ 8    99 43.5   43.5  0.000367 MPI_Allreduce EP.ib
+ 9    99 43.5   43.5  0.000193 MPI_Allreduce EP.ib
+10    99 43.5   43.5  0.00115  MPI_Finalize  EP.ib
 # … with 1,270 more rows
 
 Parsed with column specification:
@@ -906,24 +1135,123 @@ cols(
 )
 
 # A tibble: 5,501 x 6
-    Rank  Start   End  Duration Value         App  
+    Rank  Start   End  Duration Value         App   
    <
  <
 <
     <
 <
-        <chr>
- 1    99  0.740  1.56  0.816    MPI_Init      IS   
- 2    99  1.56   1.56  0.000005 MPI_Comm_rank IS   
- 3    99  1.56   1.56  0.000002 MPI_Comm_size IS   
- 4    99  1.56   1.56  0.00164  MPI_Bcast     IS   
- 5    99  3.99   5.24  1.25     MPI_Allreduce IS   
- 6    99  5.24   5.25  0.00662  MPI_Alltoall  IS   
- 7    99  5.25  22.9  17.6      MPI_Alltoallv IS   
- 8    99 23.6   23.6   0.0828   MPI_Allreduce IS   
- 9    99 23.6   23.6   0.00164  MPI_Alltoall  IS   
-10    99 23.6   38.1  14.5      MPI_Alltoallv IS   
+        <
+
+ 1    99  0.740  1.56  0.816    MPI_Init      IS.eth
+ 2    99  1.56   1.56  0.000005 MPI_Comm_rank IS.eth
+ 3    99  1.56   1.56  0.000002 MPI_Comm_size IS.eth
+ 4    99  1.56   1.56  0.00164  MPI_Bcast     IS.eth
+ 5    99  3.99   5.24  1.25     MPI_Allreduce IS.eth
+ 6    99  5.24   5.25  0.00662  MPI_Alltoall  IS.eth
+ 7    99  5.25  22.9  17.6      MPI_Alltoallv IS.eth
+ 8    99 23.6   23.6   0.0828   MPI_Allreduce IS.eth
+ 9    99 23.6   23.6   0.00164  MPI_Alltoall  IS.eth
+10    99 23.6   38.1  14.5      MPI_Alltoallv IS.eth
 # … with 5,491 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 5,501 x 6
+    Rank  Start   End Duration Value         App  
+   <
+ <
+<
+   <
+<
+        <chr>
+ 1    99  0.833  6.92 6.09     MPI_Init      IS.ib
+ 2    99  6.92   6.92 0.000009 MPI_Comm_rank IS.ib
+ 3    99  6.92   6.92 0.000003 MPI_Comm_size IS.ib
+ 4    99  6.92   6.92 0.000111 MPI_Bcast     IS.ib
+ 5    99 10.5   10.6  0.151    MPI_Allreduce IS.ib
+ 6    99 10.6   11.0  0.388    MPI_Alltoall  IS.ib
+ 7    99 11.0   19.2  8.25     MPI_Alltoallv IS.ib
+ 8    99 19.8   20.0  0.197    MPI_Allreduce IS.ib
+ 9    99 20.0   20.0  0.00181  MPI_Alltoall  IS.ib
+10    99 20.0   20.3  0.299    MPI_Alltoallv IS.ib
+# … with 5,491 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 5,501 x 6
+    Rank Start   End Duration Value         App     
+   <
+<
+<
+   <
+<
+        <
+  
+ 1    99 0.104  1.87 1.77     MPI_Init      IS.ipoib
+ 2    99 1.87   1.87 0.000005 MPI_Comm_rank IS.ipoib
+ 3    99 1.87   1.87 0.000002 MPI_Comm_size IS.ipoib
+ 4    99 1.87   1.87 0.000663 MPI_Bcast     IS.ipoib
+ 5    99 4.30   5.61 1.30     MPI_Allreduce IS.ipoib
+ 6    99 5.61   6.63 1.03     MPI_Alltoall  IS.ipoib
+ 7    99 6.63   8.31 1.67     MPI_Alltoallv IS.ipoib
+ 8    99 8.87   9.12 0.249    MPI_Allreduce IS.ipoib
+ 9    99 9.12   9.12 0.000871 MPI_Alltoall  IS.ipoib
+10    99 9.12   9.46 0.342    MPI_Alltoallv IS.ipoib
+# … with 5,491 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 15,226,704 x 6
+    Rank Start   End Duration Value          App   
+   <
+<
+<
+   <
+<
+         <
+
+ 1   143 0.386  1.24 0.853    MPI_Init       SP.eth
+ 2   143 1.24   1.24 0.000004 MPI_Comm_size  SP.eth
+ 3   143 1.24   1.24 0        MPI_Comm_rank  SP.eth
+ 4   143 1.24   1.24 0.00253  MPI_Comm_split SP.eth
+ 5   143 1.24   1.24 0.000001 MPI_Comm_size  SP.eth
+ 6   143 1.24   1.24 0.00192  MPI_Comm_dup   SP.eth
+ 7   143 1.24   1.25 0.00187  MPI_Comm_dup   SP.eth
+ 8   143 1.25   1.25 0.00134  MPI_Bcast      SP.eth
+ 9   143 1.25   1.25 0.000147 MPI_Bcast      SP.eth
+10   143 1.25   1.25 0.000093 MPI_Bcast      SP.eth
+# … with 15,226,694 more rows
 
 Parsed with column specification:
 cols(
@@ -945,16 +1273,49 @@ cols(
    <
 <
          <chr>
- 1   143 0.386  1.24 0.853    MPI_Init       SP   
- 2   143 1.24   1.24 0.000004 MPI_Comm_size  SP   
- 3   143 1.24   1.24 0        MPI_Comm_rank  SP   
- 4   143 1.24   1.24 0.00253  MPI_Comm_split SP   
- 5   143 1.24   1.24 0.000001 MPI_Comm_size  SP   
- 6   143 1.24   1.24 0.00192  MPI_Comm_dup   SP   
- 7   143 1.24   1.25 0.00187  MPI_Comm_dup   SP   
- 8   143 1.25   1.25 0.00134  MPI_Bcast      SP   
- 9   143 1.25   1.25 0.000147 MPI_Bcast      SP   
-10   143 1.25   1.25 0.000093 MPI_Bcast      SP   
+ 1   143 0.425  7.20 6.78     MPI_Init       SP.ib
+ 2   143 7.20   7.20 0.000005 MPI_Comm_size  SP.ib
+ 3   143 7.20   7.20 0.000001 MPI_Comm_rank  SP.ib
+ 4   143 7.20   7.20 0.00219  MPI_Comm_split SP.ib
+ 5   143 7.20   7.20 0        MPI_Comm_size  SP.ib
+ 6   143 7.20   7.21 0.00138  MPI_Comm_dup   SP.ib
+ 7   143 7.21   7.21 0.00177  MPI_Comm_dup   SP.ib
+ 8   143 7.21   7.21 0.00176  MPI_Bcast      SP.ib
+ 9   143 7.21   7.21 0.000068 MPI_Bcast      SP.ib
+10   143 7.21   7.21 0.000007 MPI_Bcast      SP.ib
+# … with 15,226,694 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 15,226,704 x 6
+    Rank Start   End Duration Value          App     
+   <
+<
+<
+   <
+<
+         <
+  
+ 1   143 0.897  1.70 0.802    MPI_Init       SP.ipoib
+ 2   143 1.70   1.70 0.000005 MPI_Comm_size  SP.ipoib
+ 3   143 1.70   1.70 0        MPI_Comm_rank  SP.ipoib
+ 4   143 1.70   1.70 0.00271  MPI_Comm_split SP.ipoib
+ 5   143 1.70   1.70 0.000001 MPI_Comm_size  SP.ipoib
+ 6   143 1.70   1.70 0.00186  MPI_Comm_dup   SP.ipoib
+ 7   143 1.70   1.70 0.00179  MPI_Comm_dup   SP.ipoib
+ 8   143 1.70   1.71 0.00261  MPI_Bcast      SP.ipoib
+ 9   143 1.71   1.71 0.000191 MPI_Bcast      SP.ipoib
+10   143 1.71   1.71 0.000157 MPI_Bcast      SP.ipoib
 # … with 15,226,694 more rows
 #+end_example
 
@@ -979,7 +1340,6 @@ df %>%
 df.compute
 
 df %>%
-  filter(Value != "MPI_Finalize") %>%
   group_by(Rank,Value,App) %>%
   summarize(Time = sum(Duration)) -> df.communication;
 
@@ -2937,7 +3297,6 @@ df %>%
 df.compute
 
 df %>%
-  filter(Value != "MPI_Finalize") %>%
   group_by(Rank,Value,App) %>%
   summarize(Time = sum(Duration)) -> df.communication;
 
