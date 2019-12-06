@@ -4935,22 +4935,22 @@ cols(
 #+end_example
 ***** PingPong - Latency
 #+begin_src R :results output graphics :file R/PLOTS/Latency.png :exports both :width 800 :height 350 :session *R* 
-ggplot(df_intel_latency,aes(x=bytes, y=average)) +
+ggplot(df_intel_latency[df_intel_latency$interface %in% c("ib", "eth"), ],aes(x=bytes, y=average)) +
   geom_line(aes(color = interface), alpha = 1) +
   geom_point(aes(color=interface, shape=interface),size = 4) +
   scale_shape_manual(values = c(15, 16, 17),
-                     breaks=c("ib", "ipoib", "eth"),
-                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+                     breaks=c("ib", "eth"),
+                     labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
   theme_bw() +
   scale_y_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
   ylab('Average Latency Time\n(Usec in 2 Log Scale)') +
   xlab('Message Size (Bytes)') +
-  scale_color_manual(values=c( "#BEBEBE", "#303030", "#888888"),
-                    breaks=c("ib", "ipoib", "eth"),
-                    labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-    theme (legend.position = c(0.1, 0.82),
+  scale_color_manual(values=c( "#BEBEBE", "#303030"),
+                    breaks=c("ib", "eth"),
+                    labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +
+    theme (legend.position = c(0.2, 0.82),
            legend.background = element_rect(color = "black", size = 0.5, linetype = "solid"),
            plot.margin = unit(x = c(0.2, 0, 0, 0), units = "cm"),
            axis.title=element_text(size=18), 
@@ -4966,22 +4966,22 @@ ggsave("SLIDES/img/Latency.pdf")
 
 ***** PingPong - Bandwidth
 #+begin_src R :results output graphics :file R/PLOTS/Bandwidth.png :exports both :width 800 :height 350 :session *R* 
-ggplot(df_intel_band,aes(x=bytes, y=average)) +
+ggplot(df_intel_band[df_intel_band$interface %in% c("ib", "eth"), ],aes(x=bytes, y=average)) +
   geom_line(aes(col = interface), alpha = 1) +
   geom_point(aes(col = interface, shape=interface), size = 4) +
   scale_shape_manual(values = c(15, 16, 17),
-                     breaks=c("ib", "ipoib", "eth"),
-                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +  
+                     breaks=c("ib", "eth"),
+                     labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +  
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
   theme_bw() +
   scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
   ylab('Average Bandwidth\n(Gigabytes per Second)') +
   xlab('Message Size (Bytes)') +
-  scale_colour_manual(values=c( "#BEBEBE", "#303030", "#888888"),
-                    breaks=c("ib", "ipoib", "eth"),
-                    labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-  theme (legend.position = c(0.1, 0.82),
+  scale_colour_manual(values=c( "#BEBEBE", "#303030"),
+                    breaks=c("ib", "eth"),
+                    labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +
+  theme (legend.position = c(0.2, 0.82),
          legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
           plot.margin = unit(x = c(0.1, 0, 0, 0), units = "cm"),
          axis.title=element_text(size=18), 
@@ -4989,6 +4989,7 @@ ggplot(df_intel_band,aes(x=bytes, y=average)) +
          legend.text = element_text(color = "black", size = 18),
          axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
          axis.text.y = element_text(size =16, color = "black"))
+
 ggsave("SLIDES/img/Bandwidth.pdf")
 #+end_src
 
