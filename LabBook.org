@@ -294,7 +294,7 @@ to be used during the execution, respecting the power of two or square
 root requirements, and finally executes the [[SH/experiments_exec.sh][experiments execution]]
 script like a normal bash script.
 
-** Graphical Analysis 
+** Graphical Analysis
 Upon completion of the experiments, in this topic, graphs containing
 the execution time and the characterization of the applications are
 created. The first step is to read the CSV files. Latency and
@@ -428,22 +428,22 @@ cols(
 #+end_example
 **** PingPong - Latency
 #+begin_src R :results output graphics :file R/PLOTS/Latency.png :exports both :width 800 :height 350 :session *R* 
-ggplot(df_intel_latency,aes(x=bytes, y=average)) +
+ggplot(df_intel_latency[df_intel_latency$interface %in% c("ib", "eth"), ],aes(x=bytes, y=average)) +
   geom_line(aes(color = interface), alpha = 1) +
   geom_point(aes(color=interface, shape=interface),size = 4) +
   scale_shape_manual(values = c(15, 16, 17),
-                     breaks=c("ib", "ipoib", "eth"),
-                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+                     breaks=c("ib", "eth"),
+                     labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
   theme_bw() +
   scale_y_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
   ylab('Average Latency Time\n(Usec in 2 Log Scale)') +
   xlab('Message Size (Bytes)') +
-  scale_color_manual(values=c( "#BEBEBE", "#303030", "#888888"),
-                    breaks=c("ib", "ipoib", "eth"),
-                    labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-    theme (legend.position = c(0.1, 0.82),
+  scale_color_manual(values=c( "#BEBEBE", "#303030"),
+                    breaks=c("ib", "eth"),
+                    labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +
+    theme (legend.position = c(0.2, 0.82),
            legend.background = element_rect(color = "black", size = 0.5, linetype = "solid"),
            plot.margin = unit(x = c(0.2, 0, 0, 0), units = "cm"),
            axis.title=element_text(size=18), 
@@ -458,22 +458,22 @@ ggplot(df_intel_latency,aes(x=bytes, y=average)) +
 
 **** PingPong - Bandwidth
 #+begin_src R :results output graphics :file R/PLOTS/Bandwidth.png :exports both :width 800 :height 350 :session *R* 
-ggplot(df_intel_band,aes(x=bytes, y=average)) +
+ggplot(df_intel_band[df_intel_band$interface %in% c("ib", "eth"), ],aes(x=bytes, y=average)) +
   geom_line(aes(col = interface), alpha = 1) +
   geom_point(aes(col = interface, shape=interface), size = 4) +
   scale_shape_manual(values = c(15, 16, 17),
-                     breaks=c("ib", "ipoib", "eth"),
-                     labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +  
+                     breaks=c("ib", "eth"),
+                     labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +  
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
   theme_bw() +
   scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
   ylab('Average Bandwidth\n(Gigabytes per Second)') +
   xlab('Message Size (Bytes)') +
-  scale_colour_manual(values=c( "#BEBEBE", "#303030", "#888888"),
-                    breaks=c("ib", "ipoib", "eth"),
-                    labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
-  theme (legend.position = c(0.1, 0.82),
+  scale_colour_manual(values=c( "#BEBEBE", "#303030"),
+                    breaks=c("ib", "eth"),
+                    labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +
+  theme (legend.position = c(0.2, 0.82),
          legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
           plot.margin = unit(x = c(0.1, 0, 0, 0), units = "cm"),
          axis.title=element_text(size=18), 
@@ -971,71 +971,6 @@ cols(
   X8 = col_character()
 )
 
-# A tibble: 8,193 x 6
-    Rank Start   End Duration Value          App     
-   <
-<
-<
-   <
-<
-         <
-  
- 1    99 0.722  2.70 1.98     MPI_Init       FT.ipoib
- 2    99 2.70   2.70 0.000008 MPI_Comm_size  FT.ipoib
- 3    99 2.70   2.70 0        MPI_Comm_rank  FT.ipoib
- 4    99 2.70   2.70 0.00149  MPI_Bcast      FT.ipoib
- 5    99 2.70   2.70 0.000184 MPI_Bcast      FT.ipoib
- 6    99 2.70   2.70 0.000086 MPI_Bcast      FT.ipoib
- 7    99 2.70   2.70 0.00017  MPI_Bcast      FT.ipoib
- 8    99 2.70   2.70 0.000171 MPI_Bcast      FT.ipoib
- 9    99 2.70   2.71 0.00242  MPI_Comm_split FT.ipoib
-10    99 2.71   2.71 0.00193  MPI_Comm_split FT.ipoib
-# … with 8,183 more rows
-
-Parsed with column specification:
-cols(
-  X1 = col_character(),
-  X2 = col_character(),
-  X3 = col_character(),
-  X4 = col_double(),
-  X5 = col_double(),
-  X6 = col_double(),
-  X7 = col_double(),
-  X8 = col_character()
-)
-
-# A tibble: 8,193 x 6
-    Rank Start   End Duration Value          App  
-   <
-<
-<
-   <
-<
-         <chr>
- 1    99 0.981  6.82 5.84     MPI_Init       FT.ib
- 2    99 6.82   6.82 0.000004 MPI_Comm_size  FT.ib
- 3    99 6.82   6.82 0        MPI_Comm_rank  FT.ib
- 4    99 6.82   6.82 0.000739 MPI_Bcast      FT.ib
- 5    99 6.82   6.82 0.000008 MPI_Bcast      FT.ib
- 6    99 6.82   6.82 0.00001  MPI_Bcast      FT.ib
- 7    99 6.82   6.82 0.000045 MPI_Bcast      FT.ib
- 8    99 6.82   6.82 0.000028 MPI_Bcast      FT.ib
- 9    99 6.82   6.82 0.00278  MPI_Comm_split FT.ib
-10    99 6.82   6.82 0.00140  MPI_Comm_split FT.ib
-# … with 8,183 more rows
-
-Parsed with column specification:
-cols(
-  X1 = col_character(),
-  X2 = col_character(),
-  X3 = col_character(),
-  X4 = col_double(),
-  X5 = col_double(),
-  X6 = col_double(),
-  X7 = col_double(),
-  X8 = col_character()
-)
-
 # A tibble: 1,280 x 6
     Rank  Start   End Duration Value         App   
    <
@@ -1055,71 +990,6 @@ cols(
  8    99 38.9   38.9  0.000432 MPI_Allreduce EP.eth
  9    99 38.9   38.9  0.000344 MPI_Allreduce EP.eth
 10    99 38.9   38.9  0.000841 MPI_Finalize  EP.eth
-# … with 1,270 more rows
-
-Parsed with column specification:
-cols(
-  X1 = col_character(),
-  X2 = col_character(),
-  X3 = col_character(),
-  X4 = col_double(),
-  X5 = col_double(),
-  X6 = col_double(),
-  X7 = col_double(),
-  X8 = col_character()
-)
-
-# A tibble: 1,280 x 6
-    Rank  Start   End Duration Value         App     
-   <
- <
-<
-   <
-<
-        <
-  
- 1    99  0.737  2.63 1.90     MPI_Init      EP.ipoib
- 2    99  2.63   2.63 0.000002 MPI_Comm_rank EP.ipoib
- 3    99  2.63   2.63 0        MPI_Comm_size EP.ipoib
- 4    99  2.63   2.64 0.00114  MPI_Bcast     EP.ipoib
- 5    99  2.64   2.64 0.000569 MPI_Barrier   EP.ipoib
- 6    99 39.3   39.8  0.531    MPI_Allreduce EP.ipoib
- 7    99 39.8   39.8  0.000349 MPI_Allreduce EP.ipoib
- 8    99 39.8   39.8  0.000338 MPI_Allreduce EP.ipoib
- 9    99 39.8   39.8  0.000294 MPI_Allreduce EP.ipoib
-10    99 39.8   39.8  0.00066  MPI_Finalize  EP.ipoib
-# … with 1,270 more rows
-
-Parsed with column specification:
-cols(
-  X1 = col_character(),
-  X2 = col_character(),
-  X3 = col_character(),
-  X4 = col_double(),
-  X5 = col_double(),
-  X6 = col_double(),
-  X7 = col_double(),
-  X8 = col_character()
-)
-
-# A tibble: 1,280 x 6
-    Rank  Start   End Duration Value         App  
-   <
- <
-<
-   <
-<
-        <chr>
- 1    99  0.274  6.29 6.01     MPI_Init      EP.ib
- 2    99  6.29   6.29 0.000004 MPI_Comm_rank EP.ib
- 3    99  6.29   6.29 0.000001 MPI_Comm_size EP.ib
- 4    99  6.29   6.29 0.000624 MPI_Bcast     EP.ib
- 5    99  6.29   6.29 0.000163 MPI_Barrier   EP.ib
- 6    99 42.7   43.5  0.868    MPI_Allreduce EP.ib
- 7    99 43.5   43.5  0.000179 MPI_Allreduce EP.ib
- 8    99 43.5   43.5  0.000367 MPI_Allreduce EP.ib
- 9    99 43.5   43.5  0.000193 MPI_Allreduce EP.ib
-10    99 43.5   43.5  0.00115  MPI_Finalize  EP.ib
 # … with 1,270 more rows
 
 Parsed with column specification:
@@ -1167,25 +1037,92 @@ cols(
   X8 = col_character()
 )
 
-# A tibble: 5,501 x 6
-    Rank  Start   End Duration Value         App  
+# A tibble: 15,226,704 x 6
+    Rank Start   End Duration Value          App   
+   <
+<
+<
+   <
+<
+         <
+
+ 1   143 0.386  1.24 0.853    MPI_Init       SP.eth
+ 2   143 1.24   1.24 0.000004 MPI_Comm_size  SP.eth
+ 3   143 1.24   1.24 0        MPI_Comm_rank  SP.eth
+ 4   143 1.24   1.24 0.00253  MPI_Comm_split SP.eth
+ 5   143 1.24   1.24 0.000001 MPI_Comm_size  SP.eth
+ 6   143 1.24   1.24 0.00192  MPI_Comm_dup   SP.eth
+ 7   143 1.24   1.25 0.00187  MPI_Comm_dup   SP.eth
+ 8   143 1.25   1.25 0.00134  MPI_Bcast      SP.eth
+ 9   143 1.25   1.25 0.000147 MPI_Bcast      SP.eth
+10   143 1.25   1.25 0.000093 MPI_Bcast      SP.eth
+# … with 15,226,694 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 8,193 x 6
+    Rank Start   End Duration Value          App     
+   <
+<
+<
+   <
+<
+         <
+  
+ 1    99 0.722  2.70 1.98     MPI_Init       FT.ipoib
+ 2    99 2.70   2.70 0.000008 MPI_Comm_size  FT.ipoib
+ 3    99 2.70   2.70 0        MPI_Comm_rank  FT.ipoib
+ 4    99 2.70   2.70 0.00149  MPI_Bcast      FT.ipoib
+ 5    99 2.70   2.70 0.000184 MPI_Bcast      FT.ipoib
+ 6    99 2.70   2.70 0.000086 MPI_Bcast      FT.ipoib
+ 7    99 2.70   2.70 0.00017  MPI_Bcast      FT.ipoib
+ 8    99 2.70   2.70 0.000171 MPI_Bcast      FT.ipoib
+ 9    99 2.70   2.71 0.00242  MPI_Comm_split FT.ipoib
+10    99 2.71   2.71 0.00193  MPI_Comm_split FT.ipoib
+# … with 8,183 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 1,280 x 6
+    Rank  Start   End Duration Value         App     
    <
  <
 <
    <
 <
-        <chr>
- 1    99  0.833  6.92 6.09     MPI_Init      IS.ib
- 2    99  6.92   6.92 0.000009 MPI_Comm_rank IS.ib
- 3    99  6.92   6.92 0.000003 MPI_Comm_size IS.ib
- 4    99  6.92   6.92 0.000111 MPI_Bcast     IS.ib
- 5    99 10.5   10.6  0.151    MPI_Allreduce IS.ib
- 6    99 10.6   11.0  0.388    MPI_Alltoall  IS.ib
- 7    99 11.0   19.2  8.25     MPI_Alltoallv IS.ib
- 8    99 19.8   20.0  0.197    MPI_Allreduce IS.ib
- 9    99 20.0   20.0  0.00181  MPI_Alltoall  IS.ib
-10    99 20.0   20.3  0.299    MPI_Alltoallv IS.ib
-# … with 5,491 more rows
+        <
+  
+ 1    99  0.737  2.63 1.90     MPI_Init      EP.ipoib
+ 2    99  2.63   2.63 0.000002 MPI_Comm_rank EP.ipoib
+ 3    99  2.63   2.63 0        MPI_Comm_size EP.ipoib
+ 4    99  2.63   2.64 0.00114  MPI_Bcast     EP.ipoib
+ 5    99  2.64   2.64 0.000569 MPI_Barrier   EP.ipoib
+ 6    99 39.3   39.8  0.531    MPI_Allreduce EP.ipoib
+ 7    99 39.8   39.8  0.000349 MPI_Allreduce EP.ipoib
+ 8    99 39.8   39.8  0.000338 MPI_Allreduce EP.ipoib
+ 9    99 39.8   39.8  0.000294 MPI_Allreduce EP.ipoib
+10    99 39.8   39.8  0.00066  MPI_Finalize  EP.ipoib
+# … with 1,270 more rows
 
 Parsed with column specification:
 cols(
@@ -1233,25 +1170,121 @@ cols(
 )
 
 # A tibble: 15,226,704 x 6
-    Rank Start   End Duration Value          App   
+    Rank Start   End Duration Value          App     
    <
 <
 <
    <
 <
          <
-
- 1   143 0.386  1.24 0.853    MPI_Init       SP.eth
- 2   143 1.24   1.24 0.000004 MPI_Comm_size  SP.eth
- 3   143 1.24   1.24 0        MPI_Comm_rank  SP.eth
- 4   143 1.24   1.24 0.00253  MPI_Comm_split SP.eth
- 5   143 1.24   1.24 0.000001 MPI_Comm_size  SP.eth
- 6   143 1.24   1.24 0.00192  MPI_Comm_dup   SP.eth
- 7   143 1.24   1.25 0.00187  MPI_Comm_dup   SP.eth
- 8   143 1.25   1.25 0.00134  MPI_Bcast      SP.eth
- 9   143 1.25   1.25 0.000147 MPI_Bcast      SP.eth
-10   143 1.25   1.25 0.000093 MPI_Bcast      SP.eth
+  
+ 1   143 0.897  1.70 0.802    MPI_Init       SP.ipoib
+ 2   143 1.70   1.70 0.000005 MPI_Comm_size  SP.ipoib
+ 3   143 1.70   1.70 0        MPI_Comm_rank  SP.ipoib
+ 4   143 1.70   1.70 0.00271  MPI_Comm_split SP.ipoib
+ 5   143 1.70   1.70 0.000001 MPI_Comm_size  SP.ipoib
+ 6   143 1.70   1.70 0.00186  MPI_Comm_dup   SP.ipoib
+ 7   143 1.70   1.70 0.00179  MPI_Comm_dup   SP.ipoib
+ 8   143 1.70   1.71 0.00261  MPI_Bcast      SP.ipoib
+ 9   143 1.71   1.71 0.000191 MPI_Bcast      SP.ipoib
+10   143 1.71   1.71 0.000157 MPI_Bcast      SP.ipoib
 # … with 15,226,694 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 8,193 x 6
+    Rank Start   End Duration Value          App  
+   <
+<
+<
+   <
+<
+         <chr>
+ 1    99 0.981  6.82 5.84     MPI_Init       FT.ib
+ 2    99 6.82   6.82 0.000004 MPI_Comm_size  FT.ib
+ 3    99 6.82   6.82 0        MPI_Comm_rank  FT.ib
+ 4    99 6.82   6.82 0.000739 MPI_Bcast      FT.ib
+ 5    99 6.82   6.82 0.000008 MPI_Bcast      FT.ib
+ 6    99 6.82   6.82 0.00001  MPI_Bcast      FT.ib
+ 7    99 6.82   6.82 0.000045 MPI_Bcast      FT.ib
+ 8    99 6.82   6.82 0.000028 MPI_Bcast      FT.ib
+ 9    99 6.82   6.82 0.00278  MPI_Comm_split FT.ib
+10    99 6.82   6.82 0.00140  MPI_Comm_split FT.ib
+# … with 8,183 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 1,280 x 6
+    Rank  Start   End Duration Value         App  
+   <
+ <
+<
+   <
+<
+        <chr>
+ 1    99  0.274  6.29 6.01     MPI_Init      EP.ib
+ 2    99  6.29   6.29 0.000004 MPI_Comm_rank EP.ib
+ 3    99  6.29   6.29 0.000001 MPI_Comm_size EP.ib
+ 4    99  6.29   6.29 0.000624 MPI_Bcast     EP.ib
+ 5    99  6.29   6.29 0.000163 MPI_Barrier   EP.ib
+ 6    99 42.7   43.5  0.868    MPI_Allreduce EP.ib
+ 7    99 43.5   43.5  0.000179 MPI_Allreduce EP.ib
+ 8    99 43.5   43.5  0.000367 MPI_Allreduce EP.ib
+ 9    99 43.5   43.5  0.000193 MPI_Allreduce EP.ib
+10    99 43.5   43.5  0.00115  MPI_Finalize  EP.ib
+# … with 1,270 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 5,501 x 6
+    Rank  Start   End Duration Value         App  
+   <
+ <
+<
+   <
+<
+        <chr>
+ 1    99  0.833  6.92 6.09     MPI_Init      IS.ib
+ 2    99  6.92   6.92 0.000009 MPI_Comm_rank IS.ib
+ 3    99  6.92   6.92 0.000003 MPI_Comm_size IS.ib
+ 4    99  6.92   6.92 0.000111 MPI_Bcast     IS.ib
+ 5    99 10.5   10.6  0.151    MPI_Allreduce IS.ib
+ 6    99 10.6   11.0  0.388    MPI_Alltoall  IS.ib
+ 7    99 11.0   19.2  8.25     MPI_Alltoallv IS.ib
+ 8    99 19.8   20.0  0.197    MPI_Allreduce IS.ib
+ 9    99 20.0   20.0  0.00181  MPI_Alltoall  IS.ib
+10    99 20.0   20.3  0.299    MPI_Alltoallv IS.ib
+# … with 5,491 more rows
 
 Parsed with column specification:
 cols(
@@ -1284,46 +1317,13 @@ cols(
  9   143 7.21   7.21 0.000068 MPI_Bcast      SP.ib
 10   143 7.21   7.21 0.000007 MPI_Bcast      SP.ib
 # … with 15,226,694 more rows
-
-Parsed with column specification:
-cols(
-  X1 = col_character(),
-  X2 = col_character(),
-  X3 = col_character(),
-  X4 = col_double(),
-  X5 = col_double(),
-  X6 = col_double(),
-  X7 = col_double(),
-  X8 = col_character()
-)
-
-# A tibble: 15,226,704 x 6
-    Rank Start   End Duration Value          App     
-   <
-<
-<
-   <
-<
-         <
-  
- 1   143 0.897  1.70 0.802    MPI_Init       SP.ipoib
- 2   143 1.70   1.70 0.000005 MPI_Comm_size  SP.ipoib
- 3   143 1.70   1.70 0        MPI_Comm_rank  SP.ipoib
- 4   143 1.70   1.70 0.00271  MPI_Comm_split SP.ipoib
- 5   143 1.70   1.70 0.000001 MPI_Comm_size  SP.ipoib
- 6   143 1.70   1.70 0.00186  MPI_Comm_dup   SP.ipoib
- 7   143 1.70   1.70 0.00179  MPI_Comm_dup   SP.ipoib
- 8   143 1.70   1.71 0.00261  MPI_Bcast      SP.ipoib
- 9   143 1.71   1.71 0.000191 MPI_Bcast      SP.ipoib
-10   143 1.71   1.71 0.000157 MPI_Bcast      SP.ipoib
-# … with 15,226,694 more rows
 #+end_example
 
-***** Plots
-#+begin_src R :results output graphics :file R/PLOTS/FT-EP-IS-SP.charac.png :exports both :width 800 :height 400 :session *R* 
-df <- rbind(df.ft, df.ep, df.is, df.sp)
+***** FT-Charac
+#+begin_src R :results output graphics :file R/PLOTS/FT.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.ft.eth, df.ft.ipoib, df.ft.ib)
 
-df %>%
+df.charac %>%
   filter(Value != "MPI_Finalize") %>%
   group_by(Rank,App) %>%
   summarize(MPI.Time = sum(Duration),
@@ -1333,13 +1333,13 @@ df %>%
   arrange(Rank) -> df.timings;
 df.timings
 
-df %>%
+df.charac %>%
   group_by(Rank,App) %>%
   summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
   mutate(Value = "Computing") -> df.compute
 df.compute
 
-df %>%
+df.charac %>%
   group_by(Rank,Value,App) %>%
   summarize(Time = sum(Duration)) -> df.communication;
 
@@ -1395,170 +1395,75 @@ df.compute %>%
         labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
         facet_wrap(facets= ~ App, scales="free", nrow=1) +
         scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
-        scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
         theme(strip.text.x=element_text(size=18),
         strip.background=element_rect(fill='#F5F5F5'))
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/FT-EP-IS-SP.charac.png]]
-***** Percentage
-#+begin_src R :results output graphics :file R/PLOTS/FT-EP-IS-SP.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
-options(crayon.enabled=FALSE)
-options(scipen = 999)
-suppressMessages(library(tidyverse))
-df.ft <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT") %>%
-  select(Rank, everything())
-df.ft
+[[file:R/PLOTS/FT.charac.png]]
+***** EP-Charac
+#+begin_src R :results output graphics :file R/PLOTS/EP.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.ep.eth, df.ep.ipoib, df.ep.ib)
 
-df.ft %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ft
-
-df.ft$Value <- as.character(df.ft$Value)
-df.ft$Value [grepl('MPI_*', df.ft$Value)] <- 'MPI'
-
-df.ft %>%
-  group_by(Value,App) %>%
+df.charac %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.ft$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ft;
-df.percent.ft
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
 
-df.ft$Value <- as.character(df.ft$Value)
-df.ft$Value [grepl('MPI', df.ft$Value)] <- 'Computing'
+df.charac %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
 
-df.ft %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.ft$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ft
+df.charac %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
 
-df.ep <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP") %>%
-  select(Rank, everything())
-df.ep
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
 
-df.ep %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ep
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
 
-df.ep$Value <- as.character(df.ep$Value)
-df.ep$Value [grepl('MPI_*', df.ep$Value)] <- 'MPI'
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
+  )
+}
 
-df.ep %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.ep$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ep;
-df.percent.ep
+count1 <- 0
+breaks_fun2 <- function(x) {
+  count1 <<- count1 + 1L
+  switch(
+    count1,
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
+  )
+}
 
-df.ep$Value <- as.character(df.ep$Value)
-df.ep$Value [grepl('MPI', df.ep$Value)] <- 'Computing'
-
-df.ep %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.ep$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ep
-
-df.is <- read_csv("LOGS/TRACE/charac_is.eth/charac_is.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IS") %>%
-  select(Rank, everything())
-df.is
-
-df.is %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.is
-
-df.is$Value <- as.character(df.is$Value)
-df.is$Value [grepl('MPI_*', df.is$Value)] <- 'MPI'
-
-df.is %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.is$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.is;
-df.percent.is
-
-df.is$Value <- as.character(df.is$Value)
-df.is$Value [grepl('MPI', df.is$Value)] <- 'Computing'
-
-df.is %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.is$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.is
-
-df.sp <- read_csv("LOGS/TRACE/charac_sp.eth/charac_sp.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "SP") %>%
-  select(Rank, everything())
-df.sp
-
-df.sp %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.sp
-
-df.sp$Value <- as.character(df.sp$Value)
-df.sp$Value [grepl('MPI_*', df.sp$Value)] <- 'MPI'
-
-df.sp %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.sp$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.sp;
-df.percent.sp
-
-df.sp$Value <- as.character(df.sp$Value)
-df.sp$Value [grepl('MPI', df.sp$Value)] <- 'Computing'
-
-df.sp %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.sp$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.sp
-
-df <- rbind(df.comp.ft,df.comp.ep,df.comp.is, df.comp.sp, df.percent.ft, df.percent.ep, df.percent.is, df.percent.sp)
-
-  ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
-  geom_bar(position = "fill", stat = "identity", width = 0.3) +
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
   scale_fill_manual(values=c("#303030", "#BEBEBE")) +
-  scale_y_continuous(labels = scales::percent_format()) +
   theme_bw() +
-  theme(legend.position = "top",
+  theme(legend.position="top",
         legend.key = element_rect(colour = "grey"),
         legend.key.height = unit(0.5, "line"),
         legend.key.width = unit(4, "line"),
@@ -1570,28 +1475,189 @@ df <- rbind(df.comp.ft,df.comp.ep,df.comp.is, df.comp.sp, df.percent.ft, df.perc
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-  labs(x="Applications", y="Operation Percentage")
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
+        scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/FT-EP-IS-SP.charac.percentage.png]]
+[[file:R/PLOTS/EP.charac.png]]
+***** IS-Charac
+#+begin_src R :results output graphics :file R/PLOTS/IS.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.is.eth, df.is.ipoib, df.is.ib)
+
+df.charac %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
+  summarize(MPI.Time = sum(Duration),
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
+
+df.charac %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
+
+df.charac %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
+
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
+
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
+
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
+  )
+}
+
+count1 <- 0
+breaks_fun2 <- function(x) {
+  count1 <<- count1 + 1L
+  switch(
+    count1,
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
+  )
+}
+
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
+  scale_fill_manual(values=c("#303030", "#BEBEBE")) +
+  theme_bw() +
+  theme(legend.position="top",
+        legend.key = element_rect(colour = "grey"),
+        legend.key.height = unit(0.5, "line"),
+        legend.key.width = unit(4, "line"),
+        legend.spacing = unit(100, "line"),
+        plot.margin = unit(x = c(0, 0.2, 0, 0), units = "cm"),
+        legend.margin=margin(c(0, 0, -8, 0)),
+        axis.text.x = element_text(size =16, color = "black"),
+        axis.text.y = element_text(size =16, color = "black"),
+        axis.title=element_text(size=18), 
+        legend.title = element_blank(),
+        legend.text = element_text(color = "black", size = 18)) +
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
+        scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/IS.charac.png]]
+
+***** SP-Charac
+#+begin_src R :results output graphics :file R/PLOTS/SP.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.sp.eth, df.sp.ipoib, df.sp.ib)
+
+df.charac %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
+  summarize(MPI.Time = sum(Duration),
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
+
+df.charac %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
+
+df.charac %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
+
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
+
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
+
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
+  )
+}
+
+count1 <- 0
+breaks_fun2 <- function(x) {
+  count1 <<- count1 + 1L
+  switch(
+    count1,
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
+  )
+}
+
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
+  scale_fill_manual(values=c("#303030", "#BEBEBE")) +
+  theme_bw() +
+  theme(legend.position="top",
+        legend.key = element_rect(colour = "grey"),
+        legend.key.height = unit(0.5, "line"),
+        legend.key.width = unit(4, "line"),
+        legend.spacing = unit(100, "line"),
+        plot.margin = unit(x = c(0, 0.2, 0, 0), units = "cm"),
+        legend.margin=margin(c(0, 0, -8, 0)),
+        axis.text.x = element_text(size =16, color = "black"),
+        axis.text.y = element_text(size =16, color = "black"),
+        axis.title=element_text(size=18), 
+        legend.title = element_blank(),
+        legend.text = element_text(color = "black", size = 18)) +
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
+        scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/SP.charac.png]]
+
 ***** FT-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/FT.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/FT.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
-df.ft.ib <- read_csv("LOGS/TRACE/charac_ft.ib/charac_ft.ib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT.ib") %>%
-  select(Rank, everything())
-df.ft.ib
-
 df.ft.ib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -1616,18 +1682,6 @@ df.ft.ib %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.ft.ib
 
-df.ft.ipoib <- read_csv("LOGS/TRACE/charac_ft.ipoib/charac_ft.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT.ipoib") %>%
-  select(Rank, everything())
-df.ft.ipoib
-
 df.ft.ipoib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -1651,18 +1705,6 @@ df.ft.ipoib %>%
   summarize(Total = df.total.ft.ipoib$Total,
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.ft.ipoib
-
-df.ft.eth <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT.eth") %>%
-  select(Rank, everything())
-df.ft.eth
 
 df.ft.eth %>%
   group_by(Value,App) %>%
@@ -1712,24 +1754,12 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/FT.charac.percentage.png]]
+[[file:R/PLOTS/FT.percentage.png]]
 ***** EP-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/EP.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/EP.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
-df.ep.ib <- read_csv("LOGS/TRACE/charac_ep.ib/charac_ep.ib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP.ib") %>%
-  select(Rank, everything())
-df.ep.ib
-
 df.ep.ib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -1754,18 +1784,6 @@ df.ep.ib %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.ep.ib
 
-df.ep.ipoib <- read_csv("LOGS/TRACE/charac_ep.ipoib/charac_ep.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP.ipoib") %>%
-  select(Rank, everything())
-df.ep.ipoib
-
 df.ep.ipoib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -1789,18 +1807,6 @@ df.ep.ipoib %>%
   summarize(Total = df.total.ep.ipoib$Total,
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.ep.ipoib
-
-df.ep.eth <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP.eth") %>%
-  select(Rank, everything())
-df.ep.eth
 
 df.ep.eth %>%
   group_by(Value,App) %>%
@@ -1850,25 +1856,13 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/EP.charac.percentage.png]]
+[[file:R/PLOTS/EP.percentage.png]]
 
 ***** IS-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/IS.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/IS.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
-df.is.ib <- read_csv("LOGS/TRACE/charac_is.ib/charac_is.ib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IS.ib") %>%
-  select(Rank, everything())
-df.is.ib
-
 df.is.ib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -1893,18 +1887,6 @@ df.is.ib %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.is.ib
 
-df.is.ipoib <- read_csv("LOGS/TRACE/charac_is.ipoib/charac_is.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IS.ipoib") %>%
-  select(Rank, everything())
-df.is.ipoib
-
 df.is.ipoib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -1928,18 +1910,6 @@ df.is.ipoib %>%
   summarize(Total = df.total.is.ipoib$Total,
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.is.ipoib
-
-df.is.eth <- read_csv("LOGS/TRACE/charac_is.eth/charac_is.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IS.eth") %>%
-  select(Rank, everything())
-df.is.eth
 
 df.is.eth %>%
   group_by(Value,App) %>%
@@ -1989,25 +1959,13 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/IS.charac.percentage.png]]
+[[file:R/PLOTS/IS.percentage.png]]
 
 ***** SP-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/SP.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/SP.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
-df.sp.ib <- read_csv("LOGS/TRACE/charac_sp.ib/charac_sp.ib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "SP.ib") %>%
-  select(Rank, everything())
-df.sp.ib
-
 df.sp.ib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -2032,18 +1990,6 @@ df.sp.ib %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.sp.ib
 
-df.sp.ipoib <- read_csv("LOGS/TRACE/charac_sp.ipoib/charac_sp.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "SP.ipoib") %>%
-  select(Rank, everything())
-df.sp.ipoib
-
 df.sp.ipoib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -2067,18 +2013,6 @@ df.sp.ipoib %>%
   summarize(Total = df.total.sp.ipoib$Total,
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.sp.ipoib
-
-df.sp.eth <- read_csv("LOGS/TRACE/charac_sp.eth/charac_sp.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "SP.eth") %>%
-  select(Rank, everything())
-df.sp.eth
 
 df.sp.eth %>%
   group_by(Value,App) %>%
@@ -2128,14 +2062,14 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/SP.charac.percentage.png]]
+[[file:R/PLOTS/SP.percentage.png]]
 
 **** MG-CG-LU-BT
 ***** Read CSVs
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 suppressMessages(library(tidyverse))
-df.mg <- read_csv("LOGS/TRACE/charac_mg.eth/charac_mg.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.mg.eth <- read_csv("LOGS/TRACE/charac_mg.eth/charac_mg.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -2143,11 +2077,11 @@ df.mg <- read_csv("LOGS/TRACE/charac_mg.eth/charac_mg.eth.csv", col_names = FALS
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "MG") %>%
+  mutate(App = "MG.eth") %>%
   select(Rank, everything())
-df.mg
+df.mg.eth
 
-df.cg <- read_csv("LOGS/TRACE/charac_cg.eth/charac_cg.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.cg.eth <- read_csv("LOGS/TRACE/charac_cg.eth/charac_cg.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -2155,11 +2089,11 @@ df.cg <- read_csv("LOGS/TRACE/charac_cg.eth/charac_cg.eth.csv", col_names = FALS
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "CG") %>%
+  mutate(App = "CG.eth") %>%
   select(Rank, everything())
-df.cg
+df.cg.eth
 
-df.lu <- read_csv("LOGS/TRACE/charac_lu.eth/charac_lu.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.lu.eth <- read_csv("LOGS/TRACE/charac_lu.eth/charac_lu.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -2167,11 +2101,11 @@ df.lu <- read_csv("LOGS/TRACE/charac_lu.eth/charac_lu.eth.csv", col_names = FALS
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "LU") %>%
+  mutate(App = "LU.eth") %>%
   select(Rank, everything())
-df.lu
+df.lu.eth
 
-df.bt <- read_csv("LOGS/TRACE/charac_bt.eth/charac_bt.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.bt.eth <- read_csv("LOGS/TRACE/charac_bt.eth/charac_bt.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -2179,13 +2113,336 @@ df.bt <- read_csv("LOGS/TRACE/charac_bt.eth/charac_bt.eth.csv", col_names = FALS
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "BT") %>%
+  mutate(App = "BT.eth") %>%
   select(Rank, everything())
-df.bt
+df.bt.eth
+
+df.mg.ipoib <- read_csv("LOGS/TRACE/charac_mg.ipoib/charac_mg.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "MG.ipoib") %>%
+  select(Rank, everything())
+df.mg.ipoib
+
+df.cg.ipoib <- read_csv("LOGS/TRACE/charac_cg.ipoib/charac_cg.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "CG.ipoib") %>%
+  select(Rank, everything())
+df.cg.ipoib
+
+df.lu.ipoib <- read_csv("LOGS/TRACE/charac_lu.ipoib/charac_lu.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "LU.ipoib") %>%
+  select(Rank, everything())
+df.lu.ipoib
+
+df.bt.ipoib <- read_csv("LOGS/TRACE/charac_bt.ipoib/charac_bt.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "BT.ipoib") %>%
+  select(Rank, everything())
+df.bt.ipoib
+
+
+df.mg.ib <- read_csv("LOGS/TRACE/charac_mg.ib/charac_mg.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "MG.ib") %>%
+  select(Rank, everything())
+df.mg.ib
+
+df.cg.ib <- read_csv("LOGS/TRACE/charac_cg.ib/charac_cg.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "CG.ib") %>%
+  select(Rank, everything())
+df.cg.ib
+
+df.lu.ib <- read_csv("LOGS/TRACE/charac_lu.ib/charac_lu.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "LU.ib") %>%
+  select(Rank, everything())
+df.lu.ib
+
+df.bt.ib <- read_csv("LOGS/TRACE/charac_bt.ib/charac_bt.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "BT.ib") %>%
+  select(Rank, everything())
+df.bt.ib
 #+end_src
 
 #+RESULTS:
 #+begin_example
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 3,102,496 x 6
+    Rank Start   End Duration Value          App   
+   <
+<
+<
+   <
+<
+         <
+
+ 1    99 0.866  1.61 0.741    MPI_Init       MG.eth
+ 2    99 1.61   1.61 0.000001 MPI_Comm_rank  MG.eth
+ 3    99 1.61   1.61 0        MPI_Comm_size  MG.eth
+ 4    99 1.61   1.61 0.00225  MPI_Comm_split MG.eth
+ 5    99 1.61   1.61 0.000244 MPI_Barrier    MG.eth
+ 6    99 1.61   1.61 0.00224  MPI_Bcast      MG.eth
+ 7    99 1.61   1.61 0.000049 MPI_Bcast      MG.eth
+ 8    99 1.61   1.61 0.000092 MPI_Bcast      MG.eth
+ 9    99 1.61   1.61 0.000150 MPI_Bcast      MG.eth
+10    99 1.61   1.61 0.000042 MPI_Bcast      MG.eth
+# … with 3,102,486 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 13,265,024 x 6
+    Rank Start   End Duration Value         App   
+   <
+<
+<
+   <
+<
+        <
+
+ 1    99 0.127 0.895 0.768    MPI_Init      CG.eth
+ 2    99 0.895 0.895 0.000001 MPI_Comm_rank CG.eth
+ 3    99 0.895 0.895 0        MPI_Comm_size CG.eth
+ 4    99 0.895 0.898 0.00324  MPI_Bcast     CG.eth
+ 5    99 8.18  8.18  0.000291 MPI_Irecv     CG.eth
+ 6    99 8.18  8.18  0.000118 MPI_Send      CG.eth
+ 7    99 8.18  8.20  0.0209   MPI_Wait      CG.eth
+ 8    99 8.20  8.20  0.00001  MPI_Irecv     CG.eth
+ 9    99 8.20  8.20  0.000029 MPI_Send      CG.eth
+10    99 8.20  8.20  0.000002 MPI_Wait      CG.eth
+# … with 13,265,014 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 113,834,493 x 6
+    Rank Start   End Duration Value         App   
+   <
+<
+<
+   <
+<
+        <
+
+ 1    99 0.743  1.57 0.830    MPI_Init      LU.eth
+ 2    99 1.57   1.57 0.000001 MPI_Comm_rank LU.eth
+ 3    99 1.57   1.57 0        MPI_Comm_size LU.eth
+ 4    99 1.57   1.57 0.00151  MPI_Bcast     LU.eth
+ 5    99 1.57   1.57 0.000103 MPI_Bcast     LU.eth
+ 6    99 1.57   1.57 0.000085 MPI_Bcast     LU.eth
+ 7    99 1.57   1.57 0.000051 MPI_Bcast     LU.eth
+ 8    99 1.57   1.57 0.000098 MPI_Bcast     LU.eth
+ 9    99 1.57   1.57 0.000013 MPI_Bcast     LU.eth
+10    99 1.57   1.57 0.000086 MPI_Bcast     LU.eth
+# … with 113,834,483 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 10,016,496 x 6
+    Rank Start   End Duration Value          App   
+   <
+<
+<
+   <
+<
+         <
+
+ 1   143 0.893  1.72 0.822    MPI_Init       BT.eth
+ 2   143 1.72   1.72 0.000001 MPI_Comm_size  BT.eth
+ 3   143 1.72   1.72 0        MPI_Comm_rank  BT.eth
+ 4   143 1.72   1.72 0.00260  MPI_Comm_split BT.eth
+ 5   143 1.72   1.72 0        MPI_Comm_size  BT.eth
+ 6   143 1.72   1.72 0.00188  MPI_Comm_dup   BT.eth
+ 7   143 1.72   1.72 0.00180  MPI_Comm_dup   BT.eth
+ 8   143 1.72   1.72 0.00143  MPI_Bcast      BT.eth
+ 9   143 1.72   1.72 0.000151 MPI_Bcast      BT.eth
+10   143 1.72   1.72 0.000002 MPI_Bcast      BT.eth
+# … with 10,016,486 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 3,102,496 x 6
+    Rank  Start   End Duration Value          App     
+   <
+ <
+<
+   <
+<
+         <
+  
+ 1    99 0.0543  2.46 2.40     MPI_Init       MG.ipoib
+ 2    99 2.46    2.46 0.000006 MPI_Comm_rank  MG.ipoib
+ 3    99 2.46    2.46 0        MPI_Comm_size  MG.ipoib
+ 4    99 2.46    2.46 0.00224  MPI_Comm_split MG.ipoib
+ 5    99 2.46    2.46 0.000382 MPI_Barrier    MG.ipoib
+ 6    99 2.46    2.46 0.00295  MPI_Bcast      MG.ipoib
+ 7    99 2.46    2.46 0.000176 MPI_Bcast      MG.ipoib
+ 8    99 2.46    2.46 0.000135 MPI_Bcast      MG.ipoib
+ 9    99 2.46    2.46 0.000056 MPI_Bcast      MG.ipoib
+10    99 2.46    2.46 0.000109 MPI_Bcast      MG.ipoib
+# … with 3,102,486 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+Error: object 'df.ipoib' not found
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 113,834,493 x 6
+    Rank Start   End Duration Value         App     
+   <
+<
+<
+   <
+<
+        <
+  
+ 1    99 0.969  2.69 1.72     MPI_Init      LU.ipoib
+ 2    99 2.69   2.69 0.000006 MPI_Comm_rank LU.ipoib
+ 3    99 2.69   2.69 0        MPI_Comm_size LU.ipoib
+ 4    99 2.69   2.69 0.00166  MPI_Bcast     LU.ipoib
+ 5    99 2.69   2.69 0.000141 MPI_Bcast     LU.ipoib
+ 6    99 2.69   2.69 0.000127 MPI_Bcast     LU.ipoib
+ 7    99 2.69   2.69 0.000103 MPI_Bcast     LU.ipoib
+ 8    99 2.69   2.69 0.000143 MPI_Bcast     LU.ipoib
+ 9    99 2.69   2.69 0.000174 MPI_Bcast     LU.ipoib
+10    99 2.69   2.69 0.000216 MPI_Bcast     LU.ipoib
+# … with 113,834,483 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+Error: object 'df.ipoib' not found
 
 Parsed with column specification:
 cols(
@@ -2207,16 +2464,16 @@ cols(
    <
 <
          <chr>
- 1    99 0.866  1.61 0.741    MPI_Init       MG   
- 2    99 1.61   1.61 0.000001 MPI_Comm_rank  MG   
- 3    99 1.61   1.61 0        MPI_Comm_size  MG   
- 4    99 1.61   1.61 0.00225  MPI_Comm_split MG   
- 5    99 1.61   1.61 0.000244 MPI_Barrier    MG   
- 6    99 1.61   1.61 0.00224  MPI_Bcast      MG   
- 7    99 1.61   1.61 0.000049 MPI_Bcast      MG   
- 8    99 1.61   1.61 0.000092 MPI_Bcast      MG   
- 9    99 1.61   1.61 0.000150 MPI_Bcast      MG   
-10    99 1.61   1.61 0.000042 MPI_Bcast      MG   
+ 1    99 0.834  6.80 5.97     MPI_Init       MG.ib
+ 2    99 6.80   6.80 0.000002 MPI_Comm_rank  MG.ib
+ 3    99 6.80   6.80 0.000005 MPI_Comm_size  MG.ib
+ 4    99 6.80   6.80 0.00198  MPI_Comm_split MG.ib
+ 5    99 6.80   6.80 0.000081 MPI_Barrier    MG.ib
+ 6    99 6.80   6.81 0.00227  MPI_Bcast      MG.ib
+ 7    99 6.81   6.81 0.000001 MPI_Bcast      MG.ib
+ 8    99 6.81   6.81 0        MPI_Bcast      MG.ib
+ 9    99 6.81   6.81 0        MPI_Bcast      MG.ib
+10    99 6.81   6.81 0        MPI_Bcast      MG.ib
 # … with 3,102,486 more rows
 
 Parsed with column specification:
@@ -2231,25 +2488,7 @@ cols(
   X8 = col_character()
 )
 
-# A tibble: 13,265,024 x 6
-    Rank Start   End Duration Value         App  
-   <
-<
-<
-   <
-<
-        <chr>
- 1    99 0.127 0.895 0.768    MPI_Init      CG   
- 2    99 0.895 0.895 0.000001 MPI_Comm_rank CG   
- 3    99 0.895 0.895 0        MPI_Comm_size CG   
- 4    99 0.895 0.898 0.00324  MPI_Bcast     CG   
- 5    99 8.18  8.18  0.000291 MPI_Irecv     CG   
- 6    99 8.18  8.18  0.000118 MPI_Send      CG   
- 7    99 8.18  8.20  0.0209   MPI_Wait      CG   
- 8    99 8.20  8.20  0.00001  MPI_Irecv     CG   
- 9    99 8.20  8.20  0.000029 MPI_Send      CG   
-10    99 8.20  8.20  0.000002 MPI_Wait      CG   
-# … with 13,265,014 more rows
+Error: object 'df.ib' not found
 
 Parsed with column specification:
 cols(
@@ -2271,16 +2510,16 @@ cols(
    <
 <
         <chr>
- 1    99 0.743  1.57 0.830    MPI_Init      LU   
- 2    99 1.57   1.57 0.000001 MPI_Comm_rank LU   
- 3    99 1.57   1.57 0        MPI_Comm_size LU   
- 4    99 1.57   1.57 0.00151  MPI_Bcast     LU   
- 5    99 1.57   1.57 0.000103 MPI_Bcast     LU   
- 6    99 1.57   1.57 0.000085 MPI_Bcast     LU   
- 7    99 1.57   1.57 0.000051 MPI_Bcast     LU   
- 8    99 1.57   1.57 0.000098 MPI_Bcast     LU   
- 9    99 1.57   1.57 0.000013 MPI_Bcast     LU   
-10    99 1.57   1.57 0.000086 MPI_Bcast     LU   
+ 1    99 0.789  6.78 5.99     MPI_Init      LU.ib
+ 2    99 6.78   6.78 0.000006 MPI_Comm_rank LU.ib
+ 3    99 6.78   6.78 0        MPI_Comm_size LU.ib
+ 4    99 6.78   6.78 0.000981 MPI_Bcast     LU.ib
+ 5    99 6.78   6.78 0.000003 MPI_Bcast     LU.ib
+ 6    99 6.78   6.78 0.000022 MPI_Bcast     LU.ib
+ 7    99 6.78   6.78 0.000034 MPI_Bcast     LU.ib
+ 8    99 6.78   6.78 0.000022 MPI_Bcast     LU.ib
+ 9    99 6.78   6.78 0.000019 MPI_Bcast     LU.ib
+10    99 6.78   6.78 0.000675 MPI_Bcast     LU.ib
 # … with 113,834,483 more rows
 
 Parsed with column specification:
@@ -2295,32 +2534,13 @@ cols(
   X8 = col_character()
 )
 
-# A tibble: 10,016,496 x 6
-    Rank Start   End Duration Value          App  
-   <
-<
-<
-   <
-<
-         <chr>
- 1   143 0.893  1.72 0.822    MPI_Init       BT   
- 2   143 1.72   1.72 0.000001 MPI_Comm_size  BT   
- 3   143 1.72   1.72 0        MPI_Comm_rank  BT   
- 4   143 1.72   1.72 0.00260  MPI_Comm_split BT   
- 5   143 1.72   1.72 0        MPI_Comm_size  BT   
- 6   143 1.72   1.72 0.00188  MPI_Comm_dup   BT   
- 7   143 1.72   1.72 0.00180  MPI_Comm_dup   BT   
- 8   143 1.72   1.72 0.00143  MPI_Bcast      BT   
- 9   143 1.72   1.72 0.000151 MPI_Bcast      BT   
-10   143 1.72   1.72 0.000002 MPI_Bcast      BT   
-# … with 10,016,486 more rows
+Error: object 'df.ib' not found
 #+end_example
+***** MG-Charac
+#+begin_src R :results output graphics :file R/PLOTS/MG.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.mg.eth, df.mg.ipoib, df.mg.ib)
 
-***** Plot
-#+begin_src R :results output graphics :file R/PLOTS/MG-CG-LU-BT.charac.png :exports both :width 800 :height 400 :session *R* 
-df <- rbind(df.mg, df.cg, df.lu, df.bt)
-
-df %>%
+df.charac %>%
   filter(Value != "MPI_Finalize") %>%
   group_by(Rank,App) %>%
   summarize(MPI.Time = sum(Duration),
@@ -2330,14 +2550,13 @@ df %>%
   arrange(Rank) -> df.timings;
 df.timings
 
-df %>%
+df.charac %>%
   group_by(Rank,App) %>%
   summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
   mutate(Value = "Computing") -> df.compute
 df.compute
 
-df %>%
-  filter(Value != "MPI_Finalize") %>%
+df.charac %>%
   group_by(Rank,Value,App) %>%
   summarize(Time = sum(Duration)) -> df.communication;
 
@@ -2353,22 +2572,22 @@ breaks_fun <- function(x) {
   count <<- count + 1L
   switch(
     count,
-    c(0,70,143),
-    c(0,60,127),
-    c(0,60,127),
-    c(0,60,127)
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
   )
 }
 
 count1 <- 0
-breaks_fun1 <- function(x) {
+breaks_fun2 <- function(x) {
   count1 <<- count1 + 1L
   switch(
     count1,
-    c(0,110,220,330,440,550),
-    c(0,200,400,600,800),
-    c(0,100,200,300),
-    c(0,20,40,60,80)
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
   )
 }
 
@@ -2393,172 +2612,76 @@ df.compute %>%
         labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
         facet_wrap(facets= ~ App, scales="free", nrow=1) +
         scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
-        scale_y_continuous(breaks = breaks_fun1, limits = c(0, NA)) + 
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
         theme(strip.text.x=element_text(size=18),
         strip.background=element_rect(fill='#F5F5F5'))
-
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/MG-CG-LU-BT.charac.png]]
+[[file:R/PLOTS/MG.charac.png]]
 
-***** Percentage
-#+begin_src R :results output graphics :file R/PLOTS/MG-CG-LU-BT.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
-options(crayon.enabled=FALSE)
-options(scipen = 999)
-suppressMessages(library(tidyverse))
-df.bt <- read_csv("LOGS/TRACE/charac_bt.eth/charac_bt.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "BT") %>%
-  select(Rank, everything())
-df.bt
+***** CG-Charac
+#+begin_src R :results output graphics :file R/PLOTS/CG.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.cg.eth, df.cg.ipoib, df.cg.ib)
 
-df.bt %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.bt
-
-df.bt$Value <- as.character(df.bt$Value)
-df.bt$Value [grepl('MPI_*', df.bt$Value)] <- 'MPI'
-
-df.bt %>%
-  group_by(Value,App) %>%
+df.charac %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.bt$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.bt;
-df.percent.bt
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
 
-df.bt$Value <- as.character(df.bt$Value)
-df.bt$Value [grepl('MPI', df.bt$Value)] <- 'Computing'
+df.charac %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
 
-df.bt %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.bt$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.bt
+df.charac %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
 
-df.mg <- read_csv("LOGS/TRACE/charac_mg.eth/charac_mg.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "MG") %>%
-  select(Rank, everything())
-df.mg
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
 
-df.mg %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.mg
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
 
-df.mg$Value <- as.character(df.mg$Value)
-df.mg$Value [grepl('MPI_*', df.mg$Value)] <- 'MPI'
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
+  )
+}
 
-df.mg %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.mg$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.mg;
-df.percent.mg
+count1 <- 0
+breaks_fun2 <- function(x) {
+  count1 <<- count1 + 1L
+  switch(
+    count1,
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
+  )
+}
 
-df.mg$Value <- as.character(df.mg$Value)
-df.mg$Value [grepl('MPI', df.mg$Value)] <- 'Computing'
-
-df.mg %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.mg$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.mg
-
-df.cg <- read_csv("LOGS/TRACE/charac_cg.eth/charac_cg.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "CG") %>%
-  select(Rank, everything())
-df.cg
-
-df.cg %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.cg
-
-df.cg$Value <- as.character(df.cg$Value)
-df.cg$Value [grepl('MPI_*', df.cg$Value)] <- 'MPI'
-
-df.cg %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.cg$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.cg;
-df.percent.cg
-
-df.cg$Value <- as.character(df.cg$Value)
-df.cg$Value [grepl('MPI', df.cg$Value)] <- 'Computing'
-
-df.cg %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.cg$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.cg
-
-df.lu <- read_csv("LOGS/TRACE/charac_lu.eth/charac_lu.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "LU") %>%
-  select(Rank, everything())
-df.lu
-
-df.lu %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.lu
-
-df.lu$Value <- as.character(df.lu$Value)
-df.lu$Value [grepl('MPI_*', df.lu$Value)] <- 'MPI'
-
-df.lu %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.lu$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.lu;
-df.percent.lu
-
-df.lu$Value <- as.character(df.lu$Value)
-df.lu$Value [grepl('MPI', df.lu$Value)] <- 'Computing'
-
-df.lu %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.lu$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.lu
-
-df <- rbind(df.comp.bt,df.comp.cg,df.comp.lu, df.comp.mg, df.percent.bt, df.percent.cg, df.percent.lu, df.percent.mg)
-
-  ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
-  geom_bar(position = "fill", stat = "identity", width = 0.3) +
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
   scale_fill_manual(values=c("#303030", "#BEBEBE")) +
-  scale_y_continuous(labels = scales::percent_format()) +
   theme_bw() +
-  theme(legend.position = "top",
+  theme(legend.position="top",
         legend.key = element_rect(colour = "grey"),
         legend.key.height = unit(0.5, "line"),
         legend.key.width = unit(4, "line"),
@@ -2570,11 +2693,184 @@ df <- rbind(df.comp.bt,df.comp.cg,df.comp.lu, df.comp.mg, df.percent.bt, df.perc
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-  labs(x="Applications", y="Operation Percentage")
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
+        scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/MG-CG-LU-BT.charac.percentage.png]]
+[[file:R/PLOTS/CG.charac.png]]
+
+***** LU-Charac
+#+begin_src R :results output graphics :file R/PLOTS/LU.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.lu.eth, df.lu.ipoib, df.lu.ib)
+
+df.charac %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
+  summarize(MPI.Time = sum(Duration),
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
+
+df.charac %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
+
+df.charac %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
+
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
+
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
+
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
+  )
+}
+
+count1 <- 0
+breaks_fun2 <- function(x) {
+  count1 <<- count1 + 1L
+  switch(
+    count1,
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
+  )
+}
+
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
+  scale_fill_manual(values=c("#303030", "#BEBEBE")) +
+  theme_bw() +
+  theme(legend.position="top",
+        legend.key = element_rect(colour = "grey"),
+        legend.key.height = unit(0.5, "line"),
+        legend.key.width = unit(4, "line"),
+        legend.spacing = unit(100, "line"),
+        plot.margin = unit(x = c(0, 0.2, 0, 0), units = "cm"),
+        legend.margin=margin(c(0, 0, -8, 0)),
+        axis.text.x = element_text(size =16, color = "black"),
+        axis.text.y = element_text(size =16, color = "black"),
+        axis.title=element_text(size=18), 
+        legend.title = element_blank(),
+        legend.text = element_text(color = "black", size = 18)) +
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
+        scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/LU.charac.png]]
+
+***** BT-Charac
+#+begin_src R :results output graphics :file R/PLOTS/BT.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.bt.eth, df.bt.ipoib, df.bt.ib)
+
+df.charac %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
+  summarize(MPI.Time = sum(Duration),
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
+
+df.charac %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
+
+df.charac %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
+
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
+
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
+
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
+  )
+}
+
+count1 <- 0
+breaks_fun2 <- function(x) {
+  count1 <<- count1 + 1L
+  switch(
+    count1,
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
+  )
+}
+
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
+  scale_fill_manual(values=c("#303030", "#BEBEBE")) +
+  theme_bw() +
+  theme(legend.position="top",
+        legend.key = element_rect(colour = "grey"),
+        legend.key.height = unit(0.5, "line"),
+        legend.key.width = unit(4, "line"),
+        legend.spacing = unit(100, "line"),
+        plot.margin = unit(x = c(0, 0.2, 0, 0), units = "cm"),
+        legend.margin=margin(c(0, 0, -8, 0)),
+        axis.text.x = element_text(size =16, color = "black"),
+        axis.text.y = element_text(size =16, color = "black"),
+        axis.title=element_text(size=18), 
+        legend.title = element_blank(),
+        legend.text = element_text(color = "black", size = 18)) +
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
+        scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/BT.charac.png]]
 
 ***** MG-Percentage
 #+begin_src R :results output graphics :file R/PLOTS/MG.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
@@ -3137,7 +3433,7 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 suppressMessages(library(tidyverse))
-df.imb.CPU <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.imb.CPU.eth <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3145,11 +3441,11 @@ df.imb.CPU <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv", c
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "ImbBench-CPU\n8Level") %>%
+  mutate(App = "ImbBench-CPU.eth") %>%
   select(Rank, everything())
-df.imb.CPU
+df.imb.CPU.eth
 
-df.imb.mem <- read_csv("LOGS/TRACE/charac_imb_memory.eth/charac_imb_memory.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.imb.mem.eth <- read_csv("LOGS/TRACE/charac_imb_memory.eth/charac_imb_memory.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3157,11 +3453,11 @@ df.imb.mem <- read_csv("LOGS/TRACE/charac_imb_memory.eth/charac_imb_memory.eth.c
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "ImbBench-Memory\n8Level") %>%
+  mutate(App = "ImbBench-Memory.eth") %>%
   select(Rank, everything())
-df.imb.mem
+df.imb.mem.eth
 
-df.alya <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_names = FALSE, progress=FALSE) %>%
+df.alya.eth <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3169,9 +3465,83 @@ df.alya <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_names 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "Alya") %>%
+  mutate(App = "Alya.eth") %>%
   select(Rank, everything())
-df.alya
+df.alya.eth
+
+df.imb.CPU.ipoib <- read_csv("LOGS/TRACE/charac_imb_CPU.ipoib/charac_imb_CPU.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "ImbBench-CPU.ipoib") %>%
+  select(Rank, everything())
+df.imb.CPU.ipoib
+
+df.imb.mem.ipoib <- read_csv("LOGS/TRACE/charac_imb_memory.ipoib/charac_imb_memory.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "ImbBench-Memory.ipoib") %>%
+  select(Rank, everything())
+df.imb.mem.ipoib
+
+df.alya.ipoib <- read_csv("LOGS/TRACE/charac_alya.ipoib/charac_alya.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "Alya.ipoib") %>%
+  select(Rank, everything())
+df.alya.ipoib
+
+
+df.imb.CPU.ib <- read_csv("LOGS/TRACE/charac_imb_CPU.ib/charac_imb_CPU.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "ImbBench-CPU.ib") %>%
+  select(Rank, everything())
+df.imb.CPU.ib
+
+df.imb.mem.ib <- read_csv("LOGS/TRACE/charac_imb_memory.ib/charac_imb_memory.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "ImbBench-Memory.ib") %>%
+  select(Rank, everything())
+df.imb.mem.ib
+
+df.alya.ib <- read_csv("LOGS/TRACE/charac_alya.ib/charac_alya.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "Alya.ib") %>%
+  select(Rank, everything())
+df.alya.ib
+
 #+end_src
 
 #+RESULTS:
@@ -3190,24 +3560,24 @@ cols(
 )
 
 # A tibble: 640 x 6
-    Rank Start   End Duration Value         App                   
+    Rank Start   End Duration Value         App             
    <
 <
 <
    <
 <
         <
-                
- 1   159  1.04  1.96 0.924    MPI_Init      "ImbBench-CPU\n8Level"
- 2   159  1.96  1.96 0.000001 MPI_Comm_size "ImbBench-CPU\n8Level"
- 3   159  1.96  1.96 0.000001 MPI_Comm_rank "ImbBench-CPU\n8Level"
- 4   159 11.9  12.6  0.691    MPI_Finalize  "ImbBench-CPU\n8Level"
- 5   158  1.04  1.96 0.923    MPI_Init      "ImbBench-CPU\n8Level"
- 6   158  1.96  1.96 0.000001 MPI_Comm_size "ImbBench-CPU\n8Level"
- 7   158  1.96  1.96 0        MPI_Comm_rank "ImbBench-CPU\n8Level"
- 8   158 11.1  12.6  1.46     MPI_Finalize  "ImbBench-CPU\n8Level"
- 9   157  1.06  1.96 0.908    MPI_Init      "ImbBench-CPU\n8Level"
-10   157  1.96  1.96 0.000001 MPI_Comm_size "ImbBench-CPU\n8Level"
+          
+ 1   159  1.04  1.96 0.924    MPI_Init      ImbBench-CPU.eth
+ 2   159  1.96  1.96 0.000001 MPI_Comm_size ImbBench-CPU.eth
+ 3   159  1.96  1.96 0.000001 MPI_Comm_rank ImbBench-CPU.eth
+ 4   159 11.9  12.6  0.691    MPI_Finalize  ImbBench-CPU.eth
+ 5   158  1.04  1.96 0.923    MPI_Init      ImbBench-CPU.eth
+ 6   158  1.96  1.96 0.000001 MPI_Comm_size ImbBench-CPU.eth
+ 7   158  1.96  1.96 0        MPI_Comm_rank ImbBench-CPU.eth
+ 8   158 11.1  12.6  1.46     MPI_Finalize  ImbBench-CPU.eth
+ 9   157  1.06  1.96 0.908    MPI_Init      ImbBench-CPU.eth
+10   157  1.96  1.96 0.000001 MPI_Comm_size ImbBench-CPU.eth
 # … with 630 more rows
 
 Parsed with column specification:
@@ -3223,24 +3593,24 @@ cols(
 )
 
 # A tibble: 640 x 6
-    Rank  Start   End  Duration Value         App                      
+    Rank  Start   End  Duration Value         App                
    <
  <
 <
     <
 <
         <
-                   
- 1   159  0.915  1.80  0.888    MPI_Init      "ImbBench-Memory\n8Level"
- 2   159  1.80   1.80  0.000001 MPI_Comm_size "ImbBench-Memory\n8Level"
- 3   159  1.80   1.80  0        MPI_Comm_rank "ImbBench-Memory\n8Level"
- 4   159 87.1   94.2   7.10     MPI_Finalize  "ImbBench-Memory\n8Level"
- 5   158  0.910  1.80  0.893    MPI_Init      "ImbBench-Memory\n8Level"
- 6   158  1.80   1.80  0.000001 MPI_Comm_size "ImbBench-Memory\n8Level"
- 7   158  1.80   1.80  0        MPI_Comm_rank "ImbBench-Memory\n8Level"
- 8   158 72.6   94.2  21.6      MPI_Finalize  "ImbBench-Memory\n8Level"
- 9   157  0.913  1.80  0.889    MPI_Init      "ImbBench-Memory\n8Level"
-10   157  1.80   1.80  0.000001 MPI_Comm_size "ImbBench-Memory\n8Level"
+             
+ 1   159  0.915  1.80  0.888    MPI_Init      ImbBench-Memory.eth
+ 2   159  1.80   1.80  0.000001 MPI_Comm_size ImbBench-Memory.eth
+ 3   159  1.80   1.80  0        MPI_Comm_rank ImbBench-Memory.eth
+ 4   159 87.1   94.2   7.10     MPI_Finalize  ImbBench-Memory.eth
+ 5   158  0.910  1.80  0.893    MPI_Init      ImbBench-Memory.eth
+ 6   158  1.80   1.80  0.000001 MPI_Comm_size ImbBench-Memory.eth
+ 7   158  1.80   1.80  0        MPI_Comm_rank ImbBench-Memory.eth
+ 8   158 72.6   94.2  21.6      MPI_Finalize  ImbBench-Memory.eth
+ 9   157  0.913  1.80  0.889    MPI_Init      ImbBench-Memory.eth
+10   157  1.80   1.80  0.000001 MPI_Comm_size ImbBench-Memory.eth
 # … with 630 more rows
 
 Parsed with column specification:
@@ -3256,31 +3626,230 @@ cols(
 )
 
 # A tibble: 24,550,772 x 6
-    Rank Start   End Duration Value         App  
+    Rank Start   End Duration Value         App     
    <
 <
 <
    <
 <
-        <chr>
- 1   159  1.61  2.52 0.913    MPI_Init      Alya 
- 2   159  2.52  2.52 0.000001 MPI_Comm_size Alya 
- 3   159  2.52  2.52 0        MPI_Comm_rank Alya 
- 4   159  2.52  2.52 0.000029 MPI_Gather    Alya 
- 5   159  2.52  2.52 0.000933 MPI_Bcast     Alya 
- 6   159  2.52  2.52 0.000216 MPI_Scatter   Alya 
- 7   159  2.52  2.52 0        MPI_Comm_size Alya 
- 8   159  2.52  2.52 0        MPI_Comm_rank Alya 
- 9   159  2.52  2.52 0.00002  MPI_Gather    Alya 
-10   159  2.52  2.52 0.00073  MPI_Bcast     Alya 
+        <
+  
+ 1   159  1.61  2.52 0.913    MPI_Init      Alya.eth
+ 2   159  2.52  2.52 0.000001 MPI_Comm_size Alya.eth
+ 3   159  2.52  2.52 0        MPI_Comm_rank Alya.eth
+ 4   159  2.52  2.52 0.000029 MPI_Gather    Alya.eth
+ 5   159  2.52  2.52 0.000933 MPI_Bcast     Alya.eth
+ 6   159  2.52  2.52 0.000216 MPI_Scatter   Alya.eth
+ 7   159  2.52  2.52 0        MPI_Comm_size Alya.eth
+ 8   159  2.52  2.52 0        MPI_Comm_rank Alya.eth
+ 9   159  2.52  2.52 0.00002  MPI_Gather    Alya.eth
+10   159  2.52  2.52 0.00073  MPI_Bcast     Alya.eth
+# … with 24,550,762 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 640 x 6
+    Rank  Start   End Duration Value         App               
+   <
+ <
+<
+   <
+<
+        <
+            
+ 1   159  0.983  1.84 0.852    MPI_Init      ImbBench-CPU.ipoib
+ 2   159  1.84   1.84 0.000001 MPI_Comm_size ImbBench-CPU.ipoib
+ 3   159  1.84   1.84 0        MPI_Comm_rank ImbBench-CPU.ipoib
+ 4   159 12.1   12.7  0.605    MPI_Finalize  ImbBench-CPU.ipoib
+ 5   158  0.991  1.84 0.844    MPI_Init      ImbBench-CPU.ipoib
+ 6   158  1.84   1.84 0.000001 MPI_Comm_size ImbBench-CPU.ipoib
+ 7   158  1.84   1.84 0        MPI_Comm_rank ImbBench-CPU.ipoib
+ 8   158 10.9   12.7  1.80     MPI_Finalize  ImbBench-CPU.ipoib
+ 9   157  0.979  1.84 0.856    MPI_Init      ImbBench-CPU.ipoib
+10   157  1.84   1.84 0        MPI_Comm_size ImbBench-CPU.ipoib
+# … with 630 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 640 x 6
+    Rank Start    End  Duration Value         App                  
+   <
+<
+ <
+    <
+<
+        <
+               
+ 1   159  1.03   2.87  1.84     MPI_Init      ImbBench-Memory.ipoib
+ 2   159  2.87   2.87  0.000002 MPI_Comm_size ImbBench-Memory.ipoib
+ 3   159  2.87   2.87  0        MPI_Comm_rank ImbBench-Memory.ipoib
+ 4   159 88.2  102.   13.5      MPI_Finalize  ImbBench-Memory.ipoib
+ 5   158  1.03   2.87  1.84     MPI_Init      ImbBench-Memory.ipoib
+ 6   158  2.87   2.87  0.000002 MPI_Comm_size ImbBench-Memory.ipoib
+ 7   158  2.87   2.87  0        MPI_Comm_rank ImbBench-Memory.ipoib
+ 8   158 73.4  102.   28.3      MPI_Finalize  ImbBench-Memory.ipoib
+ 9   157  1.03   2.87  1.84     MPI_Init      ImbBench-Memory.ipoib
+10   157  2.87   2.87  0.000006 MPI_Comm_size ImbBench-Memory.ipoib
+# … with 630 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 24,550,772 x 6
+    Rank  Start   End Duration Value         App       
+   <
+ <
+<
+   <
+<
+        <
+    
+ 1   159 0.0263  3.88 3.85     MPI_Init      Alya.ipoib
+ 2   159 3.88    3.88 0.000007 MPI_Comm_size Alya.ipoib
+ 3   159 3.88    3.88 0        MPI_Comm_rank Alya.ipoib
+ 4   159 3.88    3.88 0.000052 MPI_Gather    Alya.ipoib
+ 5   159 3.88    3.88 0.000765 MPI_Bcast     Alya.ipoib
+ 6   159 3.88    3.88 0.000183 MPI_Scatter   Alya.ipoib
+ 7   159 3.88    3.88 0.000001 MPI_Comm_size Alya.ipoib
+ 8   159 3.88    3.88 0        MPI_Comm_rank Alya.ipoib
+ 9   159 3.88    3.88 0.00002  MPI_Gather    Alya.ipoib
+10   159 3.88    3.88 0.000675 MPI_Bcast     Alya.ipoib
+# … with 24,550,762 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 640 x 6
+    Rank  Start   End Duration Value         App            
+   <
+ <
+<
+   <
+<
+        <
+         
+ 1   159  0.947  8.88 7.93     MPI_Init      ImbBench-CPU.ib
+ 2   159  8.88   8.88 0.000003 MPI_Comm_size ImbBench-CPU.ib
+ 3   159  8.88   8.88 0        MPI_Comm_rank ImbBench-CPU.ib
+ 4   159 18.2   19.1  0.823    MPI_Finalize  ImbBench-CPU.ib
+ 5   158  0.949  8.88 7.93     MPI_Init      ImbBench-CPU.ib
+ 6   158  8.88   8.88 0.000007 MPI_Comm_size ImbBench-CPU.ib
+ 7   158  8.88   8.88 0        MPI_Comm_rank ImbBench-CPU.ib
+ 8   158 18.0   19.1  1.06     MPI_Finalize  ImbBench-CPU.ib
+ 9   157  0.954  8.88 7.93     MPI_Init      ImbBench-CPU.ib
+10   157  8.88   8.88 0.000004 MPI_Comm_size ImbBench-CPU.ib
+# … with 630 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 640 x 6
+    Rank  Start   End  Duration Value         App               
+   <
+ <
+<
+    <
+<
+        <
+            
+ 1   159  0.352  7.99  7.63     MPI_Init      ImbBench-Memory.ib
+ 2   159  7.99   7.99  0.000007 MPI_Comm_size ImbBench-Memory.ib
+ 3   159  7.99   7.99  0        MPI_Comm_rank ImbBench-Memory.ib
+ 4   159 91.5   94.6   3.15     MPI_Finalize  ImbBench-Memory.ib
+ 5   158  0.351  7.98  7.63     MPI_Init      ImbBench-Memory.ib
+ 6   158  7.98   7.98  0.000003 MPI_Comm_size ImbBench-Memory.ib
+ 7   158  7.98   7.98  0        MPI_Comm_rank ImbBench-Memory.ib
+ 8   158 76.5   94.6  18.2      MPI_Finalize  ImbBench-Memory.ib
+ 9   157  0.340  7.98  7.65     MPI_Init      ImbBench-Memory.ib
+10   157  7.98   7.98  0.00001  MPI_Comm_size ImbBench-Memory.ib
+# … with 630 more rows
+
+Parsed with column specification:
+cols(
+  X1 = col_character(),
+  X2 = col_character(),
+  X3 = col_character(),
+  X4 = col_double(),
+  X5 = col_double(),
+  X6 = col_double(),
+  X7 = col_double(),
+  X8 = col_character()
+)
+
+# A tibble: 24,550,772 x 6
+    Rank Start   End Duration Value         App    
+   <
+<
+<
+   <
+<
+        <
+ 
+ 1   159  2.30  10.6 8.27     MPI_Init      Alya.ib
+ 2   159 10.6   10.6 0.000004 MPI_Comm_size Alya.ib
+ 3   159 10.6   10.6 0        MPI_Comm_rank Alya.ib
+ 4   159 10.6   10.6 0.000018 MPI_Gather    Alya.ib
+ 5   159 10.6   10.6 0.0318   MPI_Bcast     Alya.ib
+ 6   159 10.6   10.6 0.000065 MPI_Scatter   Alya.ib
+ 7   159 10.6   10.6 0        MPI_Comm_size Alya.ib
+ 8   159 10.6   10.6 0        MPI_Comm_rank Alya.ib
+ 9   159 10.6   10.6 0.000006 MPI_Gather    Alya.ib
+10   159 10.6   10.6 0.00793  MPI_Bcast     Alya.ib
 # … with 24,550,762 more rows
 #+end_example
 
-***** Plot
-#+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.charac.png :exports both :width 800 :height 400 :session *R* 
-df <- rbind(df.imb.CPU, df.imb.mem, df.alya)
+***** Alya-Charac
+#+begin_src R :results output graphics :file R/PLOTS/Alya.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.alya.eth, df.alya.ipoib, df.alya.ib)
 
-df %>%
+df.charac %>%
   filter(Value != "MPI_Finalize") %>%
   group_by(Rank,App) %>%
   summarize(MPI.Time = sum(Duration),
@@ -3290,13 +3859,13 @@ df %>%
   arrange(Rank) -> df.timings;
 df.timings
 
-df %>%
+df.charac %>%
   group_by(Rank,App) %>%
   summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
   mutate(Value = "Computing") -> df.compute
 df.compute
 
-df %>%
+df.charac %>%
   group_by(Rank,Value,App) %>%
   summarize(Time = sum(Duration)) -> df.communication;
 
@@ -3312,30 +3881,30 @@ breaks_fun <- function(x) {
   count <<- count + 1L
   switch(
     count,
-    c(0,50,100,159),
-    c(0,50,100,159),
-    c(0,50,100,159)
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
   )
 }
 
 count1 <- 0
-breaks_fun1 <- function(x) {
+breaks_fun2 <- function(x) {
   count1 <<- count1 + 1L
   switch(
     count1,
-    c(0,100,200,300),
-    c(0,3,6,9,12),
-    c(0,30,60,90)
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
   )
 }
-
 
 df.compute %>%
   bind_rows(df.communication) %>%
   ggplot(aes(x = Rank, y = Time, fill=Value)) +
   geom_bar(stat='identity', width=1) +
   scale_fill_manual(values=c("#303030", "#BEBEBE")) +
-  scale_x_continuous(breaks=c(0,53,106,159)) +
   theme_bw() +
   theme(legend.position="top",
         legend.key = element_rect(colour = "grey"),
@@ -3350,137 +3919,77 @@ df.compute %>%
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
         labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
-        facet_wrap(facets= ~ App, scales="free") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
         scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
-        scale_y_continuous(breaks = breaks_fun1, limits = c(0, NA)) + 
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
         theme(strip.text.x=element_text(size=18),
         strip.background=element_rect(fill='#F5F5F5'))
-
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/Alya-IMB.charac.png]]
-***** Percentage
-#+begin_src R :results output graphics :file R/PLOTS/Alya-IMB.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
-options(crayon.enabled=FALSE)
-options(scipen = 999)
-suppressMessages(library(tidyverse))
-df.alya <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "Alya") %>%
-  select(Rank, everything())
-df.alya
+[[file:R/PLOTS/Alya.charac.png]]
+***** IMB-CPU-Charac
+#+begin_src R :results output graphics :file R/PLOTS/IMB_CPU.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.imb.CPU.eth, df.imb.CPU.ipoib, df.imb.CPU.ib)
 
-df.alya %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.alya
-
-df.alya$Value <- as.character(df.alya$Value)
-df.alya$Value [grepl('MPI_*', df.alya$Value)] <- 'MPI'
-
-df.alya %>%
-  group_by(Value,App) %>%
+df.charac %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
   summarize(MPI.Time = sum(Duration),
-            Total = df.total.alya$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.alya;
-df.percent.alya
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
 
-df.alya$Value <- as.character(df.alya$Value)
-df.alya$Value [grepl('MPI', df.alya$Value)] <- 'Computing'
+df.charac %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
 
-df.alya %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.alya$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.alya
+df.charac %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
 
-df.imb_cpu <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "ImbBench-CPU\n8Level") %>%
-  select(Rank, everything())
-df.imb_cpu
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
 
-df.imb_cpu %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.imb_cpu
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
 
-df.imb_cpu$Value <- as.character(df.imb_cpu$Value)
-df.imb_cpu$Value [grepl('MPI_*', df.imb_cpu$Value)] <- 'MPI'
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
+  )
+}
 
-df.imb_cpu %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.imb_cpu$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.imb_cpu;
-df.percent.imb_cpu
+count1 <- 0
+breaks_fun2 <- function(x) {
+  count1 <<- count1 + 1L
+  switch(
+    count1,
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
+  )
+}
 
-df.imb_cpu$Value <- as.character(df.imb_cpu$Value)
-df.imb_cpu$Value [grepl('MPI', df.imb_cpu$Value)] <- 'Computing'
-
-df.imb_cpu %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.imb_cpu$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.imb_cpu
-
-df.imb_memory <- read_csv("LOGS/TRACE/charac_imb_memory.eth/charac_imb_memory.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "ImbBench-Memory\n8Level") %>%
-  select(Rank, everything())
-df.imb_memory
-
-df.imb_memory %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.imb_memory
-
-df.imb_memory$Value <- as.character(df.imb_memory$Value)
-df.imb_memory$Value [grepl('MPI_*', df.imb_memory$Value)] <- 'MPI'
-
-df.imb_memory %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.imb_memory$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.imb_memory;
-df.percent.imb_memory
-
-df.imb_memory$Value <- as.character(df.imb_memory$Value)
-df.imb_memory$Value [grepl('MPI', df.imb_memory$Value)] <- 'Computing'
-
-df.imb_memory %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.imb_memory$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.imb_memory
-
-df <- rbind(df.comp.alya,df.comp.imb_cpu,df.comp.imb_memory, df.percent.alya, df.percent.imb_cpu, df.percent.imb_memory)
-
-  ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
-  geom_bar(position = "fill", stat = "identity", width = 0.3) +
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
   scale_fill_manual(values=c("#303030", "#BEBEBE")) +
-  scale_y_continuous(labels = scales::percent_format()) +
   theme_bw() +
-  theme(legend.position = "top",
+  theme(legend.position="top",
         legend.key = element_rect(colour = "grey"),
         legend.key.height = unit(0.5, "line"),
         legend.key.width = unit(4, "line"),
@@ -3492,17 +4001,106 @@ df <- rbind(df.comp.alya,df.comp.imb_cpu,df.comp.imb_memory, df.percent.alya, df
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-  labs(x="Applications", y="Operation Percentage")
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
+        scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/Alya-IMB.charac.percentage.png]]
+[[file:R/PLOTS/IMB_CPU.charac.png]]
+***** IMB-Memory-Charac
+#+begin_src R :results output graphics :file R/PLOTS/IMB_mem.charac.png :exports both :width 800 :height 400 :session *R* 
+df.charac <- rbind(df.imb.mem.eth, df.imb.mem.ipoib, df.imb.mem.ib)
+
+df.charac %>%
+  filter(Value != "MPI_Finalize") %>%
+  group_by(Rank,App) %>%
+  summarize(MPI.Time = sum(Duration),
+            Full.Time = max(End) - min(Start)) %>%
+  mutate(Compute.Time = Full.Time - MPI.Time) %>%
+  mutate(Comm.Ratio = MPI.Time / Full.Time * 100) %>%
+  arrange(Rank) -> df.timings;
+df.timings
+
+df.charac %>%
+  group_by(Rank,App) %>%
+  summarize(Time = max(End) - min(Start) - sum(Duration)) %>%
+  mutate(Value = "Computing") -> df.compute
+df.compute
+
+df.charac %>%
+  group_by(Rank,Value,App) %>%
+  summarize(Time = sum(Duration)) -> df.communication;
+
+df.communication$Value <- as.character(df.communication$Value)
+df.communication$Value [grepl('MPI_*', df.communication$Value)] <- 'MPI'
+
+df.communication %>%
+  group_by(Rank, Value,App) %>%
+  summarize(Time = sum(Time)) -> df.communication;
+
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 60, 127),
+    c(0, 70, 143)
+  )
+}
+
+count1 <- 0
+breaks_fun2 <- function(x) {
+  count1 <<- count1 + 1L
+  switch(
+    count1,
+    c(0, 10,20,30,40),
+    c(0, 400,800,1200,1600),
+    c(0, 60,120,180),
+    c(0, 200,400,600,800)
+  )
+}
+
+df.compute %>%
+  bind_rows(df.communication) %>%
+  ggplot(aes(x = Rank, y = Time, fill=Value)) +
+  geom_bar(stat='identity', width=1) +
+  scale_fill_manual(values=c("#303030", "#BEBEBE")) +
+  theme_bw() +
+  theme(legend.position="top",
+        legend.key = element_rect(colour = "grey"),
+        legend.key.height = unit(0.5, "line"),
+        legend.key.width = unit(4, "line"),
+        legend.spacing = unit(100, "line"),
+        plot.margin = unit(x = c(0, 0.2, 0, 0), units = "cm"),
+        legend.margin=margin(c(0, 0, -8, 0)),
+        axis.text.x = element_text(size =16, color = "black"),
+        axis.text.y = element_text(size =16, color = "black"),
+        axis.title=element_text(size=18), 
+        legend.title = element_blank(),
+        legend.text = element_text(color = "black", size = 18)) +
+        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        facet_wrap(facets= ~ App, scales="free", nrow=1) +
+        scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
+        #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
+        theme(strip.text.x=element_text(size=18),
+        strip.background=element_rect(fill='#F5F5F5'))
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/IMB_mem.charac.png]]
+
 ***** Alya-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/Alya.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/Alya.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
-df.alya.ib <- read_csv("LOGS/TRACE/charac_alya.ib/charac_alya.ib.csv", col_names = FALSE, progress=FALSE) %>%
+df.alya.ib /<- read_csv("LOGS/TRACE/charac_alya.ib/charac_alya.ib.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -3634,10 +4232,10 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/Alya.charac.percentage.png]]
+[[file:R/PLOTS/Alya.percentage.png]]
 
 ***** IMB-CPU-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/imb_CPU.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/imb_CPU.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
@@ -3773,10 +4371,10 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/imb_CPU.charac.percentage.png]]
+[[file:R/PLOTS/imb_CPU.percentage.png]]
 
 ***** IMB-Memory-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/imb_memory.charac.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/imb_memory.percentage.png :exports both :width 800 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
@@ -3912,7 +4510,7 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 #+end_src
 
 #+RESULTS:
-[[file:R/PLOTS/imb_memory.charac.percentage.png]]
+[[file:R/PLOTS/imb_memory.percentage.png]]
 *** Slides Plots
 **** TOP500 
 #+begin_src R :results output graphics :file SLIDES/TOP500.png :exports both :width 800 :height 400 :session *R* 
