@@ -294,7 +294,7 @@ to be used during the execution, respecting the power of two or square
 root requirements, and finally executes the [[SH/experiments_exec.sh][experiments execution]]
 script like a normal bash script.
 
-** Graphical Analysis 
+** Graphical Analysis
 Upon completion of the experiments, in this topic, graphs containing
 the execution time and the characterization of the applications are
 created. The first step is to read the CSV files. Latency and
