@@ -17,17 +17,21 @@
 \setbeamertemplate{frametitle continuation} {}
 \title[CMP223]{Performance and Cost-Aware in HPC: A Network Interconnect Impact Assessment}
 \author[Anderson M.M]{\large{Anderson Mattheus Maliszewski}}
-\institute[UFRGS]{\large{Informatics Institute (INF)\\
+\institute[UFRGS]{\small{Informatics Institute (INF)\\
 Federal University of Rio Grande do Sul (UFRGS) \\Porto Alegre - Brazil}}
-\date[11 December, 2019]{CMP223 Computer System Performance Analysis (2019/2)\\
-11 December, 2019}
+\date[11 December, 2019]{\large{CMP223 Computer System Performance Analysis (2019/2)\\
+11 December, 2019}}
+\logo{\includegraphics[width=1.3cm,keepaspectratio]{SLIDES/logo/ufrgs.png}%
+  \hspace{\dimexpr\paperwidth-3cm-5pt}%
+  \includegraphics[width=1.5cm,keepaspectratio]{SLIDES/logo/inf-logo.png}%
+}
+
 \colorlet{beamer@blendedblue}{black}
-\definecolor{Black}{RGB}{0,0,0}
-\setbeamercolor{frametitle}{bg=Black}
+\setbeamercolor{alerted text}{fg=orange}
 
 \begin{document}
 \maketitle
-
+\logo{\includegraphics[width=1.5cm]{SLIDES/logo/inf-logo.png}}
 \begin{frame}{Introduction}
 \vfill
 Growing demand for computational power
@@ -49,7 +53,6 @@ Network interconnection is one of the \alert{bottlenecks}
 \end{frame}
 
 \begin{frame}[noframenumbering, allowframebreaks]{Motivation}
-\vspace{-0.23cm} 
 \includegraphics[width=\textwidth]{SLIDES/img/TOP500-1.pdf}
        \framebreak
  \includegraphics[width=\textwidth]{SLIDES/img/TOP500-2.pdf}
@@ -117,44 +120,39 @@ To answer these questions:
 
 \begin{frame}[noframenumbering, allowframebreaks]{System} 
 \begin{center}
-\vspace{-1.8cm} 
     \includegraphics[scale=0.65]{SLIDES/img/System1.pdf}
 \end{center}
     \begin{itemize}
-    \vspace{-0.6cm}
     \item (1) User submits a job
-    \vspace{+0.05cm}
+    \item[~] 
+    \item[~]
+    \item[~] 
     \end{itemize}
     \framebreak
 \begin{center}
     \includegraphics[scale=0.65]{SLIDES/img/System2.pdf}
 \end{center}
     \begin{itemize}
-    \vspace{-0.6cm}
     \item (1) User submits a job
     \item (2) Cluster manager allocates the nodes
     \item[~] 
     \item[~]
-    \vspace{+0.1cm}
     \end{itemize}
     \framebreak
 \begin{center}
     \includegraphics[scale=0.65]{SLIDES/img/System3.pdf}
 \end{center}    
     \begin{itemize}
-    \vspace{-0.6cm}
     \item (1) User submits a job
     \item (2) Cluster manager allocates the nodes
     \item (3) Job is passed to a switch
     \item[~]
-    \vspace{+0.1cm}
     \end{itemize}
     \framebreak
 \begin{center}
     \includegraphics[scale=0.65]{SLIDES/img/System4.pdf}
 \end{center}    
     \begin{itemize}
-    \vspace{-0.6cm}
     \item (1) User submits a job
     \item (2) Cluster manager allocates the nodes
     \item (3) Job is passed to a switch
@@ -314,6 +312,7 @@ Org and Emacs
 \begin{frame}{References}
 
 \end{frame}
+\logo{}
 
 \begin{frame}{}
 \begin{center}
@@ -325,6 +324,10 @@ Org and Emacs
 \end{center}
 \end{frame}
 
+\logo{\includegraphics[width=1.3cm,keepaspectratio]{SLIDES/logo/ufrgs.png}%
+  \hspace{\dimexpr\paperwidth-3cm-5pt}%
+  \includegraphics[width=1.5cm,keepaspectratio]{SLIDES/logo/inf-logo.png}%
+}
 \maketitle
 
 \end{document}
