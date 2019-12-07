@@ -4811,13 +4811,14 @@ ggsave("SLIDES/TOP500.pdf")
 #+RESULTS:
 [[file:SLIDES/TOP500.png]]
 **** Execution Time Plots
-***** Read CSVs
+***** Read
 #+begin_src R :results output :session *R* :exports both
 options(crayon.enabled=FALSE)
 suppressMessages(library("tidyverse"));
 df_intel <- read_csv("LOGS/LOGS_CSV/intel.22-11-2019.16h44m04s.csv", progress=FALSE)
-df_apps <- read_csv("LOGS/LOGS_CSV/apps_exec.22-11-2019.16h44m04s.csv", progress=FALSE)
-    
+df_apps <- read_csv("LOGS/LOGS_CSV/apps_exec.22-11-2019.16h44m04s.csv", progress=FALSE)%>%
+  filter(interface != "ipoib")
+
 df_apps %>%
       group_by(apps,interface) %>%
       summarise(
@@ -4871,7 +4872,7 @@ cols(
   time = col_double()
 )
 
-# A tibble: 33 x 6
+# A tibble: 22 x 6
 # Groups:   apps [11]
    apps      interface average   std   ste     N
    <
@@ -4882,15 +4883,15 @@ cols(
 <int>
  1 exec_alya eth         297.  1.77  0.968    30
  2 exec_alya ib          254.  2.79  1.53     30
- 3 exec_alya ipoib       281.  2.90  1.59     30
- 4 exec_bt   eth         505.  1.54  0.842    30
- 5 exec_bt   ib          380.  4.17  2.28     30
- 6 exec_bt   ipoib       544.  3.51  1.92     30
- 7 exec_cg   eth         761.  8.24  4.51     30
- 8 exec_cg   ib          183.  1.01  0.551    30
- 9 exec_cg   ipoib       181.  2.58  1.41     30
-10 exec_ep   eth          37.4 0.422 0.231    30
-# … with 23 more rows
+ 3 exec_bt   eth         505.  1.54  0.842    30
+ 4 exec_bt   ib          380.  4.17  2.28     30
+ 5 exec_cg   eth         761.  8.24  4.51     30
+ 6 exec_cg   ib          183.  1.01  0.551    30
+ 7 exec_ep   eth          37.4 0.422 0.231    30
+ 8 exec_ep   ib           37.3 0.239 0.131    30
+ 9 exec_ft   eth        1581.  2.72  1.49     30
+10 exec_ft   ib          145.  6.26  3.43     30
+# … with 12 more rows
 
 # A tibble: 69 x 6
 # Groups:   interface [3]
@@ -4939,18 +4940,18 @@ cols(
 ggplot(df_intel_latency[df_intel_latency$interface %in% c("ib", "eth"), ],aes(x=bytes, y=average)) +
   geom_line(aes(color = interface), alpha = 1) +
   geom_point(aes(color=interface, shape=interface),size = 4) +
-  scale_shape_manual(values = c(15, 16, 17),
-                     breaks=c("ib", "eth"),
-                     labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +
+  scale_shape_manual(values = c(15, 17),
+                     breaks=c("eth", "ib"),
+                     labels=c("Ethernet 1Gbps", "InfiniBand FDR 56Gbps")) +
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
   theme_bw() +
   scale_y_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)) +
   scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
-  ylab('Average Latency Time\n(Usec in 2 Log Scale)') +
+  ylab('Average Latency Time\n(Microseconds in Log Scale)') +
   xlab('Message Size (Bytes)') +
   scale_color_manual(values=c( "#BEBEBE", "#303030"),
-                    breaks=c("ib", "eth"),
-                    labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +
+                    breaks=c("eth", "ib"),
+                    labels=c("Ethernet 1Gbps", "InfiniBand FDR 56Gbps")) +
     theme (legend.position = c(0.2, 0.82),
            legend.background = element_rect(color = "black", size = 0.5, linetype = "solid"),
            plot.margin = unit(x = c(0.2, 0, 0, 0), units = "cm"),
@@ -4958,7 +4959,7 @@ ggplot(df_intel_latency[df_intel_latency$interface %in% c("ib", "eth"), ],aes(x=
            legend.title = element_blank(),
            legend.text = element_text(color = "black", size = 18),
            axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
-           axis.text.y = element_text(size =16, color = "black"))
+           axis.text.y = element_text(size =16, color = "black")) 
 ggsave("SLIDES/img/Latency.pdf")
 #+end_src
 
@@ -4970,9 +4971,9 @@ ggsave("SLIDES/img/Latency.pdf")
 ggplot(df_intel_band[df_intel_band$interface %in% c("ib", "eth"), ],aes(x=bytes, y=average)) +
   geom_line(aes(col = interface), alpha = 1) +
   geom_point(aes(col = interface, shape=interface), size = 4) +
-  scale_shape_manual(values = c(15, 16, 17),
-                     breaks=c("ib", "eth"),
-                     labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +  
+  scale_shape_manual(values = c(15, 17),
+                     breaks=c("eth", "ib"),
+                     labels=c("Ethernet 1Gbps","InfiniBand FDR 56Gbps")) +  
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
   theme_bw() +
   scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8)) +
@@ -4980,8 +4981,8 @@ ggplot(df_intel_band[df_intel_band$interface %in% c("ib", "eth"), ],aes(x=bytes,
   ylab('Average Bandwidth\n(Gigabytes per Second)') +
   xlab('Message Size (Bytes)') +
   scale_colour_manual(values=c( "#BEBEBE", "#303030"),
-                    breaks=c("ib", "eth"),
-                    labels=c("InfiniBand FDR 56Gbps", "Ethernet 1Gbps")) +
+                    breaks=c("eth", "ib"),
+                    labels=c("Ethernet 1Gbps", "InfiniBand FDR 56Gbps")) +
   theme (legend.position = c(0.2, 0.82),
          legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
           plot.margin = unit(x = c(0.1, 0, 0, 0), units = "cm"),
@@ -4989,10 +4990,58 @@ ggplot(df_intel_band[df_intel_band$interface %in% c("ib", "eth"), ],aes(x=bytes,
          legend.title = element_blank(),
          legend.text = element_text(color = "black", size = 18),
          axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
-         axis.text.y = element_text(size =16, color = "black"))
-
+         axis.text.y = element_text(size =16, color = "black")) +
 ggsave("SLIDES/img/Bandwidth.pdf")
 #+end_src
 
 #+RESULTS:
 [[file:R/PLOTS/Bandwidth.png]]
+***** FT-EP-Alya-IMB
+#+begin_src R :results output graphics :file  R/PLOTS/FT-EP-Alya-IMB.png :exports both :width 800 :height 400 :session *R* 
+try <- c(exec_ft="FT", exec_alya="Alya",  exec_ep="EP", exec_imb_CPU="IMB-CPU")
+try2 <- c(exec_ft="128", exec_alya="160",  exec_ep="128", exec_imb_CPU="160")
+df_apps$interface <- factor(df_apps$interface,
+                            levels=c("eth", "ib"))
+
+count <- 0
+breaks_fun <- function(x) {
+  count <<- count + 1L
+  switch(
+    count,
+    c(0,100,200,300),
+    c(0,10,20,30,37),
+    c(0,400,800,1200,1600),
+    c(0,3,6,9)
+  )
+}
+
+plot <- ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_ep", "exec_alya", "exec_imb_CPU"),], aes(x=apps, y=average, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.6) +
+         geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=0.2, position = position_dodge(.6)) +
+         theme_bw() +
+         scale_fill_manual(values=c("#BEBEBE", "#303030") ,
+                           breaks=c("eth", "ib"), labels=c("1 Gbps Ethernet", "InfiniBand FDR 56Gbps")) +
+         theme(legend.position = "top", 
+               legend.key = element_rect(colour = "grey"),
+               legend.key.height = unit(0.5, "line"),
+               legend.key.width = unit(4, "line"),
+               legend.spacing = unit(100, "line"),
+               plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
+               legend.margin=margin(c(0, 0, -8, 0)),
+               axis.text.x = element_text(size =16, color = "black"),
+               axis.text.y = element_text(size =16, color = "black"),
+               axis.title=element_text(size=18), 
+               legend.title = element_blank(),
+               legend.text = element_text(color = "black", size = 18)) +
+         scale_x_discrete(labels=try2) +
+         labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+         facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
+         scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
+         theme(strip.text.x=element_text(size=18),
+               strip.background=element_rect(fill='#F5F5F5'))
+  ggsave(filename= "SLIDES/img/FT-EP-Alya-IMB.pdf", plot=plot)
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/FT-EP-Alya-IMB.png]]
+
