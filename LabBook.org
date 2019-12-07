@@ -4990,7 +4990,7 @@ ggplot(df_intel_band[df_intel_band$interface %in% c("ib", "eth"), ],aes(x=bytes,
          legend.title = element_blank(),
          legend.text = element_text(color = "black", size = 18),
          axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
-         axis.text.y = element_text(size =16, color = "black")) +
+         axis.text.y = element_text(size =16, color = "black"))
 ggsave("SLIDES/img/Bandwidth.pdf")
 #+end_src
 
@@ -5015,12 +5015,12 @@ breaks_fun <- function(x) {
   )
 }
 
-plot <- ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_ep", "exec_alya", "exec_imb_CPU"),], aes(x=apps, y=average, fill=interface)) +
+ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_ep", "exec_alya", "exec_imb_CPU"),], aes(x=apps, y=average, fill=interface)) +
 geom_bar(stat="identity", position = "dodge", width = 0.6) +
          geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=0.2, position = position_dodge(.6)) +
          theme_bw() +
          scale_fill_manual(values=c("#BEBEBE", "#303030") ,
-                           breaks=c("eth", "ib"), labels=c("1 Gbps Ethernet", "InfiniBand FDR 56Gbps")) +
+                           breaks=c("eth", "ib"), labels=c("Ethernet 1 Gbps", "InfiniBand FDR 56Gbps")) +
          theme(legend.position = "top", 
                legend.key = element_rect(colour = "grey"),
                legend.key.height = unit(0.5, "line"),
@@ -5038,10 +5038,63 @@ geom_bar(stat="identity", position = "dodge", width = 0.6) +
          facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
          scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
          theme(strip.text.x=element_text(size=18),
-               strip.background=element_rect(fill='#F5F5F5'))
-  ggsave(filename= "SLIDES/img/FT-EP-Alya-IMB.pdf", plot=plot)
+               strip.background=element_rect(fill='#F5F5F5')) 
+ggsave("SLIDES/img/FT-EP-Alya-IMB.pdf")
 #+end_src
 
 #+RESULTS:
 [[file:R/PLOTS/FT-EP-Alya-IMB.png]]
+**** Cost Plots 
+***** Read CSVs
+#+begin_src R :results output :session *R* :exports both
+options(crayon.enabled=FALSE)
+suppressMessages(library("tidyverse"));
+df_apps <- read_csv("LOGS/LOGS_CSV/apps_exec.22-11-2019.16h44m04s.csv", progress=FALSE)
+
+  A8_h=0.975
+  A8_m=A8_h/60
+  A10_h=0.78
+  A10_m=(A10_h/60)
+
+df_apps %>%
+  group_by(apps,interface) %>%
+  summarise(
+    average_s=mean(time),
+    average_m=average_s/60,
+    cost= ifelse(interface[1] == "eth", A10_m*average_m,  A8_m*average_m)) %>%
+  arrange(apps,interface) -> df_apps
+
+#+end_src
+***** FT-EP-Alya-IMB
+#+begin_src R :results output graphics :file FT-EP-Alya-IMB.png :exports both :width 800 :height 400 :session *R* 
+try <- c(exec_ft="FT", exec_sp="SP",  exec_ep="EP", exec_is="IS")
+try2 <- c(exec_ft="128", exec_sp="144",  exec_ep="128", exec_is="128")
+df_apps$interface <- factor(df_apps$interface,
+levels=c("ib", "eth"))
+
+ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_alya", "exec_ep", "exec_imb_CPU"), ] , aes(x=apps, y=cost, fill=interface)) +
+geom_bar(stat="identity", position = "dodge", width = 0.6) +
+theme_bw() +
+scale_fill_manual(values=c("#303030", "#888888", "#BEBEBE") ,
+breaks=c("ib", "ipoib", "eth"), labels=c("InfiniBand", "IP-over-IB", "Ethernet")) +
+theme(legend.position = "top", 
+      legend.key = element_rect(colour = "grey"),
+      legend.key.height = unit(0.5, "line"),
+      legend.key.width = unit(4, "line"),
+      legend.spacing = unit(100, "line"),
+      plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
+      legend.margin=margin(c(0, 0, -8, 0)),
+      axis.text.x = element_text(size =16, color = "black"),
+      axis.text.y = element_text(size =16, color = "black"),
+      axis.title=element_text(size=18), 
+      legend.title = element_blank(),
+      legend.text = element_text(color = "black", size = 18)) +
+      scale_x_discrete(labels=try2) +
+      labs(x="Number of MPI Processes", y="Execution Cost in US$") +
+      facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
+      #scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
+      theme(strip.text.x=element_text(size=18),
+            strip.background=element_rect(fill='#F5F5F5'))
+ggsave("SLIDES/img/FT-EP-Alya-IMB.cost.pdf")
+#+end_src
 
