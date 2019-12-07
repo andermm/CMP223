@@ -5207,8 +5207,8 @@ breaks_fun <- function(x) {
   count <<- count + 1L
   switch(
     count,
-    c(0, 60, 127),
-    c(0, 60, 127)
+    c(0, 80, 160),
+    c(0, 80, 160)
   )
 }
 
