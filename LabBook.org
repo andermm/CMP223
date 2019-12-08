@@ -4849,7 +4849,7 @@ geom_bar(stat="identity", position = "dodge", width = 0.6) +
                legend.title = element_blank(),
                legend.text = element_text(color = "black", size = 18)) +
          scale_x_discrete(labels=try2) +
-         labs(x="Number of MPI Processes", y="Execution Time in Seconds") +
+         labs(x="MPI Processes Number", y="Execution Time in Seconds") +
          facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
          scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
          theme(strip.text.x=element_text(size=18),
@@ -4916,7 +4916,7 @@ theme(legend.position = "top",
       legend.title = element_blank(),
       legend.text = element_text(color = "black", size = 18)) +
       scale_x_discrete(labels=try2) +
-      labs(x="Number of MPI Processes", y="Execution Cost in US$") +
+      labs(x="MPI Processes Number", y="Execution Cost in US$") +
       facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
       #scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
       theme(strip.text.x=element_text(size=18),
@@ -5024,7 +5024,7 @@ df.compute %>%
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        labs(x="MPI Ranks Number", y="Execution Time in Seconds") +
         facet_wrap(facets= ~ App, scales="free", nrow=1) +
         scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
         scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
@@ -5134,7 +5134,7 @@ df.compute %>%
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        labs(x="MPI Ranks Number", y="Execution Time in Seconds") +
         facet_wrap(facets= ~ App, scales="free", nrow=1) +
         scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
         theme(strip.text.x=element_text(size=18),
@@ -5240,7 +5240,7 @@ df.compute %>%
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        labs(x="MPI Ranks Number", y="Execution Time in Seconds") +
         facet_wrap(facets= ~ App, scales="free", nrow=1) +
         scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
         scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
@@ -5348,7 +5348,7 @@ df.compute %>%
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-        labs(x="Number of MPI Ranks", y="Execution Time in Seconds") +
+        labs(x="MPI Ranks Number", y="Execution Time in Seconds") +
         facet_wrap(facets= ~ App, scales="free", nrow=1) +
         scale_x_continuous(breaks = breaks_fun, limits = c(0, NA)) +
         #scale_y_continuous(breaks = breaks_fun2, limits = c(0, NA)) +
@@ -5361,10 +5361,34 @@ ggsave("SLIDES/img/IMB-CPU.charac.pdf")
 [[file:R/PLOTS/IMB_CPU.charac.png]]
 
 ***** FT-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/FT.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/FT.percentage.png :exports both :width 500 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
+df.ft.eth <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "FT-Ethernet 1 Gbps") %>%
+  select(Rank, everything())
+df.ft.eth
+
+df.ft.ib <- read_csv("LOGS/TRACE/charac_ft.ib/charac_ft.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "FT-InfiniBand FDR 56Gbps") %>%
+  select(Rank, everything())
+df.ft.ib
+
 df.ft.ib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -5388,30 +5412,6 @@ df.ft.ib %>%
   summarize(Total = df.total.ft.ib$Total,
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.ft.ib
-
-df.ft.ipoib %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ft.ipoib
-
-df.ft.ipoib$Value <- as.character(df.ft.ipoib$Value)
-df.ft.ipoib$Value [grepl('MPI_*', df.ft.ipoib$Value)] <- 'MPI'
-
-df.ft.ipoib %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.ft.ipoib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ft.ipoib;
-df.percent.ft.ipoib
-
-df.ft.ipoib$Value <- as.character(df.ft.ipoib$Value)
-df.ft.ipoib$Value [grepl('MPI', df.ft.ipoib$Value)] <- 'Computing'
-
-df.ft.ipoib %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.ft.ipoib$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ft.ipoib
 
 df.ft.eth %>%
   group_by(Value,App) %>%
@@ -5437,10 +5437,10 @@ df.ft.eth %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.ft.eth
 
-df <- rbind(df.comp.ft.eth, df.comp.ft.ib, df.comp.ft.ipoib, df.percent.ft.eth, df.percent.ft.ib, df.percent.ft.ipoib)
+df <- rbind(df.comp.ft.eth, df.comp.ft.ib, df.percent.ft.eth, df.percent.ft.ib)
 
 ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
-  geom_bar(position = "fill", stat = "identity", width = 0.3) +
+  geom_bar(position = "fill", stat = "identity", width = 0.25) +
   scale_fill_manual(values=c("#303030", "#BEBEBE")) +
   scale_y_continuous(labels = scales::percent_format()) +
   theme_bw() +
@@ -5456,17 +5456,41 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-  labs(x="Applications", y="Operation Percentage")
-
+  labs(x="Application/Interconnection", y="Operations Time Percentage")
+ggsave("SLIDES/img/FT.percentage.pdf")
 #+end_src
 
 #+RESULTS:
 [[file:R/PLOTS/FT.percentage.png]]
 ***** EP-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/EP.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/EP.percentage.png :exports both :width 500 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
+df.ep.eth <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "EP-Ethernet 1 Gbps") %>%
+  select(Rank, everything())
+df.ep.eth
+
+df.ep.ib <- read_csv("LOGS/TRACE/charac_ep.ib/charac_ep.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "EP-InfiniBand FDR 56Gbps") %>%
+  select(Rank, everything())
+df.ep.ib
+
 df.ep.ib %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -5490,30 +5514,6 @@ df.ep.ib %>%
   summarize(Total = df.total.ep.ib$Total,
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.ep.ib
-
-df.ep.ipoib %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.ep.ipoib
-
-df.ep.ipoib$Value <- as.character(df.ep.ipoib$Value)
-df.ep.ipoib$Value [grepl('MPI_*', df.ep.ipoib$Value)] <- 'MPI'
-
-df.ep.ipoib %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.ep.ipoib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.ep.ipoib;
-df.percent.ep.ipoib
-
-df.ep.ipoib$Value <- as.character(df.ep.ipoib$Value)
-df.ep.ipoib$Value [grepl('MPI', df.ep.ipoib$Value)] <- 'Computing'
-
-df.ep.ipoib %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.ep.ipoib$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.ep.ipoib
 
 df.ep.eth %>%
   group_by(Value,App) %>%
@@ -5539,10 +5539,10 @@ df.ep.eth %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.ep.eth
 
-df <- rbind(df.comp.ep.eth, df.comp.ep.ib, df.comp.ep.ipoib, df.percent.ep.eth, df.percent.ep.ib, df.percent.ep.ipoib)
+df <- rbind(df.comp.ep.eth, df.comp.ep.ib, df.percent.ep.eth, df.percent.ep.ib)
 
 ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
-  geom_bar(position = "fill", stat = "identity", width = 0.3) +
+  geom_bar(position = "fill", stat = "identity", width = 0.25) +
   scale_fill_manual(values=c("#303030", "#BEBEBE")) +
   scale_y_continuous(labels = scales::percent_format()) +
   theme_bw() +
@@ -5558,7 +5558,9 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-  labs(x="Applications", y="Operation Percentage")
+  labs(x="Application/Interconnection", y="Operations Time Percentage")
+ggsave("SLIDES/img/EP.percentage.pdf")
+
 
 #+end_src
 
@@ -5566,11 +5568,11 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 [[file:R/PLOTS/EP.percentage.png]]
 
 ***** Alya-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/Alya.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/Alya.percentage.png :exports both :width 500 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
-df.alya.ib /<- read_csv("LOGS/TRACE/charac_alya.ib/charac_alya.ib.csv", col_names = FALSE, progress=FALSE) %>%
+df.alya.eth <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
   rename(Start = X4,
@@ -5578,7 +5580,19 @@ df.alya.ib /<- read_csv("LOGS/TRACE/charac_alya.ib/charac_alya.ib.csv", col_name
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "Alya.ib") %>%
+  mutate(App = "Alya-Ethernet 1 Gbps") %>%
+  select(Rank, everything())
+df.alya.eth
+
+df.alya.ib <- read_csv("LOGS/TRACE/charac_alya.ib/charac_alya.ib.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "Alya-InfiniBand FDR 56Gbps") %>%
   select(Rank, everything())
 df.alya.ib
 
@@ -5606,54 +5620,6 @@ df.alya.ib %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.alya.ib
 
-df.alya.ipoib <- read_csv("LOGS/TRACE/charac_alya.ipoib/charac_alya.ipoib.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "Alya.ipoib") %>%
-  select(Rank, everything())
-df.alya.ipoib
-
-df.alya.ipoib %>%
-  group_by(Value,App) %>%
-  filter(Value == "MPI_Finalize") %>%
-  summarize(Total = sum(End))  -> df.total.alya.ipoib
-
-df.alya.ipoib$Value <- as.character(df.alya.ipoib$Value)
-df.alya.ipoib$Value [grepl('MPI_*', df.alya.ipoib$Value)] <- 'MPI'
-
-df.alya.ipoib %>%
-  group_by(Value,App) %>%
-  summarize(MPI.Time = sum(Duration),
-            Total = df.total.alya.ipoib$Total,
-            Percent=(MPI.Time*100)/Total) -> df.percent.alya.ipoib;
-df.percent.alya.ipoib
-
-df.alya.ipoib$Value <- as.character(df.alya.ipoib$Value)
-df.alya.ipoib$Value [grepl('MPI', df.alya.ipoib$Value)] <- 'Computing'
-
-df.alya.ipoib %>%
-  group_by(Value,App) %>%
-  summarize(Total = df.total.alya.ipoib$Total,
-            MPI.Time = Total - sum(Duration),
-            Percent=(MPI.Time*100)/Total) -> df.comp.alya.ipoib
-
-df.alya.eth <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "Alya.eth") %>%
-  select(Rank, everything())
-df.alya.eth
-
 df.alya.eth %>%
   group_by(Value,App) %>%
   filter(Value == "MPI_Finalize") %>%
@@ -5678,10 +5644,10 @@ df.alya.eth %>%
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.alya.eth
 
-df <- rbind(df.comp.alya.eth, df.comp.alya.ib, df.comp.alya.ipoib, df.percent.alya.eth, df.percent.alya.ib, df.percent.alya.ipoib)
+df <- rbind(df.comp.alya.eth, df.comp.alya.ib, df.percent.alya.eth, df.percent.alya.ib)
 
 ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
-  geom_bar(position = "fill", stat = "identity", width = 0.3) +
+  geom_bar(position = "fill", stat = "identity", width = 0.25) +
   scale_fill_manual(values=c("#303030", "#BEBEBE")) +
   scale_y_continuous(labels = scales::percent_format()) +
   theme_bw() +
@@ -5697,7 +5663,8 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-  labs(x="Applications", y="Operation Percentage")
+  labs(x="Application/Interconnection", y="Operations Time Percentage")
+ggsave("SLIDES/img/Alya.percentage.pdf")
 
 #+end_src
 
@@ -5705,10 +5672,22 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
 [[file:R/PLOTS/Alya.percentage.png]]
 
 ***** IMB-CPU-Percentage
-#+begin_src R :results output graphics :file R/PLOTS/imb_CPU.percentage.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file R/PLOTS/imb_CPU.percentage.png :exports both :width 500 :height 400 :session *R* 
 options(crayon.enabled=FALSE)
 options(scipen = 999)
 suppressMessages(library(tidyverse))
+df.imb_CPU.eth <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv", col_names = FALSE, progress=FALSE) %>%
+  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
+  select(-X1, -X2, -X3, -X7) %>%
+  rename(Start = X4,
+         End = X5,
+         Duration = X6,
+         Value = X8) %>%
+  mutate(Rank = as.integer(Rank)) %>%
+  mutate(App = "IMB-CPU\nEthernet 1 Gbps") %>%
+  select(Rank, everything())
+df.imb_CPU.eth
+
 df.imb_CPU.ib <- read_csv("LOGS/TRACE/charac_imb_CPU.ib/charac_imb_CPU.ib.csv", col_names = FALSE, progress=FALSE) %>%
   mutate(Rank = gsub("MPI Rank", "", X2)) %>%
   select(-X1, -X2, -X3, -X7) %>%
@@ -5717,7 +5696,7 @@ df.imb_CPU.ib <- read_csv("LOGS/TRACE/charac_imb_CPU.ib/charac_imb_CPU.ib.csv", 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IMB_CPU.ib") %>%
+  mutate(App = "IMB-CPU\nInfiniBand FDR 56Gbps") %>%
   select(Rank, everything())
 df.imb_CPU.ib
 
@@ -5744,18 +5723,6 @@ df.imb_CPU.ib %>%
   summarize(Total = df.total.imb_CPU.ib$Total,
             MPI.Time = Total - sum(Duration),
             Percent=(MPI.Time*100)/Total) -> df.comp.imb_CPU.ib
-
-df.imb_CPU.eth <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv", col_names = FALSE, progress=FALSE) %>%
-  mutate(Rank = gsub("MPI Rank", "", X2)) %>%
-  select(-X1, -X2, -X3, -X7) %>%
-  rename(Start = X4,
-         End = X5,
-         Duration = X6,
-         Value = X8) %>%
-  mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IMB_CPU.eth") %>%
-  select(Rank, everything())
-df.imb_CPU.eth
 
 df.imb_CPU.eth %>%
   group_by(Value,App) %>%
@@ -5784,7 +5751,7 @@ df.imb_CPU.eth %>%
 df <- rbind(df.comp.imb_CPU.eth, df.comp.imb_CPU.ib, df.percent.imb_CPU.eth, df.percent.imb_CPU.ib)
 
 ggplot(df, aes(x=App, y=Percent, fill=Value)) + 
-  geom_bar(position = "fill", stat = "identity", width = 0.3) +
+  geom_bar(position = "fill", stat = "identity", width = 0.25) +
   scale_fill_manual(values=c("#303030", "#BEBEBE")) +
   scale_y_continuous(labels = scales::percent_format()) +
   theme_bw() +
@@ -5800,7 +5767,8 @@ ggplot(df, aes(x=App, y=Percent, fill=Value)) +
         axis.title=element_text(size=18), 
         legend.title = element_blank(),
         legend.text = element_text(color = "black", size = 18)) +
-  labs(x="Applications", y="Operation Percentage")
+  labs(x="Application/Interconnection", y="Operations Time Percentage")
+ggsave("SLIDES/img/IMB_CPU.percentage.pdf")
 
 #+end_src
 
