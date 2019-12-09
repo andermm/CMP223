@@ -39,7 +39,7 @@ Federal University of Rio Grande do Sul (UFRGS) \\Porto Alegre - Brazil}}
 \vfill
 Growing demand for computational power
 \begin{itemize}
-\item High Performace Computing (HPC)
+\item High Performance Computing (HPC)
 \item Clusters and "as a Service" cloud models
 \end{itemize}
 \pause \vfill
@@ -51,7 +51,7 @@ Communication characteristics vary
 \pause \vfill
 Network interconnection is directly related to performance losses
 \begin{itemize}
-\item High ṕerformance interconnects - InfiniBand
+\item High performance interconnects - InfiniBand
 \end{itemize}
 \end{frame}
 
@@ -62,21 +62,21 @@ Network interconnection is directly related to performance losses
 
 \begin{frame}{Objective}
 \vfill
-Assess the impact of the \alert{network interconnection} on HPC applications regarding performance and cost execution
-
+Assess the impact of network interconnect on HPC applications regarding performance and  execution cost
 \pause \vfill
-How do the \alert{communication characteristics} of applications influence their performance?
-
+How do the communication characteristics of applications influence their performance?
+\pause \vfill
+Is it possible to optimize both performance and execution cost just by using another interconnect?
 \pause \vfill
 To answer these questions:
 
 \pause \vfill
 \begin{itemize}
-    \item  Both \alert{InfiniBand (IB)} and \alert{Gigabit Ethernet (ETH)}, as well as \alert{IP-over-IB (IPoIB)} interconnections were evaluated using the same physical cluster of servers
+    \item Both 1 Gbps Ethernet (ETH) and InfiniBand FDR 56 Gbps (FDR) interconnects were evaluated using the same physical server cluster, using applications with different requests
 \pause \vfill
-    \item All applications are also profiled, in which their MPI operations were exposed.
+    \item All applications were also tracked, exposing their communication and computing characteristics both rank by rank and as a percentage
 \pause \vfill
-    \item The cost was calculated using the Microsoft Azure instance pricing model, in which the instances have the same hardware, differing only by interconnection (IB and Ethernet)
+    \item Finally, the execution cost was calculated using the Microsoft Azure instance pricing model, where the instances in question (A8 and A10) have the same hardware, differing only by the interconnect \\used (IB and Ethernet).
 \end{itemize}
 \vfill
 \end{frame}
@@ -118,7 +118,7 @@ To answer these questions:
     \includegraphics[scale=0.65]{SLIDES/img/System1.pdf}
 \end{center}
     \begin{itemize}
-    \item (1) User submits a job
+    \item (1) The user submits a job through the Internet using SSH in this case
     \item[~] 
     \item[~]
     \item[~] 
@@ -128,8 +128,8 @@ To answer these questions:
     \includegraphics[scale=0.65]{SLIDES/img/System2.pdf}
 \end{center}
     \begin{itemize}
-    \item (1) User submits a job
-    \item (2) Cluster manager allocates the nodes
+    \item (1) The user submits a job through the Internet using SSH in this case
+    \item (2) Cluster manager allocates nodes using its own policy based for example on node availability
     \item[~] 
     \item[~]
     \end{itemize}
@@ -138,9 +138,9 @@ To answer these questions:
     \includegraphics[scale=0.65]{SLIDES/img/System3.pdf}
 \end{center}    
     \begin{itemize}
-    \item (1) User submits a job
-    \item (2) Cluster manager allocates the nodes
-    \item (3) Job is passed to a switch
+    \item (1) The user submits a job through the Internet using SSH in this case
+    \item (2) Cluster manager allocates nodes using its own policy based for example on node availability
+    \item (3) Job is passed to nodes via a switch
     \item[~]
     \end{itemize}
     \framebreak
@@ -148,10 +148,10 @@ To answer these questions:
     \includegraphics[scale=0.65]{SLIDES/img/System4.pdf}
 \end{center}    
     \begin{itemize}
-    \item (1) User submits a job
-    \item (2) Cluster manager allocates the nodes
-    \item (3) Job is passed to a switch
-    \item (4) Switch acts as a central point of nodes communication
+    \item (1) The user submits a job through the Internet using SSH in this case
+    \item (2) Cluster manager allocates nodes using its own policy based for example on node availability
+    \item (3) Job is passed to nodes via a switch
+    \item (4) The switch acts as a central point of nodes communication
     \end{itemize}
 \end{frame}
 
@@ -163,9 +163,7 @@ PCAD's Hype cluster \footnote{[1] http://gppd-hpc.inf.ufrgs.br/}
 \item 128 GB DDR4 RAM
 \item Gigabit Ethernet and InfiniBand FDR interconnects
 \item Ubuntu Server 18.04.01
-\vfill
 \end{itemize}
-\vfill
 \end{frame}
 
 \begin{frame}{Applications}
@@ -199,19 +197,19 @@ Real application performance
 \end{frame}
 
 \begin{frame}{Trace}
-To trace the applications we used: 
-    \pause \vfill
+To track the applications were used:
+\pause \vfill
     \begin{itemize}
-        \item Score-P 6.0
+        \item Score-P Version 6.0
         \begin{itemize}
-            \item Responsible for introducing the code instrumentation
+            \item Used to compile applications and thus make data collection possible
         \end{itemize}
     \pause \vfill
         \item Akypuera
         \begin{itemize}
             \item \texttt{otf22paje}
                 \begin{itemize}
-                    \item Convert the OTF2 output to TRACE file
+                    \item Convert the files
                 \end{itemize}
         \end{itemize}
     \pause \vfill
@@ -219,7 +217,7 @@ To trace the applications we used:
         \begin{itemize}
             \item \texttt{pj\_dump}
                 \begin{itemize}
-                    \item Convert the TRACE file to a CSV to be analysed in R
+                    \item Convert files to a CSV for parsing them in R
                 \end{itemize}
         \end{itemize}
     \end{itemize}
@@ -228,39 +226,46 @@ To trace the applications we used:
 
 \begin{frame}{Experimental Design}
 \vfill
-Was created using the DoE.base library in R
+It was created using the DoE.base library in R
 \begin{itemize}
     \item Follows a full factorial design
     \item Two levels for each execution
  \begin{itemize}
 \item Application: \alert{BT}, \alert{EP}, \alert{CG}, \alert{MG}, \alert{LU}, \alert{SP}, \alert{IS}, \alert{FT}, \alert{IMB\_Memory}, \alert{IMB\_CPU}, \alert{PinPong}, and \alert{Alya}
-\item Network Interface: \alert{Gigabit Ethernet}, \alert{InfiniBand}, and \alert{IP-over-IB}
+\item Network Interface: \alert{Gigabit Ethernet} and \alert{InfiniBand}
 \end{itemize}
     \item 30 randomized replications
    \end{itemize}
-N = (12 applications) \texttimes{} (3 interconnections) \texttimes{} (30 replications) = 1080 experiments\footnote{In the characterization execution the PingPong application was not executed and only one replication was performed, totaling in N = (11 applications) \texttimes{} (3 interconnections) = 33 experiments}   
+N = (12 applications) \texttimes{} (2 interconnections) \texttimes{} (30 replications) = 720 experiments\footnote{In the characterization execution the PingPong application was not executed and only one replication was performed, totaling in N = (11 applications) \texttimes{} (2 interconnections) = 22 experiments}   
 \vfill
 \end{frame}
 
-\begin{frame}{Reproducible Research}
+\begin{frame}{Reproducible Research Methodology}
 \vfill
-Execution scripts
+A main execution script
 \begin{itemize}
     \item No user interaction
-    \item 
     \item Collect system information
-    \item Download all softwares/applications
-    \item Compile
+    \item Download all softwares/applications and compile them
     \item Execute and collect the results
 \end{itemize}
 
 Org and Emacs
 \begin{itemize}
     \item LabBook
-    \begin{itemize}
-        \item How to
-    \end{itemize}
     \item R Blocks of code
+\end{itemize}
+
+GitHub
+\begin{itemize}
+    \item All scripts are public
+    \item Description of files and folders with softwares used/needed to accurately reproduce this evaluation
+    \item If something is wrong, anyone can open a 'Issue'
+\end{itemize}
+
+Zenodo
+\begin{itemize}
+    \item As this work has logs that add up to 117G, these \\will be zipped and sent to Zenodo
 \end{itemize}
 \end{frame}
 
@@ -276,11 +281,10 @@ Org and Emacs
 \begin{frame}{Network Latency}
 \includegraphics[width=\textwidth]{SLIDES/img/Latency.pdf}
 \vfill\pause
+Observations
 \begin{itemize}
     \item InfiniBand latency is much lower\\
         $\to$ Similar results observed in the literature
-    \item\pause IP-over-IB and Ethernet results overlap in all points\\
-        $\to$ Non-observable performance differences
 \end{itemize}
 \end{frame}
 
@@ -288,11 +292,9 @@ Org and Emacs
 \begin{frame}{Network Bandwidth}
 \includegraphics[width=\textwidth]{SLIDES/img/Bandwidth.pdf}
 \vfill\pause
+Observations
 \begin{itemize}
-    \item InfiniBand bandwidth starts to have a great difference since messages size with 8192 bytes\\
-        $\to$ Similar results observed in the literature
-    \item\pause Again, IP-over-IB and Ethernet results overlap in all points\\
-        $\to$ Non-observable performance differences
+    \item InfiniBand's bandwidth begins to show a big difference (for better) from 1024 Bytes messages
 \end{itemize}
 \end{frame}
 
@@ -300,9 +302,9 @@ Org and Emacs
 \includegraphics[width=\textwidth]{SLIDES/img/FT-EP-Alya-IMB.pdf}
 Observations
 \begin{itemize}
-    \item teste
-    \item teste
-    \item item
+    \item Alya performance is increased by up to $\approx$16\%
+    \item EP and IMB performance for both ETH and IB overlaps
+    \item FT have a enormous gain using IB (up to $\approx$989\%)
 \end{itemize}
 \end{frame}
 
@@ -333,13 +335,9 @@ Observations
 \end{figure}
 Observations
 \begin{itemize}
-    \item teste
-    \item teste
-    \item item
-    \item item
-    \item teste
-    \item teste
-    \item teste
+    \item Based on the plot with MPI Ranks (left side), this app follows a straight line to be almost perfectly balanced
+    \item Both ETH and IB have almost the same pattern with different execution times
+    \item In the percentage graph (right side), the results show that both interconnections have almost the same computation and MPI percentage between them
 \end{itemize}
 \end{frame}
 
@@ -350,13 +348,9 @@ Observations
 \end{figure}
 Observations
 \begin{itemize}
-    \item teste
-    \item teste
-    \item item
-    \item item
-    \item teste
-    \item teste
-    \item teste
+    \item This application is dominated by Computing, with some rankings having MPI spikes
+    \item In IB, the MPI\_Init operation has a longer execution time, which sets it apart from ETH
+    \item The total percentage of MPI and Computing confirms the \\above explanation, in which ETH has a bigger Computing \\and a smaller MPI than ETH   
 \end{itemize}
 
 \end{frame}
@@ -368,13 +362,9 @@ Observations
 \end{figure}
 Observations
 \begin{itemize}
-    \item teste
-    \item teste
-    \item item
-    \item item
-    \item teste
-    \item teste
-    \item teste
+    \item FT has the pattern of sending several MPI messages, which makes it communication intensive
+    \item In ETH, it is dominated by MPI operations, therefore its time is high
+    \item On the other hand, in IB, both MPI and Computing \\operations reaches $\approx$50\%
 \end{itemize}
 \end{frame}
 
@@ -385,22 +375,42 @@ Observations
 \end{figure}
 Observations
 \begin{itemize}
-    \item teste
-    \item teste
-    \item item
-    \item item
-    \item teste
-    \item teste
-    \item teste
+    \item This app simulates the behavior of 8 levels of load unbalance, and this is evident in its tracing
+    \item As MPI\_Finalize spikes decrease, compute spikes increase.
+    \item MPI\_Init in IB increases the overall MPI time and percentage
+    \item CPU-Bound application with no gain in IB (similar to EP) 
+
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusion}
 
+Network interconnect performance remains a crucial aspect of HPC environments
+
+How do the communication characteristics of applications influence their performance?
+\begin{itemize}
+    \item For applications with a high level of network dependency, it reaches or even exceeds the same level of importance as processing power
+    \begin{itemize}
+        \item FT $\approx$989\%
+        \item IS $\approx$978\%
+    \end{itemize} 
+    \item On the other hand, for applications that are CPU-Bound, a faster interconnection does not influence for improved performance
+    \begin{itemize}
+        \item EP 0\% gain or loss
+        \item IMB-CPU less than 1\%
+    \end{itemize}
+\end{itemize}
+It is possible to optimize both performance and execution cost?
+\begin{itemize}
+    \item YES!, BUT depends on the application characteristics, for example, FT have a huge gain in performance ($\approx$989\%) and also\\ optimized their cost $\approx$770\%
+\end{itemize}
 \end{frame}
 
-\begin{frame}{References}
-
+\begin{frame}{Future Work}
+\begin{itemize}
+    \item Perform the same evaluation in the main public clouds providers (Microsoft Azure, Amazon AWS, and Google Cloud), considering all the interconnection at disposal
+    \item Publish a paper using the up-to-date price of the instances
+\end{itemize}
 \end{frame}
 \logo{}
 
