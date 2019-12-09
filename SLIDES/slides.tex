@@ -37,19 +37,19 @@ Federal University of Rio Grande do Sul (UFRGS) \\Porto Alegre - Brazil}}
 \logo{\includegraphics[width=1.5cm]{SLIDES/logo/inf-logo.png}}
 \begin{frame}{Introduction}
 \vfill
-Growing demand for computational power
+Growing demand for \alert{computational power}
 \begin{itemize}
 \item High Performance Computing (HPC)
 \item Clusters and "as a Service" cloud models
 \end{itemize}
 \pause \vfill
-Communication characteristics vary
+\alert{Communication characteristics} vary from application to application
 \begin{itemize}
-\item Specific proposal for parallel programs
+\item Application specific proposal
 \item Bandwidth and latency-sensitive
 \end{itemize}
 \pause \vfill
-Network interconnection is directly related to performance losses
+Network interconnection is directly related to \alert{performance losses}
 \begin{itemize}
 \item High performance interconnects - InfiniBand
 \end{itemize}
@@ -62,11 +62,11 @@ Network interconnection is directly related to performance losses
 
 \begin{frame}{Objective}
 \vfill
-Assess the impact of network interconnect on HPC applications regarding performance and  execution cost
+Assess the impact of \alert{network interconnect} on HPC applications regarding \alert{performance} and  \alert{execution cost}
 \pause \vfill
-How do the communication characteristics of applications influence their performance?
+How do the \alert{communication characteristics} of applications influence their \alert{performance}?
 \pause \vfill
-Is it possible to optimize both performance and execution cost just by using another interconnect?
+Is it possible to optimize both \alert{performance} and \alert{execution cost} just by using another interconnect?
 \pause \vfill
 To answer these questions:
 
@@ -74,9 +74,9 @@ To answer these questions:
 \begin{itemize}
     \item Both 1 Gbps Ethernet (ETH) and InfiniBand FDR 56 Gbps (FDR) interconnects were evaluated using the same physical server cluster, using applications with different requests
 \pause \vfill
-    \item All applications were also tracked, exposing their communication and computing characteristics both rank by rank and as a percentage
+    \item All applications were also traced, exposing their communication and computing characteristics both rank by rank and as a percentage
 \pause \vfill
-    \item Finally, the execution cost was calculated using the Microsoft Azure instance pricing model, where the instances in question (A8 and A10) have the same hardware, differing only by the interconnect \\used (IB and Ethernet).
+    \item Finally, the execution cost was calculated using the Microsoft Azure instance pricing model, where the instances in question \\(A8 and A10) have the same hardware, differing only by the interconnect used (IB and Ethernet)
 \end{itemize}
 \vfill
 \end{frame}
@@ -90,13 +90,20 @@ To answer these questions:
 \item System
 \item Testbed
 \item Applications
-\item Trace
+\item Tracing Process
 \item Experimental Design
-\item Reproducible Research
+\item Reproducible Research Methodology
 \end{itemize}
 \end{itemize}
 \begin{itemize}
 \item Results
+\begin{itemize}
+    \item Latency
+    \item Bandwidth
+    \item Execution time
+    \item Execution cost
+    \item Characterization
+\end{itemize}
 \end{itemize}
 \begin{itemize}
 \item Conclusion
@@ -113,7 +120,7 @@ To answer these questions:
 \end{frame}
 
 \begin{frame}[noframenumbering, allowframebreaks]{System}
-\vspace{-0.3cm}
+\vspace{-0.7cm}
 \begin{center}
     \includegraphics[scale=0.65]{SLIDES/img/System1.pdf}
 \end{center}
@@ -196,8 +203,8 @@ Real application performance
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Trace}
-To track the applications were used:
+\begin{frame}{Tracing Process}
+To trace the applications were used:
 \pause \vfill
     \begin{itemize}
         \item Score-P Version 6.0
@@ -236,7 +243,7 @@ It was created using the DoE.base library in R
 \end{itemize}
     \item 30 randomized replications
    \end{itemize}
-N = (12 applications) \texttimes{} (2 interconnections) \texttimes{} (30 replications) = 720 experiments\footnote{In the characterization execution the PingPong application was not executed and only one replication was performed, totaling in N = (11 applications) \texttimes{} (2 interconnections) = 22 experiments}   
+N = (12 applications) \texttimes{} (2 interconnections) \texttimes{} (30 replications) = 720 experiments\footnote{In the characterization execution the PingPong application was not\\executed and only one replication was performed, totaling in \\N = (11 applications) \texttimes{} (2 interconnections) = 22 experiments}   
 \vfill
 \end{frame}
 
@@ -294,7 +301,7 @@ Observations
 \vfill\pause
 Observations
 \begin{itemize}
-    \item InfiniBand's bandwidth begins to show a big difference (for better) from 1024 Bytes messages
+    \item InfiniBand's bandwidth begins to show a big difference \\(for better) from 1024 Bytes messages
 \end{itemize}
 \end{frame}
 
@@ -302,14 +309,14 @@ Observations
 \includegraphics[width=\textwidth]{SLIDES/img/FT-EP-Alya-IMB.pdf}
 Observations
 \begin{itemize}
-    \item Alya performance is increased by up to $\approx$16\%
+    \item Alya performance is increased by up to $\approx$16\% using IB
     \item EP and IMB performance for both ETH and IB overlaps
     \item FT have a enormous gain using IB (up to $\approx$989\%)
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Analysis Of Interesting Cases (Execution Cost)}
-\vspace{-1cm}
+\vspace{-0.5cm}
 \begin{center}
 \includegraphics[scale=0.3]{SLIDES/img/FT-EP-Alya-IMB.cost.pdf}
 \end{center}
@@ -326,6 +333,9 @@ Observations
 \end{tabular}%
 }
 \end{table}
+\begin{itemize}
+    \item A8 (IB) costs US\$ 0.975 and A10 (ETH) US\$ 0.78 per hour
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Analysis Of Interesting Cases (Characterization - Alya)}
