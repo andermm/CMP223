@@ -69,11 +69,11 @@ To answer these questions:
 
 \pause \vfill
 \begin{itemize}
-    \item Both \alert{1 Gbps Ethernet (ETH)} and \alert{InfiniBand FDR 56 Gbps (IB)} interconnects were evaluated using the same physical server cluster, using applications with different requests
+    \item Both \alert{1 Gbps Ethernet (GbE)} and \alert{InfiniBand Fourteen Data Rate (FDR) 56 Gbps (IB)} interconnects were evaluated using the same physical server cluster, using applications with different requests
 \pause \vfill
     \item All applications were also \alert{traced}, exposing their communication and computing characteristics both rank by rank and as a percentage
 \pause \vfill
-    \item Finally, the \alert{execution cost} was calculated using the \alert{Microsoft Azure instance pricing model}, where the instances in question \\(A8 and A10) have the same hardware, differing only by the interconnect used (IB and Ethernet)
+    \item Finally, the \alert{execution cost} was calculated using the \alert{Microsoft Azure instance pricing model}, where the instances in question \\(A8 and A10) have the same hardware, differing only by the interconnect used (IB and GbE)
 \end{itemize}
 \vfill
     
@@ -169,7 +169,6 @@ PCAD's Hype cluster (four nodes)\footnote{[1] http://gppd-hpc.inf.ufrgs.br/}
 \end{itemize}
 Network Equipment
 \begin{itemize}
-\item Gigabit Ethernet and InfiniBand FDR interconnects
 \item Mellanox MT27600 Channel Adapter (CA)
 \item InfiniBand 56 Gbps 4X FDR ConnectX-3
 \item OFED version 4.6-1.0.1.1
@@ -240,16 +239,17 @@ To trace the applications were used:
 It was created using the DoE.base library in R
 \begin{itemize}
     \item Follows a full factorial design
-    \item Two levels for each execution
+    \pause\item Two levels for each execution
  \begin{itemize}
 \item Application: \alert{BT}, \alert{EP}, \alert{CG}, \alert{MG}, \alert{LU}, \alert{SP}, \alert{IS}, \alert{FT}, \alert{IMB\_Memory}, \alert{IMB\_CPU}, \alert{PinPong}, and \alert{Alya}
 \item Network Interface: \alert{Gigabit Ethernet} and \alert{InfiniBand}
 \end{itemize}
-    \item 30 randomized replications
+    \pause\item 30 randomized replications
+    \pause\item Error bars are calculated considering a \alert{confidence level of 99.7\%} assuming a Gaussian distribution
    \end{itemize}
 N = (12 applications) \texttimes{} (2 interconnections) \texttimes{} (30 replications) = 720 experiments
 \pause \begin{itemize}
-    \item In the characterization execution, PingPong application was not executed and only one replication was performed, totaling in N = (11 applications) \texttimes{} (2 interconnections) = 22 experiments  
+    \item In the characterization execution, PingPong application was not executed and only one replication was performed, totaling in N = \\(11 applications) \texttimes{} (2 interconnections) = 22 experiments  
 
 \end{itemize}
 \end{frame}
@@ -308,7 +308,7 @@ A main execution script
 \vfill
 \pause Observations
 \begin{itemize}
-    \item InfiniBand's bandwidth begins to show a \alert{big difference} \\(for better) from 1024 Bytes messages
+    \item InfiniBand's bandwidth (In terms of bandwidth, higher is better) begins to show a \alert{significant difference} from 1024 Bytes \\messages
 \end{itemize}
 \end{frame}
 
@@ -317,7 +317,7 @@ A main execution script
 \pause Observations
 \begin{itemize}
     \item Alya performance is increased by up to \alert{$\approx$16\%} using IB
-    \pause\item EP and IMB performance for both ETH and IB \alert{overlaps}
+    \pause\item EP and IMB performance for both GbE and IB \alert{overlaps}
     \pause\item FT have a enormous gain using IB (\alert{up to $\approx$989\%})
 \end{itemize}
 \end{frame}
@@ -327,12 +327,12 @@ A main execution script
 \begin{center}
 \includegraphics[scale=0.3]{SLIDES/img/FT-EP-Alya-IMB.cost.pdf}
 \end{center}
-\vspace{-0.5cm}
+\vspace{-1cm}
 \begin{table}[h]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lllll}
 \hline
-{\color[HTML]{000000} App} & {\color[HTML]{000000} ETH Execution Cost} & {\color[HTML]{000000} IB Execution Cost} & {\color[HTML]{000000} Cost Difference} & {\color[HTML]{000000} \begin{tabular}[c]{@{}l@{}}Percentual\\ Cost Variation\end{tabular}} \\ \hline
+{\color[HTML]{000000} App} & {\color[HTML]{000000} GbE Execution Cost} & {\color[HTML]{000000} IB Execution Cost} & {\color[HTML]{000000} Cost Difference} & {\color[HTML]{000000} \begin{tabular}[c]{@{}l@{}}Percentual\\ Cost Variation\end{tabular}} \\ \hline
 {\color[HTML]{000000} Alya} & {\color[HTML]{000000} US\$ 0.26} & {\color[HTML]{000000} US\$ 0.28} & {\color[HTML]{000000} US\$ -0.02} & {\color[HTML]{000000} -6.48\%} \\
 {\color[HTML]{000000} EP} & {\color[HTML]{000000} US\$ 0.03} & {\color[HTML]{000000} US\$ 0.04} & {\color[HTML]{000000} US\$ -0.01} & {\color[HTML]{000000} -19.81\%} \\
 {\color[HTML]{000000} FT} & {\color[HTML]{000000} US\$ 1.36} & {\color[HTML]{000000} US\$ 0.16} & {\color[HTML]{000000} US\$ 1.21} & {\color[HTML]{000000} 770\%} \\
@@ -341,7 +341,7 @@ A main execution script
 }
 \end{table}
 \begin{itemize}
-    \item A8 (IB) costs \alert{US\$ 0.975} and A10 (ETH) \alert{US\$ 0.78} per hour
+    \item A8 (IB) costs \alert{US\$ 0.975} and A10 (GbE) \alert{US\$ 0.78} per hour
 \end{itemize}
 \end{frame}
 
@@ -353,7 +353,7 @@ A main execution script
 \pause Observations
 \begin{itemize}
     \item Based on the plot with MPI Ranks (left side), this app follows a straight line to be \alert{almost perfectly balanced}
-    \pause\item Both ETH and IB have almost the \alert{same pattern} with \alert{different execution times}
+    \pause\item Both GbE and IB have almost the \alert{same pattern} with \alert{different execution times}
     \pause\item In the percentage graph (right side), the results show that both interconnections have almost the \alert{same computation and MPI percentage between them}
 \end{itemize}
 \end{frame}
@@ -380,7 +380,7 @@ A main execution script
 \pause Observations
 \begin{itemize}
     \item FT has the pattern of sending several MPI messages, which makes it \alert{communication intensive}
-    \pause \item In ETH, it is \alert{dominated by MPI operations}, therefore its time is high
+    \pause \item In GbE, it is \alert{dominated by MPI operations}, therefore its time is high
     \pause \item On the other hand, in IB, both MPI and Computing \\operations reaches \alert{$\approx$50\%}
 \end{itemize}
 \end{frame}
@@ -433,7 +433,7 @@ Network interconnect performance remains a \alert{crucial aspect of HPC environm
    \hfill
    \includegraphics[width=0.3\textwidth]{SLIDES/logo/Azure_logo.png}
 \end{figure}
-    \pause\item Publish a paper using up-to-date instances price
+    \pause\item Publish a paper using up-to-date \alert{instances price}
     \begin{center}
         \includegraphics[width=0.4\textwidth]{SLIDES/logo/Publishing.png}
     \end{center}
