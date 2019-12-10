@@ -4757,24 +4757,24 @@ ggplot(df_intel_latency[df_intel_latency$interface %in% c("ib", "eth"), ],aes(x=
   geom_point(aes(color=interface, shape=interface),size = 4) +
   scale_shape_manual(values = c(15, 17),
                      breaks=c("eth", "ib"),
-                     labels=c("Ethernet 1Gbps", "InfiniBand FDR 56Gbps")) +
+                     labels=c("GbE", "IB FDR")) +
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
   theme_bw() +
-  scale_y_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024)) +
-  scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
-  ylab('Average Latency Time\n(Microseconds in Log Scale)') +
+  scale_y_log10(breaks=c(1,4,16,64,256,1024)) +
+  scale_x_log10(breaks=c(1,4,16,64,256,1024,4096,16384,65536,262144,1048576,4194304)) +
+  ylab(expression(paste("Average Latency Time (",mu,"s)"))) +
   xlab('Message Size (Bytes)') +
   scale_color_manual(values=c( "#BEBEBE", "#303030"),
-                    breaks=c("eth", "ib"),
-                    labels=c("Ethernet 1Gbps", "InfiniBand FDR 56Gbps")) +
-    theme (legend.position = c(0.2, 0.82),
-           legend.background = element_rect(color = "black", size = 0.5, linetype = "solid"),
-           plot.margin = unit(x = c(0.2, 0, 0, 0), units = "cm"),
-           axis.title=element_text(size=18), 
-           legend.title = element_blank(),
-           legend.text = element_text(color = "black", size = 18),
-           axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
-           axis.text.y = element_text(size =16, color = "black")) 
+                     breaks=c("eth", "ib"),
+                     labels=c("GbE", "IB FDR")) +
+  theme (legend.position = c(0.1, 0.85),
+         legend.background = element_rect(color = "black", size = 0.5, linetype = "solid"),
+         plot.margin = unit(x = c(0.2, 0, 0, 0), units = "cm"),
+         axis.title=element_text(size=18), 
+         legend.title = element_blank(),
+         legend.text = element_text(color = "black", size = 18),
+         axis.text.x = element_text(size =16, color = "black"),
+         axis.text.y = element_text(size =16, color = "black")) 
 ggsave("SLIDES/img/Latency.pdf")
 #+end_src
 
@@ -4788,23 +4788,23 @@ ggplot(df_intel_band[df_intel_band$interface %in% c("ib", "eth"), ],aes(x=bytes,
   geom_point(aes(col = interface, shape=interface), size = 4) +
   scale_shape_manual(values = c(15, 17),
                      breaks=c("eth", "ib"),
-                     labels=c("Ethernet 1Gbps","InfiniBand FDR 56Gbps")) +  
+                     labels=c("GbE","IB FDR")) +  
   geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
   theme_bw() +
   scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8)) +
-  scale_x_log10(breaks=c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304)) +
-  ylab('Average Bandwidth\n(Gigabytes per Second)') +
+  scale_x_log10(breaks=c(1,4,16,64,256,1024,4096,16384,65536,262144,1048576,4194304)) +
+  ylab('Average Bandwidth(GB/s)') +
   xlab('Message Size (Bytes)') +
   scale_colour_manual(values=c( "#BEBEBE", "#303030"),
                     breaks=c("eth", "ib"),
-                    labels=c("Ethernet 1Gbps", "InfiniBand FDR 56Gbps")) +
-  theme (legend.position = c(0.2, 0.82),
+                    labels=c("GbE", "IB FDR")) +
+  theme (legend.position = c(0.1, 0.85),
          legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
           plot.margin = unit(x = c(0.1, 0, 0, 0), units = "cm"),
          axis.title=element_text(size=18), 
          legend.title = element_blank(),
          legend.text = element_text(color = "black", size = 18),
-         axis.text.x = element_text(angle=55, hjust=1, size =16, color = "black"),
+         axis.text.x = element_text(size =16, color = "black"),
          axis.text.y = element_text(size =16, color = "black"))
 ggsave("SLIDES/img/Bandwidth.pdf")
 #+end_src
@@ -4831,11 +4831,11 @@ breaks_fun <- function(x) {
 }
 
 ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_ep", "exec_alya", "exec_imb_CPU"),], aes(x=apps, y=average, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.6) +
-         geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=0.2, position = position_dodge(.6)) +
+geom_bar(stat="identity", position = "dodge", width = 0.4) +
+         geom_errorbar(aes(ymin=average-ste, ymax=average+ste), width=0.2, position = position_dodge(.4)) +
          theme_bw() +
          scale_fill_manual(values=c("#BEBEBE", "#303030") ,
-                           breaks=c("eth", "ib"), labels=c("Ethernet 1 Gbps", "InfiniBand FDR 56Gbps")) +
+                           breaks=c("eth", "ib"), labels=c("GbE", "IB FDR")) +
          theme(legend.position = "top", 
                legend.key = element_rect(colour = "grey"),
                legend.key.height = unit(0.5, "line"),
@@ -4892,17 +4892,17 @@ df_apps %>%
 : )
 
 ***** FT-EP-Alya-IMB
-#+begin_src R :results output graphics :file FT-EP-Alya-IMB.png :exports both :width 800 :height 400 :session *R* 
+#+begin_src R :results output graphics :file FT-EP-Alya-IMB.cost.png :exports both :width 800 :height 400 :session *R* 
 try <- c(exec_ft="FT", exec_alya="Alya",  exec_ep="EP", exec_imb_CPU="IMB-CPU")
 try2 <- c(exec_ft="128", exec_alya="160",  exec_ep="128", exec_imb_CPU="160")
 df_apps$interface <- factor(df_apps$interface,
 levels=c("eth", "ib"))
 
 ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_alya", "exec_ep", "exec_imb_CPU"), ] , aes(x=apps, y=cost, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.6) +
+geom_bar(stat="identity", position = "dodge", width = 0.4) +
 theme_bw() +
 scale_fill_manual(values=c("#BEBEBE", "#303030") ,
-breaks=c("eth", "ib"), labels=c( "Ethernet 1 Gbps", "InfiniBand FDR 56Gbps")) +
+breaks=c("eth", "ib"), labels=c( "GbE", "IB FDR")) +
 theme(legend.position = "top", 
       legend.key = element_rect(colour = "grey"),
       legend.key.height = unit(0.5, "line"),
@@ -4925,7 +4925,7 @@ ggsave("SLIDES/img/FT-EP-Alya-IMB.cost.pdf")
 #+end_src
 
 #+RESULTS:
-[[file:FT-EP-Alya-IMB.png]]
+[[file:FT-EP-Alya-IMB.cost.png]]
 
 **** Characterization Plots
 ***** FT-Charac
@@ -4940,7 +4940,7 @@ df.ft.eth <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT-Ethernet 1 Gbps") %>%
+  mutate(App = "FT (GbE)") %>%
   select(Rank, everything())
 df.ft.eth
 
@@ -4952,7 +4952,7 @@ df.ft.ib <- read_csv("LOGS/TRACE/charac_ft.ib/charac_ft.ib.csv", col_names = FAL
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT-InfiniBand FDR 56Gbps") %>%
+  mutate(App = "FT (IB FDR)") %>%
   select(Rank, everything())
 df.ft.ib
 
@@ -5047,7 +5047,7 @@ df.ep.eth <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP-Ethernet 1 Gbps") %>%
+  mutate(App = "EP (GbE)") %>%
   select(Rank, everything())
 df.ep.eth
 
@@ -5059,7 +5059,7 @@ df.ep.ib <- read_csv("LOGS/TRACE/charac_ep.ib/charac_ep.ib.csv", col_names = FAL
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP-InfiniBand FDR 56Gbps") %>%
+  mutate(App = "EP (IB FDR)") %>%
   select(Rank, everything())
 df.ep.ib
 
@@ -5157,7 +5157,7 @@ df.alya.eth <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_na
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "Alya-Ethernet 1 Gbps") %>%
+  mutate(App = "Alya (GbE)") %>%
   select(Rank, everything())
 df.alya.eth
 
@@ -5169,7 +5169,7 @@ df.alya.ib <- read_csv("LOGS/TRACE/charac_alya.ib/charac_alya.ib.csv", col_names
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "Alya-InfiniBand FDR 56Gbps") %>%
+  mutate(App = "Alya (IB FDR)") %>%
   select(Rank, everything())
 df.alya.ib
 
@@ -5263,7 +5263,7 @@ df.imb.cpu.eth <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IMB-CPU Ethernet 1 Gbps") %>%
+  mutate(App = "IMB-CPU (GbE)") %>%
   select(Rank, everything())
 df.imb.cpu.eth
 
@@ -5275,7 +5275,7 @@ df.imb.cpu.ib <- read_csv("LOGS/TRACE/charac_imb_CPU.ib/charac_imb_CPU.ib.csv", 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IMB-CPU InfiniBand FDR 56Gbps") %>%
+  mutate(App = "IMB-CPU (IB FDR)") %>%
   select(Rank, everything())
 df.imb.cpu.ib
 
@@ -5373,7 +5373,7 @@ df.ft.eth <- read_csv("LOGS/TRACE/charac_ft.eth/charac_ft.eth.csv", col_names = 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT-Ethernet 1 Gbps") %>%
+  mutate(App = "FT (GbE)") %>%
   select(Rank, everything())
 df.ft.eth
 
@@ -5385,7 +5385,7 @@ df.ft.ib <- read_csv("LOGS/TRACE/charac_ft.ib/charac_ft.ib.csv", col_names = FAL
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "FT-InfiniBand FDR 56Gbps") %>%
+  mutate(App = "FT (IB FDR)") %>%
   select(Rank, everything())
 df.ft.ib
 
@@ -5475,7 +5475,7 @@ df.ep.eth <- read_csv("LOGS/TRACE/charac_ep.eth/charac_ep.eth.csv", col_names = 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP-Ethernet 1 Gbps") %>%
+  mutate(App = "EP (GbE)") %>%
   select(Rank, everything())
 df.ep.eth
 
@@ -5487,7 +5487,7 @@ df.ep.ib <- read_csv("LOGS/TRACE/charac_ep.ib/charac_ep.ib.csv", col_names = FAL
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "EP-InfiniBand FDR 56Gbps") %>%
+  mutate(App = "EP (IB FDR)") %>%
   select(Rank, everything())
 df.ep.ib
 
@@ -5580,7 +5580,7 @@ df.alya.eth <- read_csv("LOGS/TRACE/charac_alya.eth/charac_alya.eth.csv", col_na
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "Alya-Ethernet 1 Gbps") %>%
+  mutate(App = "Alya (GbE)") %>%
   select(Rank, everything())
 df.alya.eth
 
@@ -5592,7 +5592,7 @@ df.alya.ib <- read_csv("LOGS/TRACE/charac_alya.ib/charac_alya.ib.csv", col_names
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "Alya-InfiniBand FDR 56Gbps") %>%
+  mutate(App = "Alya (IB FDR)") %>%
   select(Rank, everything())
 df.alya.ib
 
@@ -5684,7 +5684,7 @@ df.imb_CPU.eth <- read_csv("LOGS/TRACE/charac_imb_CPU.eth/charac_imb_CPU.eth.csv
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IMB-CPU\nEthernet 1 Gbps") %>%
+  mutate(App = "IMB-CPU (GbE)") %>%
   select(Rank, everything())
 df.imb_CPU.eth
 
@@ -5696,7 +5696,7 @@ df.imb_CPU.ib <- read_csv("LOGS/TRACE/charac_imb_CPU.ib/charac_imb_CPU.ib.csv", 
          Duration = X6,
          Value = X8) %>%
   mutate(Rank = as.integer(Rank)) %>%
-  mutate(App = "IMB-CPU\nInfiniBand FDR 56Gbps") %>%
+  mutate(App = "IMB-CPU (IB FDR)") %>%
   select(Rank, everything())
 df.imb_CPU.ib
 
