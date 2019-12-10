@@ -40,7 +40,7 @@ Federal University of Rio Grande do Sul (UFRGS) \\Porto Alegre - Brazil}}
 Growing demand for \alert{computational power}
 \begin{itemize}
 \item High Performance Computing (HPC)
-\item Clusters and "as a Service" cloud models
+\item Clusters and ``as a Service'' cloud models
 \end{itemize}
 \pause \vfill
 \alert{Communication characteristics} vary from application to application
@@ -279,7 +279,7 @@ A main execution script
 
 \pause Zenodo
 \begin{itemize}
-    \item As this work has logs that add up to 117G, these \\will be zipped and sent to Zenodo
+    \item As this work has logs that add up to 117G, these will be\\ zipped and sent to Zenodo
 \end{itemize}
 \end{frame}
 
@@ -366,8 +366,8 @@ A main execution script
 \pause Observations
 \begin{itemize}
     \item This application is \alert{dominated by Computing}, with some rankings having \alert{MPI spikes}
-    \pause\item In IB, the MPI\_Init operation has a \alert{longer execution time}, which sets it apart from ETH
-    \pause\item The total percentage of MPI and Computing confirms the \\above explanation, in which \alert{ETH has a bigger Computing} \\and a \alert{smaller MPI than ETH}   
+    \pause\item In IB, the MPI\_Init operation has a \alert{longer execution time}, which sets it apart from GbE
+    \pause\item The total percentage of MPI and Computing confirms the \\above explanation, in which \alert{GbE has a bigger Computing} \\and a \alert{smaller MPI than GbE}   
 \end{itemize}
 
 \end{frame}
@@ -406,26 +406,26 @@ Network interconnect performance remains a \alert{crucial aspect of HPC environm
 
 \pause \texttt{How do the communication characteristics of applications influence their performance?}
 \begin{itemize}
-    \pause \item For applications with a high level of network dependency, it reaches or even exceeds the same level of importance as processing power
+    \pause \item For applications with a \alert{high level of network dependency}, it reaches or even exceeds the same level of importance as processing power
     \begin{itemize}
-        \item FT $\approx$989\%
-        \item IS $\approx$978\%
+        \item FT \alert{$\approx$989\%}
+        \item IS \alert{$\approx$978\%}
     \end{itemize} 
-    \pause\item On the other hand, for applications that are CPU-Bound, a faster interconnection does not influence for improved performance
+    \pause\item On the other hand, for applications that are \alert{CPU-Bound}, a faster interconnection does not influence for improved performance
     \begin{itemize}
-        \item EP 0\% gain or loss
-        \item IMB-CPU less than 1\%
+        \item EP \alert{0\%} gain or loss
+        \item IMB-CPU less than \alert{1\%}
     \end{itemize}
 \end{itemize}
 \pause \texttt{It is possible to optimize both performance and execution cost?}
 \begin{itemize}
-    \pause\item YES, BUT depends on the application characteristics, for example, FT have a huge gain in performance ($\approx$989\%) and also\\ optimized their cost $\approx$770\%
+    \pause\item Yes, but depends on \alert{the application characteristics}, for \\example, FT have a huge gain in performance (\alert{$\approx$989\%}) \\and also optimized their cost \alert{$\approx$770\%}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[t]{Future Work}
 \begin{itemize}
-    \item Perform the same assessment on leading public cloud providers (Amazon AWS, Google Cloud, and Microsoft Azure), considering all available network interconnects
+    \item Perform the same assessment on leading public cloud providers (\alert{Amazon AWS}, \alert{Google Cloud}, and \alert{Microsoft Azure}), considering all available network interconnects
    \begin{figure}
    \includegraphics[width=0.3\textwidth]{SLIDES/logo/amazon.png}
    \hfill
