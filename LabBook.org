@@ -4871,13 +4871,14 @@ df_apps <- read_csv("LOGS/LOGS_CSV/apps_exec.22-11-2019.16h44m04s.csv", progress
   A8_m=A8_h/60
   A10_h=0.78
   A10_m=(A10_h/60)
+  n_instances=4
 
 df_apps %>%
   group_by(apps,interface) %>%
   summarise(
     average_s=mean(time),
     average_m=average_s/60,
-    cost= ifelse(interface[1] == "eth", A10_m*average_m,  A8_m*average_m)) %>%
+    cost= ifelse(interface[1] == "eth", A10_m*average_m*n_instances, A8_m*average_m*n_instances)) %>%
   arrange(apps,interface) -> df_apps
 
 #+end_src
@@ -4890,42 +4891,6 @@ df_apps %>%
 :   interface = col_character(),
 :   time = col_double()
 : )
-
-***** FT-EP-Alya-IMB
-#+begin_src R :results output graphics :file FT-EP-Alya-IMB.cost.png :exports both :width 800 :height 400 :session *R* 
-try <- c(exec_ft="FT", exec_alya="Alya",  exec_ep="EP", exec_imb_CPU="IMB-CPU")
-try2 <- c(exec_ft="128", exec_alya="160",  exec_ep="128", exec_imb_CPU="160")
-df_apps$interface <- factor(df_apps$interface,
-levels=c("eth", "ib"))
-
-ggplot(df_apps[df_apps$apps %in% c("exec_ft", "exec_alya", "exec_ep", "exec_imb_CPU"), ] , aes(x=apps, y=cost, fill=interface)) +
-geom_bar(stat="identity", position = "dodge", width = 0.4) +
-theme_bw() +
-scale_fill_manual(values=c("#BEBEBE", "#303030") ,
-breaks=c("eth", "ib"), labels=c( "GbE", "IB FDR")) +
-theme(legend.position = "top", 
-      legend.key = element_rect(colour = "grey"),
-      legend.key.height = unit(0.5, "line"),
-      legend.key.width = unit(4, "line"),
-      legend.spacing = unit(100, "line"),
-      plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
-      legend.margin=margin(c(0, 0, -8, 0)),
-      axis.text.x = element_text(size =16, color = "black"),
-      axis.text.y = element_text(size =16, color = "black"),
-      axis.title=element_text(size=18), 
-      legend.title = element_blank(),
-      legend.text = element_text(color = "black", size = 18)) +
-      scale_x_discrete(labels=try2) +
-      labs(x="MPI Processes Number", y="Execution Cost in US$") +
-      facet_wrap(facets= ~ apps, scales="free", labeller=labeller(apps=try), nrow=1) +
-      #scale_y_continuous(breaks = breaks_fun, limits = c(0, NA)) + 
-      theme(strip.text.x=element_text(size=18),
-            strip.background=element_rect(fill='#F5F5F5'))
-ggsave("SLIDES/img/FT-EP-Alya-IMB.cost.pdf")
-#+end_src
-
-#+RESULTS:
-[[file:FT-EP-Alya-IMB.cost.png]]
 
 **** Characterization Plots
 ***** FT-Charac
