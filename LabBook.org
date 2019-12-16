@@ -5696,3 +5696,191 @@ ggsave("SLIDES/img/IMB_CPU.percentage.pdf")
 #+RESULTS:
 [[file:R/PLOTS/imb_CPU.percentage.png]]
 
+*** Paper Plots 
+**** Read
+#+begin_src R :results output :session *R* :exports both
+options(crayon.enabled=FALSE)
+suppressMessages(library("tidyverse"));
+df_intel <- read_csv("LOGS/LOGS_CSV/intel.22-11-2019.16h44m04s.csv", progress=FALSE)
+df_apps <- read_csv("LOGS/LOGS_CSV/apps_exec.22-11-2019.16h44m04s.csv", progress=FALSE)%>%
+  filter(interface != "ipoib")
+
+df_apps %>%
+      group_by(apps,interface) %>%
+      summarise(
+        average=mean(time),
+        std=sd(time),
+        ste=3*std/sqrt(n()),
+        N=n()) %>%
+      arrange(apps,interface) -> df_apps
+df_apps
+
+df_intel %>%
+  filter(bytes != 0) %>%
+  group_by(interface,bytes) %>%
+  summarise(
+    average=mean(time),
+    std=sd(time),
+    ste=3*std/sqrt(n()),
+    N=n()) %>%
+  arrange(interface,bytes) -> df_intel_latency
+df_intel_latency
+
+df_intel %>%
+  filter(bytes != 0) %>%
+  group_by(interface,bytes) %>%
+  summarise(
+    average=(mean(`mbytes-sec`)/1000),
+    std=(sd(`mbytes-sec`)/1000),
+    ste=3*std/sqrt(n()),
+    N=n()) %>%
+  arrange(interface,bytes) -> df_intel_band
+df_intel_band
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+Parsed with column specification:
+cols(
+  apps = col_character(),
+  interface = col_character(),
+  bytes = col_double(),
+  time = col_double(),
+  `mbytes-sec` = col_double()
+)
+
+Parsed with column specification:
+cols(
+  apps = col_character(),
+  interface = col_character(),
+  time = col_double()
+)
+
+# A tibble: 22 x 6
+# Groups:   apps [11]
+   apps      interface average   std   ste     N
+   <
+    <
+      <
+<
+<
+<int>
+ 1 exec_alya eth         297.  1.77  0.968    30
+ 2 exec_alya ib          254.  2.79  1.53     30
+ 3 exec_bt   eth         505.  1.54  0.842    30
+ 4 exec_bt   ib          380.  4.17  2.28     30
+ 5 exec_cg   eth         761.  8.24  4.51     30
+ 6 exec_cg   ib          183.  1.01  0.551    30
+ 7 exec_ep   eth          37.4 0.422 0.231    30
+ 8 exec_ep   ib           37.3 0.239 0.131    30
+ 9 exec_ft   eth        1581.  2.72  1.49     30
+10 exec_ft   ib          145.  6.26  3.43     30
+# … with 12 more rows
+
+# A tibble: 69 x 6
+# Groups:   interface [3]
+   interface bytes average   std   ste     N
+   <
+    <
+  <
+<
+<
+<int>
+ 1 eth           1    6.42 0.456 0.250    30
+ 2 eth           2    6.28 0.470 0.257    30
+ 3 eth           4    6.18 0.472 0.258    30
+ 4 eth           8    6.07 0.381 0.209    30
+ 5 eth          16    6.02 0.338 0.185    30
+ 6 eth          32    5.98 0.301 0.165    30
+ 7 eth          64    5.98 0.280 0.153    30
+ 8 eth         128    5.99 0.272 0.149    30
+ 9 eth         256    5.99 0.247 0.136    30
+10 eth         512    6.02 0.218 0.119    30
+# … with 59 more rows
+
+# A tibble: 69 x 6
+# Groups:   interface [3]
+   interface bytes  average       std        ste     N
+   <
+    <
+   <
+    <
+     <
+<int>
+ 1 eth           1 0.000157 0.0000106 0.00000578    30
+ 2 eth           2 0.000320 0.0000230 0.0000126     30
+ 3 eth           4 0.000651 0.0000487 0.0000267     30
+ 4 eth           8 0.00132  0.0000821 0.0000450     30
+ 5 eth          16 0.00267  0.000147  0.0000803     30
+ 6 eth          32 0.00536  0.000264  0.000145      30
+ 7 eth          64 0.0107   0.000488  0.000267      30
+ 8 eth         128 0.0214   0.000945  0.000518      30
+ 9 eth         256 0.0428   0.00172   0.000940      30
+10 eth         512 0.0852   0.00298   0.00163       30
+# … with 59 more rows
+#+end_example
+**** PingPong - Latency
+#+begin_src R :results output graphics :file SLIDES/Latency-paper.pdf :exports both :width 4 :height 4 :session *R* 
+ggplot(df_intel_latency[df_intel_latency$interface %in% c("ib", "eth"), ],aes(x=bytes, y=average)) +
+  geom_line(aes(color = interface), alpha = 0.5) +
+  geom_point(aes(color=interface),size = 1) +
+  scale_shape_manual(values = c(15, 17),
+                     breaks=c("eth", "ib"),
+                     labels=c("GbE", "IB FDR")) +
+  geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .25) +
+  theme_bw(base_size=12) +
+  scale_y_log10(breaks=c(1,4,16,64,256,1024)) +
+  scale_x_log10(breaks=c(1,4,16,64,256,1024,4096,16384,65536,262144,1048576,4194304)) +
+  ylab(expression(paste("Average Latency Time (",mu,"s)"))) +
+  xlab('Message Size (Bytes)') +
+  scale_color_manual(values=c( "#BEBEBE", "#303030"),
+                     breaks=c("eth", "ib"),
+                     labels=c("GbE", "IB FDR")) +
+  theme_bw(base_size = 13) +
+  theme (legend.position = "top",
+         legend.spacing = unit(x = c(0, 0, 0, 0), units = 'mm'),
+         legend.justification = "left",
+         legend.box.spacing = unit(0, "pt"),
+         legend.box.margin = margin(0,0,0,0),
+         plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"),
+         legend.title = element_blank(),
+         legend.text = element_text(color = "black"))
+#+end_src
+
+#+RESULTS:
+[[file:SLIDES/Latency-paper.pdf]]
+
+**** PingPong - Bandwidth
+#+begin_src R :results output graphics :file R/PLOTS/Bandwidth.png :exports both :width 800 :height 600 :session *R* 
+ggplot(df_intel_band[df_intel_band$interface %in% c("ib", "eth"), ],aes(x=bytes, y=average)) +
+  geom_line(aes(col = interface), alpha = 1) +
+  geom_point(aes(col = interface, shape=interface), size = 4) +
+  scale_shape_manual(values = c(15, 17),
+                     breaks=c("eth", "ib"),
+                     labels=c("GbE","IB FDR")) +  
+  geom_errorbar(aes(ymin=average-ste, ymax=average+ste, color=interface, group=interface), width = .2) +
+  theme_bw() +
+  scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8)) +
+  scale_x_log10(breaks=c(1,4,16,64,256,1024,4096,16384,65536,262144,1048576,4194304)) +
+  ylab('Average Bandwidth(GB/s)') +
+  xlab('Message Size (Bytes)') +
+  scale_colour_manual(values=c( "#BEBEBE", "#303030"),
+                    breaks=c("eth", "ib"),
+                    labels=c("GbE", "IB FDR")) +
+  theme (legend.position = c(0.1, 0.85),
+         legend.background = element_rect(color = "black", size = 0.3, linetype = "solid"),
+          plot.margin = unit(x = c(0.1, 0, 0, 0), units = "cm"),
+         axis.title=element_text(size=18), 
+         legend.title = element_blank(),
+         legend.text = element_text(color = "black", size = 18),
+         axis.text.x = element_text(size =16, color = "black"),
+         axis.text.y = element_text(size =16, color = "black"))
+ggsave("SLIDES/img/Bandwidth-paper.pdf")
+#+end_src
+
+#+RESULTS:
+[[file:R/PLOTS/Bandwidth.png]]
+
+
